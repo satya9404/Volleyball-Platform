@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Add Team Member | NIT Nagaland Volleyball
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/add-team-player.css'
+          ) }}">
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo-area">
+
+            <div class="logo">
+                NIT
+            </div>
+
+            <div>
+                <h2>NIT Nagaland</h2>
+                <p>Volleyball Platform</p>
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('tournaments') }}">
+                Tournaments
+            </a>
+
+            <a href="{{ url_for('matches') }}">
+                Matches
+            </a>
+
+            <a href="{{ url_for('organizer_dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main>
+
+        <p class="label">
+            TEAM MANAGEMENT
+        </p>
+
+        <h1>
+            Add Team Member
+        </h1>
+
+        <p class="subtitle">
+            Add a player to
+            <strong>{{ team.team_name }}</strong>
+        </p>
+
+
+        <!-- FORM -->
+
+        <div class="card">
+
+            <form method="POST">
+
+                <label for="player_id">
+                    Select Player
+                </label>
+
+                <select
+                    name="player_id"
+                    id="player_id"
+                    required
+                >
+
+                    <option value="">
+                        Select Player
+                    </option>
+
+                    {% for player in players %}
+
+                    <option value="{{ player.id }}">
+
+                        {{ player.name }}
+
+                        -
+                        {{ player.roll_number }}
+
+                        -
+                        {{ player.department }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <button type="submit">
+                    + Add Player
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <div class="back">
+
+            <a href="{{ url_for(
+                'team_details',
+                team_id=team.id
+            ) }}">
+                ← Back to Team
+            </a>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+<div class="new-player-option">
+
+    <span>New player not in the list?</span>
+
+    <a
+        href="{{ url_for(
+            'add_new_player',
+            team_id=team.id
+        ) }}"
+        class="new-player-button"
+    >
+        + Add New Player
+    </a>
+
+</div>
+</html>

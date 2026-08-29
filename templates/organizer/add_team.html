@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add Team | NIT Nagaland Volleyball</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/organizer-forms.css') }}">
+</head>
+
+<body>
+
+<main class="organizer-form-page">
+
+    <div class="organizer-form-card">
+
+        <h1>Add Team</h1>
+
+        <p class="subtitle">
+            Add a participating team to
+            <strong>{{ tournament.name }}</strong>
+        </p>
+
+        {% if error %}
+            <div class="form-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label for="team_name">
+                    Team Name
+                </label>
+
+                <input
+                    type="text"
+                    id="team_name"
+                    name="team_name"
+                    placeholder="Enter team name"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="organizer-form-button">
+
+                Add Team
+
+            </button>
+
+        </form>
+
+        <a
+            href="{{ url_for(
+                'tournament_details',
+                tournament_id=tournament.id
+            ) }}"
+            class="organizer-form-back">
+
+            ← Back to Tournament
+
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

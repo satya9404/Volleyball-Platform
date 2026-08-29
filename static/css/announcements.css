@@ -1,0 +1,693 @@
+/* =========================================================
+   ANNOUNCEMENTS
+   NIT NAGALAND VOLLEYBALL
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.announcements-page {
+
+    width: min(1100px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 55px 0 80px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.announcements-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    padding: 32px;
+
+    margin-bottom: 35px;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe7f1;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(20, 50, 90, 0.07);
+}
+
+
+/* HEADER ICON */
+
+.header-icon {
+
+    width: 72px;
+
+    height: 72px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eef5ff;
+
+    border: 1px solid #d9e7f8;
+
+    border-radius: 18px;
+
+    font-size: 34px;
+}
+
+
+/* HEADER CONTENT */
+
+.header-content {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+/* LABEL */
+
+.header-label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #ef634f;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2.5px;
+}
+
+
+/* TITLE */
+
+.announcements-header h1 {
+
+    margin: 0;
+
+    color: #092f5f;
+
+    font-size: 42px;
+
+    font-weight: 800;
+
+    line-height: 1.15;
+}
+
+
+/* DESCRIPTION */
+
+.header-description {
+
+    margin: 9px 0 0;
+
+    color: #687c96;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ADD ANNOUNCEMENT BUTTON
+   ========================================================= */
+
+.admin-action {
+
+    margin-top: 20px;
+}
+
+
+.add-announcement-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px 17px;
+
+    background: #092f5f;
+
+    color: #ffffff;
+
+    border: 1px solid #092f5f;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.add-announcement-button:hover {
+
+    background: #124b88;
+
+    border-color: #124b88;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(9, 47, 95, 0.20);
+}
+
+
+/* PLUS ICON */
+
+.add-button-icon {
+
+    width: 23px;
+
+    height: 23px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.14);
+
+    border-radius: 6px;
+
+    font-size: 19px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   ANNOUNCEMENT LIST
+   ========================================================= */
+
+.announcements-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.announcement-card {
+
+    position: relative;
+
+    padding: 26px 28px 22px 31px;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe7f1;
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 7px 22px rgba(20, 50, 90, 0.06);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+/* LEFT ACCENT */
+
+.announcement-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 18px;
+
+    bottom: 18px;
+
+    width: 4px;
+
+    background: #ef634f;
+
+    border-radius: 0 5px 5px 0;
+}
+
+
+.announcement-card:hover {
+
+    transform: translateY(-2px);
+
+    border-color: #cbd8e7;
+
+    box-shadow:
+        0 12px 30px rgba(20, 50, 90, 0.10);
+}
+
+
+/* =========================================================
+   CARD TOP
+   ========================================================= */
+
+.announcement-top {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 16px;
+}
+
+
+/* ANNOUNCEMENT ICON */
+
+.announcement-icon {
+
+    width: 46px;
+
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #fff2ee;
+
+    border: 1px solid #f8ddd6;
+
+    border-radius: 12px;
+
+    font-size: 22px;
+}
+
+
+/* HEADING */
+
+.announcement-heading {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.announcement-heading h2 {
+
+    margin: 0 0 10px;
+
+    color: #123c68;
+
+    font-size: 21px;
+
+    font-weight: 750;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   META
+   ========================================================= */
+
+.announcement-meta {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+
+.meta-item {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 10px;
+
+    background: #f5f8fc;
+
+    border: 1px solid #e2e9f2;
+
+    border-radius: 7px;
+
+    color: #60758f;
+
+    font-size: 12px;
+
+    font-weight: 650;
+}
+
+
+.meta-icon {
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+.announcement-message {
+
+    margin-top: 21px;
+
+    padding: 19px 8px 2px;
+
+    border-top: 1px solid #edf1f5;
+
+    color: #40546c;
+
+    font-size: 15px;
+
+    line-height: 1.75;
+
+    white-space: pre-line;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.announcement-footer {
+
+    margin-top: 17px;
+
+    padding: 13px 8px 0;
+
+    border-top: 1px solid #edf1f5;
+}
+
+
+.posted-by {
+
+    color: #8a9aae;
+
+    font-size: 12px;
+}
+
+
+.posted-by strong {
+
+    color: #5d7088;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-announcements {
+
+    padding: 65px 30px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe7f1;
+
+    border-radius: 19px;
+
+    box-shadow:
+        0 9px 28px rgba(20, 50, 90, 0.07);
+}
+
+
+.empty-icon {
+
+    width: 70px;
+
+    height: 70px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eef5ff;
+
+    border: 1px solid #dbe7f5;
+
+    border-radius: 18px;
+
+    font-size: 31px;
+}
+
+
+.empty-announcements h2 {
+
+    margin: 0 0 9px;
+
+    color: #123c68;
+
+    font-size: 26px;
+
+    font-weight: 750;
+}
+
+
+.empty-announcements p {
+
+    max-width: 520px;
+
+    margin: 0 auto;
+
+    color: #71839a;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* EMPTY ADD BUTTON */
+
+.empty-add-button {
+
+    display: inline-block;
+
+    margin-top: 22px;
+
+    padding: 11px 17px;
+
+    background: #092f5f;
+
+    color: #ffffff;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.empty-add-button:hover {
+
+    background: #124b88;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .announcements-page {
+
+        width: calc(100% - 24px);
+
+        padding: 30px 0 55px;
+    }
+
+
+    .announcements-header {
+
+        align-items: flex-start;
+
+        gap: 16px;
+
+        padding: 23px;
+
+        border-radius: 16px;
+    }
+
+
+    .header-icon {
+
+        width: 54px;
+
+        height: 54px;
+
+        border-radius: 13px;
+
+        font-size: 26px;
+    }
+
+
+    .announcements-header h1 {
+
+        font-size: 31px;
+    }
+
+
+    .header-description {
+
+        font-size: 14px;
+    }
+
+
+    .announcement-card {
+
+        padding: 22px 20px 19px 23px;
+
+        border-radius: 15px;
+    }
+
+
+    .announcement-top {
+
+        gap: 12px;
+    }
+
+
+    .announcement-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        border-radius: 10px;
+
+        font-size: 19px;
+    }
+
+
+    .announcement-heading h2 {
+
+        font-size: 18px;
+    }
+
+
+    .announcement-message {
+
+        font-size: 14px;
+
+        line-height: 1.7;
+    }
+
+
+    .admin-action {
+
+        margin-top: 17px;
+    }
+
+
+    .add-announcement-button {
+
+        width: fit-content;
+
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+   ========================================================= */
+
+@media (max-width: 450px) {
+
+    .announcements-header {
+
+        display: block;
+    }
+
+
+    .header-icon {
+
+        margin-bottom: 18px;
+    }
+
+
+    .announcements-header h1 {
+
+        font-size: 29px;
+    }
+
+
+    .announcement-meta {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .empty-announcements {
+
+        padding: 50px 20px;
+    }
+}

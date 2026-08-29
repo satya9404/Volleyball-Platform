@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block title %}
+Standings | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/standings.css') }}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="standings-page">
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <section class="standings-header">
+
+        <div class="standings-label">
+            TOURNAMENT STANDINGS
+        </div>
+
+        <h1>
+            {{ tournament.name }}
+        </h1>
+
+        <p>
+            Current team standings based on completed matches.
+        </p>
+
+    </section>
+
+
+    <!-- =========================================
+         STANDINGS CARD
+    ========================================== -->
+
+    <section class="standings-card">
+
+        <div class="standings-card-header">
+
+            <div>
+                <span class="section-label">
+                    POINTS TABLE
+                </span>
+
+                <h2>
+                    Team Standings
+                </h2>
+            </div>
+
+            <div class="team-count">
+                {{ standings|length }} Teams
+            </div>
+
+        </div>
+
+
+        {% if standings %}
+
+        <!-- =====================================
+             DESKTOP TABLE
+        ====================================== -->
+
+        <div class="standings-table">
+
+            <!-- TABLE HEADER -->
+
+            <div class="standing-row standing-heading">
+
+                <div class="position">
+                    POS
+                </div>
+
+                <div class="team-column">
+                    TEAM
+                </div>
+
+                <div>
+                    P
+                </div>
+
+                <div>
+                    W
+                </div>
+
+                <div>
+                    L
+                </div>
+
+                <div>
+                    SW
+                </div>
+
+                <div>
+                    SL
+                </div>
+
+                <div>
+                    SD
+                </div>
+
+                <div class="points-column">
+                    PTS
+                </div>
+
+            </div>
+
+
+            <!-- TABLE ROWS -->
+
+            {% for team in standings %}
+
+            <div class="standing-row
+                        {% if team.position == 1 %}
+                            first-place
+                        {% elif team.position == 2 %}
+                            second-place
+                        {% elif team.position == 3 %}
+                            third-place
+                        {% endif %}">
+
+                <!-- POSITION -->
+
+                <div class="position">
+
+                    {% if team.position == 1 %}
+                        🥇
+                    {% elif team.position == 2 %}
+                        🥈
+                    {% elif team.position == 3 %}
+                        🥉
+                    {% else %}
+                        {{ team.position }}
+                    {% endif %}
+
+                </div>
+
+
+                <!-- TEAM -->
+
+                <div class="team-column">
+
+                    <span class="team-name">
+                        {{ team.team_name }}
+                    </span>
+
+                </div>
+
+
+                <!-- PLAYED -->
+
+                <div data-label="Played">
+                    {{ team.played }}
+                </div>
+
+
+                <!-- WON -->
+
+                <div data-label="Won"
+                     class="won">
+                    {{ team.won }}
+                </div>
+
+
+                <!-- LOST -->
+
+                <div data-label="Lost"
+                     class="lost">
+                    {{ team.lost }}
+                </div>
+
+
+                <!-- SETS WON -->
+
+                <div data-label="Sets Won">
+                    {{ team.sets_won }}
+                </div>
+
+
+                <!-- SETS LOST -->
+
+                <div data-label="Sets Lost">
+                    {{ team.sets_lost }}
+                </div>
+
+
+                <!-- SET DIFFERENCE -->
+
+                <div data-label="Set Difference"
+                     class="set-difference
+                     {% if team.set_difference > 0 %}
+                         positive
+                     {% elif team.set_difference < 0 %}
+                         negative
+                     {% endif %}">
+
+                    {% if team.set_difference > 0 %}
+                        +{{ team.set_difference }}
+                    {% else %}
+                        {{ team.set_difference }}
+                    {% endif %}
+
+                </div>
+
+
+                <!-- POINTS -->
+
+                <div class="points-column points">
+
+                    {{ team.points }}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- =====================================
+             LEGEND
+        ====================================== -->
+
+        <div class="standings-legend">
+
+            <div>
+                <strong>P</strong>
+                Played
+            </div>
+
+            <div>
+                <strong>W</strong>
+                Won
+            </div>
+
+            <div>
+                <strong>L</strong>
+                Lost
+            </div>
+
+            <div>
+                <strong>SW</strong>
+                Sets Won
+            </div>
+
+            <div>
+                <strong>SL</strong>
+                Sets Lost
+            </div>
+
+            <div>
+                <strong>SD</strong>
+                Set Difference
+            </div>
+
+            <div>
+                <strong>PTS</strong>
+                Points
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+        <!-- =====================================
+             EMPTY STATE
+        ====================================== -->
+
+        <div class="no-standings">
+
+            <div class="no-standings-icon">
+                🏐
+            </div>
+
+            <h2>
+                No Standings Yet
+            </h2>
+
+            <p>
+                Standings will appear here after completed
+                matches are recorded.
+            </p>
+
+            <a
+                href="{{ url_for('matches') }}"
+                class="matches-button"
+            >
+                View Matches
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =========================================
+         BACK
+    ========================================== -->
+
+    <div class="back-section">
+
+        <a href="{{ url_for('home') }}">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

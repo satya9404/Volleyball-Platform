@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Team Member | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block content %}
+{% block extra_css %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/add-new-player.css') }}">
+{% endblock %}
+<section class="add-player-page">
+
+    <div class="add-player-container">
+
+        <!-- HEADER -->
+
+        <div class="page-header">
+
+            <span class="section-label">
+                TEAM MANAGEMENT
+            </span>
+
+            <h1>
+                Add New Player
+            </h1>
+
+            <p>
+                Add a new player to
+                <strong>{{ team.team_name }}</strong>
+            </p>
+
+            <span class="tournament-name">
+                🏆 {{ team.tournament_name }}
+            </span>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        {% if error %}
+
+        <div class="error-message">
+            ⚠️ {{ error }}
+        </div>
+
+        {% endif %}
+
+
+        <!-- FORM -->
+
+        <div class="player-form-card">
+
+            <form method="POST">
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Player Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter player name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="roll_number">
+                        Roll Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="roll_number"
+                        name="roll_number"
+                        placeholder="Enter roll number"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="department">
+                        Department
+                    </label>
+
+                    <select
+                        id="department"
+                        name="department"
+                    >
+
+                        <option value="">
+                            Select Department
+                        </option>
+
+                        <option value="CSE">
+                            CSE
+                        </option>
+
+                        <option value="ECE">
+                            ECE
+                        </option>
+
+                        <option value="EEE">
+                            EEE
+                        </option>
+
+                        <option value="ME">
+                            ME
+                        </option>
+
+                        <option value="CE">
+                            CE
+                        </option>
+
+                        <option value="BS-MS">
+                            BS-MS
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="add-player-button"
+                >
+                    + Add Player
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div class="back-section">
+
+            <a
+                href="{{ url_for(
+                    'team_details',
+                    team_id=team.id
+                ) }}"
+                class="back-button"
+            >
+                ← Back to Team
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

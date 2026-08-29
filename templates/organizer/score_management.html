@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+{% block title %}
+Score Management | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/score_management.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="score-management-page">
+
+    <!-- HEADER -->
+
+    <section class="score-header">
+
+        <div class="header-label">
+            ADMINISTRATION
+        </div>
+
+        <h1>
+            Score Management
+        </h1>
+
+        <p>
+            Update the score or modify match information.
+        </p>
+
+    </section>
+
+
+    <!-- MATCH INFORMATION -->
+
+    <section class="match-summary">
+
+        <div class="match-summary-top">
+
+            <div class="team-name">
+                {{ match.team1_name }}
+            </div>
+
+            <div class="vs">
+                VS
+            </div>
+
+            <div class="team-name">
+                {{ match.team2_name }}
+            </div>
+
+        </div>
+
+        <div class="match-details">
+
+            <div>
+                <span class="detail-label">TOURNAMENT</span>
+                <span class="detail-value">
+                    {{ match.tournament_name }}
+                </span>
+            </div>
+
+            <div>
+                <span class="detail-label">DATE</span>
+                <span class="detail-value">
+                    {{ match.match_date }}
+                </span>
+            </div>
+
+            <div>
+                <span class="detail-label">TIME</span>
+                <span class="detail-value">
+                    {{ match.match_time or "Not specified" }}
+                </span>
+            </div>
+
+            {% if match.venue_name %}
+            <div>
+                <span class="detail-label">VENUE</span>
+                <span class="detail-value">
+                    {{ match.venue_name }}
+
+                    {% if match.venue_location %}
+                        — {{ match.venue_location }}
+                    {% endif %}
+                </span>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- MANAGEMENT OPTIONS -->
+
+    <section class="management-options">
+
+        <!-- SCORE MANAGEMENT -->
+
+        <a
+            href="{{ url_for(
+                'add_match_score',
+                match_id=match.id
+            ) }}"
+            class="management-card score-card"
+        >
+
+            <div class="management-icon">
+                🏐
+            </div>
+
+            <div class="management-content">
+
+                <h2>
+                    Score Management
+                </h2>
+
+                <p>
+                    Add or update set scores
+                </p>
+
+            </div>
+
+            <div class="management-arrow">
+                →
+            </div>
+
+        </a>
+
+
+        <!-- EDIT MATCH -->
+
+        <a
+            href="{{ url_for(
+                'edit_match',
+                match_id=match.id
+            ) }}"
+            class="management-card edit-card"
+        >
+
+            <div class="management-icon">
+                ✏️
+            </div>
+
+            <div class="management-content">
+
+                <h2>
+                    Edit Match
+                </h2>
+
+                <p>
+                    Update teams, date, venue and status
+                </p>
+
+            </div>
+
+            <div class="management-arrow">
+                →
+            </div>
+
+        </a>
+
+    </section>
+
+
+    <!-- SET FORMAT -->
+
+    <section class="set-format">
+
+        <div class="format-icon">
+            🏐
+        </div>
+
+        <div class="format-content">
+
+            <div class="format-label">
+                SET FORMAT
+            </div>
+
+            <h2>
+                Flexible Set Format
+            </h2>
+
+            <p>
+                Your college may play a set to
+                <strong>15 points</strong> or
+                <strong>25 points</strong>
+                depending on the available time.
+                Enter the actual score played.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXISTING SCORES -->
+
+    <section class="existing-scores">
+
+        <div class="scores-header">
+
+            <div>
+                <div class="section-label">
+                    MATCH SCORE
+                </div>
+
+                <h2>
+                    Set Scores
+                </h2>
+            </div>
+
+            <a
+                href="{{ url_for(
+                    'add_match_score',
+                    match_id=match.id
+                ) }}"
+                class="add-score-button"
+            >
+                + Add / Update Score
+            </a>
+
+        </div>
+
+
+        {% if scores %}
+
+            <div class="scores-table">
+
+                <div class="score-row score-heading">
+
+                    <div>
+                        SET
+                    </div>
+
+                    <div>
+                        {{ match.team1_name }}
+                    </div>
+
+                    <div>
+                        {{ match.team2_name }}
+                    </div>
+
+                </div>
+
+
+                {% for score in scores %}
+
+                <div class="score-row">
+
+                    <div class="set-number">
+                        Set {{ score.set_number }}
+                    </div>
+
+                    <div class="score-number">
+                        {{ score.team1_score }}
+                    </div>
+
+                    <div class="score-number">
+                        {{ score.team2_score }}
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="no-scores">
+
+                <div class="no-score-icon">
+                    🏐
+                </div>
+
+                <h3>
+                    No Set Scores Yet
+                </h3>
+
+                <p>
+                    No scores have been entered for this match.
+                </p>
+
+                <a
+                    href="{{ url_for(
+                        'add_match_score',
+                        match_id=match.id
+                    ) }}"
+                    class="add-score-button"
+                >
+                    + Enter First Score
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- BACK -->
+
+    <div class="back-section">
+
+        <a
+            href="{{ url_for(
+                'match_details',
+                match_id=match.id
+            ) }}"
+        >
+            ← Back to Match
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

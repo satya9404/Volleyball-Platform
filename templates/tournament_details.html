@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {{ tournament.name }} | NIT Nagaland Volleyball
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/tournament-details.css') }}">
+</head>
+
+<body>
+
+<main class="tournament-page">
+
+    <div class="tournament-container">
+
+
+        <!-- =========================================
+             TOURNAMENT HEADER
+        ========================================== -->
+
+        <section class="tournament-header">
+
+            <div class="tournament-icon">
+                🏐
+            </div>
+
+            <p class="section-label">
+                VOLLEYBALL TOURNAMENT
+            </p>
+
+            <h1>
+                {{ tournament.name }}
+            </h1>
+
+            {% if tournament.description %}
+
+                <p class="description">
+                    {{ tournament.description }}
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =========================================
+             TOURNAMENT INFORMATION
+        ========================================== -->
+
+        <section class="tournament-info">
+
+            <div class="info-card">
+
+                <span class="info-icon">
+                    📅
+                </span>
+
+                <div>
+
+                    <span class="info-label">
+                        Start Date
+                    </span>
+
+                    <strong>
+                        {{ tournament.start_date }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span class="info-icon">
+                    📅
+                </span>
+
+                <div>
+
+                    <span class="info-label">
+                        End Date
+                    </span>
+
+                    <strong>
+                        {{ tournament.end_date }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span class="info-icon">
+                    📍
+                </span>
+
+                <div>
+
+                    <span class="info-label">
+                        Location
+                    </span>
+
+                    <strong>
+                        {{ tournament.location or "Not specified" }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span class="info-icon">
+                    🏆
+                </span>
+
+                <div>
+
+                    <span class="info-label">
+                        Format
+                    </span>
+
+                    <strong>
+                        {{ tournament.format or "Not specified" }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span class="info-icon">
+                    ⚡
+                </span>
+
+                <div>
+
+                    <span class="info-label">
+                        Status
+                    </span>
+
+                    <strong class="status">
+                        {{ tournament.status }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             TEAMS
+        ========================================== -->
+
+        <section class="teams-section">
+
+
+            <!-- TEAMS HEADING -->
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        TOURNAMENT TEAMS
+                    </p>
+
+                    <h2>
+                        Participating Teams
+                    </h2>
+
+                </div>
+
+
+                <div class="teams-heading-right">
+
+                    <span class="team-count">
+                        {{ teams|length }} Teams
+                    </span>
+
+
+                    <!-- ADD TEAM BUTTON -->
+
+                    {% if session.get("user_role") in ["admin", "organizer"] %}
+
+                        <a
+                            href="{{ url_for(
+                                'add_team',
+                                tournament_id=tournament.id
+                            ) }}"
+                            class="add-team-button"
+                        >
+                            + Add Team
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 TEAM LIST
+            ========================================== -->
+
+            {% if teams %}
+
+                <div class="teams-grid">
+
+                    {% for team in teams %}
+
+                        <a
+                            href="{{ url_for(
+                                'team_details',
+                                team_id=team.id
+                            ) }}"
+                            class="team-card"
+                        >
+
+                            <!-- TEAM LOGO -->
+
+                            <div class="team-logo">
+
+                                {% if team.team_logo %}
+
+                                    <img
+                                        src="{{ url_for(
+                                            'static',
+                                            filename='uploads/' ~ team.team_logo
+                                        ) }}"
+                                        alt="{{ team.team_name }}"
+                                    >
+
+                                {% else %}
+
+                                    <div class="no-logo">
+                                        🏐
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- TEAM INFORMATION -->
+
+                            <div class="team-information">
+
+                                <h3>
+                                    {{ team.team_name }}
+                                </h3>
+
+                                <p>
+                                    View team players
+                                </p>
+
+                                <span class="view-team">
+                                    View Team →
+                                </span>
+
+                            </div>
+
+
+                            <!-- ARROW -->
+
+                            <div class="team-arrow">
+                                →
+                            </div>
+
+                        </a>
+
+                    {% endfor %}
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- =========================================
+                     NO TEAMS
+                ========================================== -->
+
+                <div class="no-teams">
+
+                    <div class="no-teams-icon">
+                        🏐
+                    </div>
+
+                    <h3>
+                        No teams registered
+                    </h3>
+
+                    <p>
+                        Teams will appear here when they are
+                        added to this tournament.
+                    </p>
+
+
+                    <!-- ADD FIRST TEAM -->
+
+                    {% if session.get("user_role") in ["admin", "organizer"] %}
+
+                        <a
+                            href="{{ url_for(
+                                'add_team',
+                                tournament_id=tournament.id
+                            ) }}"
+                            class="add-team-button"
+                        >
+                            + Add First Team
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =========================================
+             MATCHES
+        ========================================== -->
+
+        <section class="matches-section">
+
+
+            <!-- MATCH HEADING -->
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        TOURNAMENT MATCHES
+                    </p>
+
+                    <h2>
+                        Matches
+                    </h2>
+
+                </div>
+
+
+                <span class="match-count">
+                    {{ matches|length }} Matches
+                </span>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 MATCH LIST
+            ========================================== -->
+
+            {% if matches %}
+
+                <div class="matches-grid">
+
+                    {% for match in matches %}
+
+                        <div class="tournament-match-card">
+
+
+                            <!-- ROUND -->
+
+                            <div class="match-round">
+                                {{ match.round_name or "Match" }}
+                            </div>
+
+
+
+                            <!-- TEAMS -->
+
+                            <div class="match-teams">
+
+                                <div class="match-team">
+
+                                    <span>
+                                        {{ match.team1_name }}
+                                    </span>
+
+                                </div>
+
+
+                                <div class="match-vs">
+                                    VS
+                                </div>
+
+
+                                <div class="match-team">
+
+                                    <span>
+                                        {{ match.team2_name }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- MATCH DETAILS -->
+
+                            <div class="match-details">
+
+                                <span>
+                                    📅 {{ match.match_date }}
+                                </span>
+
+                                <span>
+                                    🕐 {{ match.match_time }}
+                                </span>
+
+
+                                {% if match.venue_name %}
+
+                                    <span>
+                                        📍 {{ match.venue_name }}
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+
+                            <!-- STATUS -->
+
+                            <div class="match-status">
+
+                                <span>
+                                    {{ match.status|upper }}
+                                </span>
+
+                            </div>
+
+
+
+                            <!-- VIEW MATCH -->
+
+                            <a
+                                href="{{ url_for(
+                                    'match_details',
+                                    match_id=match.id
+                                ) }}"
+                                class="view-match-button"
+                            >
+                                View Match →
+                            </a>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- =========================================
+                     NO MATCHES
+                ========================================== -->
+
+                <div class="no-matches">
+
+                    <div class="no-matches-icon">
+                        🏐
+                    </div>
+
+                    <h3>
+                        No matches scheduled
+                    </h3>
+
+                    <p>
+                        Matches will appear here when they are
+                        created for this tournament.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =========================================
+             BACK BUTTON
+        ========================================== -->
+
+        <div class="back-section">
+
+            <a
+                href="{{ url_for('tournaments') }}"
+                class="back-button"
+            >
+                ← Back to Tournaments
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+
+{% block title %}
+Announcements | NIT Nagaland Volleyball
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/announcements.css') }}"
+>
+
+<style>
+
+    /* ==============================
+       ATTACHMENT
+    ============================== */
+
+    .announcement-attachment {
+        margin-top: 22px;
+        padding: 15px 18px;
+
+        display: flex;
+        align-items: center;
+        gap: 14px;
+
+        background: #f5f8ff;
+        border: 1px solid #dce6f8;
+        border-radius: 12px;
+    }
+
+    .attachment-icon {
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .attachment-info {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+
+        flex: 1;
+        min-width: 0;
+    }
+
+    .attachment-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #315aa8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .attachment-name {
+        font-size: 14px;
+        color: #263b63;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .attachment-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 9px 16px;
+
+        background: #174ea6;
+        color: white;
+
+        text-decoration: none;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        transition: 0.2s ease;
+
+        flex-shrink: 0;
+    }
+
+    .attachment-button:hover {
+        background: #0f3b82;
+        transform: translateY(-1px);
+    }
+
+
+    /* ==============================
+       MOBILE
+    ============================== */
+
+    @media (max-width: 600px) {
+
+        .announcement-attachment {
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .attachment-info {
+            width: calc(100% - 50px);
+        }
+
+        .attachment-button {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="announcements-page">
+
+
+    <!-- ==========================================
+         PAGE HEADER
+    =========================================== -->
+
+    <section class="announcements-header">
+
+        <div class="header-icon">
+            📢
+        </div>
+
+
+        <div class="header-content">
+
+            <span class="header-label">
+                NIT NAGALAND VOLLEYBALL
+            </span>
+
+
+            <h1>
+                Announcements
+            </h1>
+
+
+            <p class="header-description">
+                Latest tournament news, updates and important
+                information.
+            </p>
+
+
+            <!-- ADMIN / ORGANIZER -->
+
+            {% if session.get("user_role") in ["admin", "organizer"] %}
+
+            <div class="admin-action">
+
+                <a
+                    href="{{ url_for('add_announcement') }}"
+                    class="add-announcement-button"
+                >
+
+                    <span class="add-button-icon">
+                        +
+                    </span>
+
+                    <span>
+                        Add Announcement
+                    </span>
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         ANNOUNCEMENTS
+    =========================================== -->
+
+    <section class="announcements-section">
+
+
+        {% if announcements %}
+
+
+        <div class="announcements-list">
+
+
+            {% for announcement in announcements %}
+
+
+            <article class="announcement-card">
+
+
+                <!-- ==================================
+                     ANNOUNCEMENT HEADER
+                =================================== -->
+
+                <div class="announcement-top">
+
+
+                    <div class="announcement-icon">
+                        📣
+                    </div>
+
+
+                    <div class="announcement-heading">
+
+
+                        <h2>
+                            {{ announcement.title }}
+                        </h2>
+
+
+                        <div class="announcement-meta">
+
+
+                            <!-- TOURNAMENT -->
+
+                            <span class="meta-item">
+
+                                <span class="meta-icon">
+                                    🏆
+                                </span>
+
+                                <span>
+                                    {{ announcement.tournament_name }}
+                                </span>
+
+                            </span>
+
+
+                            <!-- DATE -->
+
+                            <span class="meta-item">
+
+                                <span class="meta-icon">
+                                    📅
+                                </span>
+
+                                <span>
+
+                                    {% if announcement.created_at %}
+
+                                    {{ announcement.created_at.strftime('%d %b %Y') }}
+
+                                    {% endif %}
+
+                                </span>
+
+                            </span>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==================================
+                     MESSAGE
+                =================================== -->
+
+                <div class="announcement-message">
+
+                    {{ announcement.message }}
+
+                </div>
+
+
+
+                <!-- ==================================
+                     ATTACHMENT
+                =================================== -->
+
+                {% if announcement.attachment_path %}
+
+                <div class="announcement-attachment">
+
+
+                    <div class="attachment-icon">
+                        📎
+                    </div>
+
+
+                    <div class="attachment-info">
+
+                        <span class="attachment-label">
+                            Attachment
+                        </span>
+
+
+                        <span
+                            class="attachment-name"
+                            title="{{ announcement.attachment_filename }}"
+                        >
+
+                            {{ announcement.attachment_filename }}
+
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for(
+                            'static',
+                            filename=announcement.attachment_path
+                        ) }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="attachment-button"
+                    >
+
+                        View File
+
+                    </a>
+
+
+                </div>
+
+                {% endif %}
+
+
+
+                <!-- ==================================
+                     FOOTER
+                =================================== -->
+
+                <div class="announcement-footer">
+
+                    <span class="posted-by">
+
+                        Posted by
+
+                        <strong>
+                            {{ announcement.created_by_name }}
+                        </strong>
+
+                    </span>
+
+                </div>
+
+
+            </article>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- ==========================================
+             EMPTY STATE
+        =========================================== -->
+
+        <div class="empty-announcements">
+
+
+            <div class="empty-icon">
+                📢
+            </div>
+
+
+            <h2>
+                No Announcements Yet
+            </h2>
+
+
+            <p>
+                There are currently no announcements.
+                Please check again later for tournament updates.
+            </p>
+
+
+            {% if session.get("user_role") in ["admin", "organizer"] %}
+
+            <a
+                href="{{ url_for('add_announcement') }}"
+                class="empty-add-button"
+            >
+
+                + Create First Announcement
+
+            </a>
+
+            {% endif %}
+
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</div>
+
+{% endblock %}
+

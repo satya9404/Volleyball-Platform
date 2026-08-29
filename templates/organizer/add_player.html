@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add Player | NIT Nagaland Volleyball</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/organizer-forms.css') }}">
+</head>
+
+<body>
+
+<main class="organizer-form-page">
+
+    <div class="organizer-form-card">
+
+        <h1>Add Player</h1>
+
+        <p class="subtitle">
+            Add a player to
+            <strong>{{ team.team_name }}</strong>
+        </p>
+
+        <p class="subtitle">
+            {{ team.tournament_name }}
+        </p>
+
+        {% if error %}
+            <div class="form-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label for="name">
+                    Player Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter player name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="roll_number">
+                    Roll Number
+                </label>
+
+                <input
+                    type="text"
+                    id="roll_number"
+                    name="roll_number"
+                    placeholder="Enter roll number"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="department">
+                    Department
+                </label>
+
+                <input
+                    type="text"
+                    id="department"
+                    name="department"
+                    placeholder="Enter department"
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="organizer-form-button">
+
+                Add Player
+
+            </button>
+
+        </form>
+
+        <a
+            href="{{ url_for(
+                'tournament_details',
+                tournament_id=team.tournament_id
+            ) }}"
+            class="organizer-form-back">
+
+            ← Back to Tournament
+
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

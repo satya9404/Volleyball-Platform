@@ -1,0 +1,1651 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ match.team1_name }} vs {{ match.team2_name }} | NIT Nagaland Volleyball
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/match-details.css') }}?v=13"
+>
+
+<style>
+
+    /* =====================================================
+       LAST UPDATED
+    ====================================================== */
+
+    .last-updated {
+        display: inline-block;
+
+        margin-left: 10px;
+        padding: 6px 12px;
+
+        border-radius: 20px;
+
+        background: #f3f4f6;
+        color: #6b7280;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+    }
+
+
+    .last-updated.updated {
+        background: #e8f8ee;
+        color: #168044;
+    }
+
+
+    @media (max-width: 600px) {
+
+        .last-updated {
+            margin-left: 0;
+            margin-top: 8px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="match-details-page">
+
+
+    <!-- =====================================================
+         MATCH HERO
+    ====================================================== -->
+
+    <section class="match-hero">
+
+        <div class="hero-label">
+            MATCH DETAILS
+        </div>
+
+
+        <h1 class="match-title">
+
+            <span class="team-name">
+                {{ match.team1_name }}
+            </span>
+
+            <span class="vs-text">
+                VS
+            </span>
+
+            <span class="team-name">
+                {{ match.team2_name }}
+            </span>
+
+        </h1>
+
+
+        {% if match.tournament_name %}
+
+        <p class="tournament-title">
+            {{ match.tournament_name }}
+        </p>
+
+        {% endif %}
+
+
+        <div class="match-status-row">
+
+            <!-- STATUS -->
+
+            <span
+                class="status-badge
+                {% if match.status == 'live' %}
+                    live
+                {% elif match.status == 'completed' %}
+                    completed
+                {% elif match.status == 'cancelled' %}
+                    cancelled
+                {% else %}
+                    scheduled
+                {% endif %}"
+                id="match-status-badge"
+            >
+
+                {% if match.status == "live" %}
+
+                    ● LIVE
+
+                {% elif match.status == "completed" %}
+
+                    ✓ COMPLETED
+
+                {% elif match.status == "cancelled" %}
+
+                    ✕ CANCELLED
+
+                {% else %}
+
+                    ◷ SCHEDULED
+
+                {% endif %}
+
+            </span>
+
+
+            <!-- LAST UPDATED -->
+
+            <span
+                class="last-updated"
+                id="last-updated"
+            >
+                Updated just now
+            </span>
+
+
+            <!-- ROUND -->
+
+            {% if match.round_name %}
+
+                <span class="round-badge">
+                    {{ match.round_name }}
+                </span>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MATCH INFORMATION
+    ====================================================== -->
+
+    <section class="match-information">
+
+
+        <!-- DATE -->
+
+        <div class="information-card">
+
+            <div class="information-icon">
+                📅
+            </div>
+
+            <div class="information-content">
+
+                <span class="information-label">
+                    DATE
+                </span>
+
+                <strong>
+                    {{ match.match_date }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TIME -->
+
+        <div class="information-card">
+
+            <div class="information-icon">
+                🕐
+            </div>
+
+            <div class="information-content">
+
+                <span class="information-label">
+                    TIME
+                </span>
+
+                <strong>
+                    {{ match.match_time or "Not specified" }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- VENUE -->
+
+        <div class="information-card">
+
+            <div class="information-icon">
+                📍
+            </div>
+
+            <div class="information-content">
+
+                <span class="information-label">
+                    VENUE
+                </span>
+
+                <strong>
+
+                    {% if match.venue_name %}
+
+                        {{ match.venue_name }}
+
+                    {% else %}
+
+                        Not specified
+
+                    {% endif %}
+
+                </strong>
+
+
+                {% if match.venue_location %}
+
+                    <small>
+                        {{ match.venue_location }}
+                    </small>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOURNAMENT -->
+
+        <div class="information-card">
+
+            <div class="information-icon">
+                🏆
+            </div>
+
+            <div class="information-content">
+
+                <span class="information-label">
+                    TOURNAMENT
+                </span>
+
+                <strong>
+                    {{ match.tournament_name }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MATCH SCORE
+    ====================================================== -->
+
+    <section class="scores-section">
+
+
+        <div class="scores-heading">
+
+            <div>
+
+                <span class="section-label">
+                    MATCH SCORE
+                </span>
+
+                <h2>
+                    Set Scores
+                </h2>
+
+                <p id="score-description">
+                    Live scores update automatically during the match.
+                </p>
+
+            </div>
+
+
+            <!-- SET COUNT -->
+
+            <div
+                class="sets-count"
+                id="sets-count"
+            >
+
+                {% if sets %}
+
+                    {{ sets|length }}
+
+                    Set{% if sets|length != 1 %}s{% endif %}
+
+                {% else %}
+
+                    0 Sets
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SCORE CARD
+        ================================================== -->
+
+        <div
+            class="scores-card"
+            id="scores-card"
+        >
+
+
+            <!-- TABLE HEADER -->
+
+            <div class="score-header">
+
+                <div>
+                    SET
+                </div>
+
+                <div>
+                    {{ match.team1_name }}
+                </div>
+
+                <div>
+                    {{ match.team2_name }}
+                </div>
+
+                <div>
+                    WINNER
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SCORE ROWS
+            ================================================== -->
+
+            <div id="score-rows">
+
+                {% if sets %}
+
+                    {% for set in sets %}
+
+                    <div
+                        class="score-row"
+                        data-set="{{ set.set_number }}"
+                    >
+
+
+                        <!-- SET NUMBER -->
+
+                        <div class="set-number">
+
+                            Set {{ set.set_number }}
+
+                        </div>
+
+
+
+                        <!-- TEAM 1 SCORE -->
+
+                        <div
+                            class="
+                                score-number
+                                team1-score
+
+                                {% if set.winner_id == match.team1_id %}
+                                    winning-score
+                                {% endif %}
+                            "
+                            data-team1-set="{{ set.set_number }}"
+                        >
+
+                            {{ set.team1_score }}
+
+                        </div>
+
+
+
+                        <!-- TEAM 2 SCORE -->
+
+                        <div
+                            class="
+                                score-number
+                                team2-score
+
+                                {% if set.winner_id == match.team2_id %}
+                                    winning-score
+                                {% endif %}
+                            "
+                            data-team2-set="{{ set.set_number }}"
+                        >
+
+                            {{ set.team2_score }}
+
+                        </div>
+
+
+
+                        <!-- WINNER -->
+
+                        <div
+                            class="set-winner"
+                            data-winner-set="{{ set.set_number }}"
+                        >
+
+                            {% if set.winner_id == match.team1_id %}
+
+                                <span class="winner-badge">
+                                    🏆 {{ match.team1_name }}
+                                </span>
+
+                            {% elif set.winner_id == match.team2_id %}
+
+                                <span class="winner-badge">
+                                    🏆 {{ match.team2_name }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="no-winner">
+                                    LIVE
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                    </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- =================================================
+                 NO SCORE
+            ================================================== -->
+
+            <div
+                class="no-score-card"
+                id="no-score-card"
+                {% if sets %}
+                    style="display: none;"
+                {% endif %}
+            >
+
+                <div class="no-score-icon">
+                    🏐
+                </div>
+
+
+                <h3>
+                    Score Not Available
+                </h3>
+
+
+                <p>
+                    No set scores have been entered for this match yet.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================================
+             SETS WON
+        ====================================================== -->
+
+        {% set team1_wins = sets | selectattr(
+            "winner_id",
+            "equalto",
+            match.team1_id
+        ) | list | length %}
+
+
+        {% set team2_wins = sets | selectattr(
+            "winner_id",
+            "equalto",
+            match.team2_id
+        ) | list | length %}
+
+
+        <div class="sets-summary">
+
+            <span class="summary-label">
+                SETS WON
+            </span>
+
+
+            <div class="summary-teams">
+
+
+                <!-- TEAM 1 -->
+
+                <div class="summary-team">
+
+                    <strong>
+                        {{ match.team1_name }}
+                    </strong>
+
+                    <span
+                        class="team1-sets"
+                        id="team1-sets"
+                    >
+                        {{ team1_wins }}
+                    </span>
+
+                </div>
+
+
+
+                <!-- DIVIDER -->
+
+                <div class="summary-divider">
+                    —
+                </div>
+
+
+
+                <!-- TEAM 2 -->
+
+                <div class="summary-team">
+
+                    <span
+                        class="team2-sets"
+                        id="team2-sets"
+                    >
+                        {{ team2_wins }}
+                    </span>
+
+                    <strong>
+                        {{ match.team2_name }}
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             MATCH WINNER
+        ====================================================== -->
+
+        <div
+            class="match-winner-card"
+            id="match-winner-card"
+            {% if not match.winner_id %}
+                style="display: none;"
+            {% endif %}
+        >
+
+            <div class="winner-label">
+                🏆 MATCH WINNER
+            </div>
+
+
+            <h3 id="match-winner-name">
+
+                {% if match.winner_id == match.team1_id %}
+
+                    {{ match.team1_name }}
+
+                {% elif match.winner_id == match.team2_id %}
+
+                    {{ match.team2_name }}
+
+                {% endif %}
+
+            </h3>
+
+
+            <p>
+                Congratulations on winning the match.
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ADMINISTRATION
+    ====================================================== -->
+
+    {% if session.get("user_role") in ["admin", "organizer"] %}
+
+
+    <section class="administration-section">
+
+
+        <div class="administration-header">
+
+            <div>
+
+                <span class="section-label">
+                    ADMINISTRATION
+                </span>
+
+                <h2>
+                    Match Management
+                </h2>
+
+                <p>
+                    Update the score or modify match information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="management-buttons">
+
+
+            <!-- SCORE MANAGEMENT -->
+
+            <a
+                href="{{ url_for(
+                    'add_match_score',
+                    match_id=match.id
+                ) }}"
+                class="management-button score-button"
+            >
+
+                <span class="management-icon">
+                    🏐
+                </span>
+
+
+                <span class="management-content">
+
+                    <strong>
+                        Score Management
+                    </strong>
+
+                    <small>
+                        Live score management
+                    </small>
+
+                </span>
+
+
+                <span class="management-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <!-- EDIT MATCH -->
+
+            <a
+                href="{{ url_for(
+                    'edit_match',
+                    match_id=match.id
+                ) }}"
+                class="management-button edit-button"
+            >
+
+                <span class="management-icon">
+                    ✏️
+                </span>
+
+
+                <span class="management-content">
+
+                    <strong>
+                        Edit Match
+                    </strong>
+
+                    <small>
+                        Update teams, date, venue and status
+                    </small>
+
+                </span>
+
+
+                <span class="management-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         SET FORMAT
+    ====================================================== -->
+
+    <section class="set-format-section">
+
+
+        <div class="set-format-card">
+
+
+            <div class="format-icon">
+                🏐
+            </div>
+
+
+            <div class="format-content">
+
+                <span class="section-label">
+                    SET FORMAT
+                </span>
+
+
+                <h2>
+                    Flexible Set Format
+                </h2>
+
+
+                <p>
+
+                    Your college may play a set to
+                    <strong>15 points</strong>
+                    or
+                    <strong>25 points</strong>
+                    depending on the available time.
+
+                    Enter the actual score played.
+
+                </p>
+
+
+                <div class="format-options">
+
+
+                    <div class="format-option">
+
+                        <span class="format-number">
+                            15
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                15 Point Set
+                            </strong>
+
+                            <small>
+                                Used when match time is limited
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="format-option">
+
+                        <span class="format-number">
+                            25
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                25 Point Set
+                            </strong>
+
+                            <small>
+                                Used when sufficient time is available
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         BACK
+    ====================================================== -->
+
+    <div class="back-section">
+
+        <a
+            href="{{ url_for('matches') }}"
+            class="back-button"
+        >
+            ← Back to Matches
+        </a>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     LIVE SCORE JAVASCRIPT
+========================================================= -->
+
+<script>
+
+const MATCH_ID = {{ match.id }};
+
+
+/* =========================================================
+   KEEP TRACK OF PREVIOUS SCORES
+========================================================= */
+
+let previousScores = {};
+
+
+
+/* =========================================================
+   UPDATE LAST UPDATED
+========================================================= */
+
+function updateLastUpdated() {
+
+    const element =
+        document.getElementById(
+            "last-updated"
+        );
+
+
+    if (!element) {
+        return;
+    }
+
+
+    const now =
+        new Date();
+
+
+    element.textContent =
+        "Updated " +
+        now.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        });
+
+
+    element.classList.add(
+        "updated"
+    );
+
+
+    setTimeout(() => {
+
+        element.classList.remove(
+            "updated"
+        );
+
+    }, 800);
+
+}
+
+
+
+/* =========================================================
+   SCORE CHANGE ANIMATION
+========================================================= */
+
+function animateScore(element) {
+
+    if (!element) {
+        return;
+    }
+
+
+    element.classList.remove(
+        "score-changed"
+    );
+
+
+    /*
+        Force browser reflow so animation
+        can run again.
+    */
+
+    void element.offsetWidth;
+
+
+    element.classList.add(
+        "score-changed"
+    );
+
+}
+
+
+
+/* =========================================================
+   UPDATE LIVE SCORE
+========================================================= */
+
+async function updateLiveScore() {
+
+    try {
+
+        const response = await fetch(
+
+            `/api/match/${MATCH_ID}/score`,
+
+            {
+                cache: "no-store"
+            }
+
+        );
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Live score API error:",
+                response.status
+            );
+
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            console.error(
+                "Live score API:",
+                data.message
+            );
+
+            return;
+        }
+
+
+
+        /* =================================================
+           UPDATE TIME
+        ================================================= */
+
+        updateLastUpdated();
+
+
+
+        /* =================================================
+           SCORE ROW CONTAINER
+        ================================================= */
+
+        const scoreRows =
+            document.getElementById(
+                "score-rows"
+            );
+
+
+        const noScoreCard =
+            document.getElementById(
+                "no-score-card"
+            );
+
+
+
+        /* =================================================
+           SET SCORES
+        ================================================= */
+
+        if (
+            data.sets &&
+            data.sets.length > 0
+        ) {
+
+            if (noScoreCard) {
+
+                noScoreCard.style.display =
+                    "none";
+
+            }
+
+
+            data.sets.forEach(set => {
+
+
+                /* =========================================
+                   FIND EXISTING ROW
+                ========================================= */
+
+                let row =
+                    document.querySelector(
+                        `.score-row[data-set="${set.set_number}"]`
+                    );
+
+
+
+                /* =========================================
+                   CREATE ROW
+                ========================================= */
+
+                if (!row) {
+
+                    row =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    row.className =
+                        "score-row";
+
+
+                    row.dataset.set =
+                        set.set_number;
+
+
+                    row.innerHTML = `
+
+                        <div class="set-number">
+                            Set ${set.set_number}
+                        </div>
+
+
+                        <div
+                            class="score-number team1-score"
+                            data-team1-set="${set.set_number}"
+                        >
+                            ${set.team1_score}
+                        </div>
+
+
+                        <div
+                            class="score-number team2-score"
+                            data-team2-set="${set.set_number}"
+                        >
+                            ${set.team2_score}
+                        </div>
+
+
+                        <div
+                            class="set-winner"
+                            data-winner-set="${set.set_number}"
+                        >
+
+                            <span class="no-winner">
+                                LIVE
+                            </span>
+
+                        </div>
+
+                    `;
+
+
+                    if (scoreRows) {
+
+                        scoreRows.appendChild(
+                            row
+                        );
+
+                    }
+
+                }
+
+
+
+                /* =========================================
+                   TEAM 1 SCORE
+                ========================================= */
+
+                const team1Element =
+                    document.querySelector(
+                        `[data-team1-set="${set.set_number}"]`
+                    );
+
+
+                if (team1Element) {
+
+                    const newScore =
+                        Number(
+                            set.team1_score
+                        );
+
+
+                    const oldScore =
+                        previousScores[
+                            set.set_number
+                        ]?.team1;
+
+
+                    if (
+                        typeof oldScore !==
+                        "undefined" &&
+                        oldScore !== newScore
+                    ) {
+
+                        animateScore(
+                            team1Element
+                        );
+
+                    }
+
+
+                    team1Element.textContent =
+                        set.team1_score;
+
+                }
+
+
+
+                /* =========================================
+                   TEAM 2 SCORE
+                ========================================= */
+
+                const team2Element =
+                    document.querySelector(
+                        `[data-team2-set="${set.set_number}"]`
+                    );
+
+
+                if (team2Element) {
+
+                    const newScore =
+                        Number(
+                            set.team2_score
+                        );
+
+
+                    const oldScore =
+                        previousScores[
+                            set.set_number
+                        ]?.team2;
+
+
+                    if (
+                        typeof oldScore !==
+                        "undefined" &&
+                        oldScore !== newScore
+                    ) {
+
+                        animateScore(
+                            team2Element
+                        );
+
+                    }
+
+
+                    team2Element.textContent =
+                        set.team2_score;
+
+                }
+
+
+
+                /* =========================================
+                   WINNER
+                ========================================= */
+
+                const winnerElement =
+                    document.querySelector(
+                        `[data-winner-set="${set.set_number}"]`
+                    );
+
+
+                if (winnerElement) {
+
+
+                    if (
+                        set.winner_id ===
+                        {{ match.team1_id }}
+                    ) {
+
+                        winnerElement.innerHTML = `
+
+                            <span class="winner-badge">
+                                🏆 {{ match.team1_name }}
+                            </span>
+
+                        `;
+
+
+                        if (team1Element) {
+
+                            team1Element.classList.add(
+                                "winning-score"
+                            );
+
+                        }
+
+
+                        if (team2Element) {
+
+                            team2Element.classList.remove(
+                                "winning-score"
+                            );
+
+                        }
+
+                    }
+
+
+                    else if (
+                        set.winner_id ===
+                        {{ match.team2_id }}
+                    ) {
+
+                        winnerElement.innerHTML = `
+
+                            <span class="winner-badge">
+                                🏆 {{ match.team2_name }}
+                            </span>
+
+                        `;
+
+
+                        if (team2Element) {
+
+                            team2Element.classList.add(
+                                "winning-score"
+                            );
+
+                        }
+
+
+                        if (team1Element) {
+
+                            team1Element.classList.remove(
+                                "winning-score"
+                            );
+
+                        }
+
+                    }
+
+
+                    else {
+
+                        winnerElement.innerHTML = `
+
+                            <span class="no-winner">
+                                LIVE
+                            </span>
+
+                        `;
+
+
+                        if (team1Element) {
+
+                            team1Element.classList.remove(
+                                "winning-score"
+                            );
+
+                        }
+
+
+                        if (team2Element) {
+
+                            team2Element.classList.remove(
+                                "winning-score"
+                            );
+
+                        }
+
+                    }
+
+                }
+
+
+
+                /* =========================================
+                   SAVE CURRENT SCORE
+                ========================================= */
+
+                if (
+                    !previousScores[
+                        set.set_number
+                    ]
+                ) {
+
+                    previousScores[
+                        set.set_number
+                    ] = {};
+
+                }
+
+
+                previousScores[
+                    set.set_number
+                ].team1 =
+                    Number(
+                        set.team1_score
+                    );
+
+
+                previousScores[
+                    set.set_number
+                ].team2 =
+                    Number(
+                        set.team2_score
+                    );
+
+            });
+
+        }
+
+
+        else {
+
+            if (noScoreCard) {
+
+                noScoreCard.style.display =
+                    "block";
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           SET COUNT
+        ================================================= */
+
+        const setsCount =
+            document.getElementById(
+                "sets-count"
+            );
+
+
+        if (setsCount) {
+
+            const count =
+                data.sets
+                    ? data.sets.length
+                    : 0;
+
+
+            setsCount.textContent =
+                `${count} Set${count === 1 ? "" : "s"}`;
+
+        }
+
+
+
+        /* =================================================
+           SETS WON
+        ================================================= */
+
+        const team1Sets =
+            document.getElementById(
+                "team1-sets"
+            );
+
+
+        const team2Sets =
+            document.getElementById(
+                "team2-sets"
+            );
+
+
+        if (
+            team1Sets &&
+            typeof data.team1_sets !==
+            "undefined"
+        ) {
+
+            team1Sets.textContent =
+                data.team1_sets;
+
+        }
+
+
+        if (
+            team2Sets &&
+            typeof data.team2_sets !==
+            "undefined"
+        ) {
+
+            team2Sets.textContent =
+                data.team2_sets;
+
+        }
+
+
+
+        /* =================================================
+           MATCH STATUS
+        ================================================= */
+
+        const statusBadge =
+            document.getElementById(
+                "match-status-badge"
+            );
+
+
+        if (statusBadge) {
+
+
+            if (
+                data.status ===
+                "live"
+            ) {
+
+                statusBadge.textContent =
+                    "● LIVE";
+
+
+                statusBadge.classList.remove(
+                    "scheduled",
+                    "completed",
+                    "cancelled"
+                );
+
+
+                statusBadge.classList.add(
+                    "live"
+                );
+
+            }
+
+
+            else if (
+                data.status ===
+                "completed"
+            ) {
+
+                statusBadge.textContent =
+                    "✓ COMPLETED";
+
+
+                statusBadge.classList.remove(
+                    "scheduled",
+                    "live",
+                    "cancelled"
+                );
+
+
+                statusBadge.classList.add(
+                    "completed"
+                );
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           MATCH WINNER
+        ================================================= */
+
+        const winnerCard =
+            document.getElementById(
+                "match-winner-card"
+            );
+
+
+        const winnerName =
+            document.getElementById(
+                "match-winner-name"
+            );
+
+
+        if (
+            data.match_winner_id
+        ) {
+
+
+            if (winnerCard) {
+
+                winnerCard.style.display =
+                    "block";
+
+            }
+
+
+            if (winnerName) {
+
+
+                if (
+                    data.match_winner_id ===
+                    {{ match.team1_id }}
+                ) {
+
+                    winnerName.textContent =
+                        "{{ match.team1_name }}";
+
+                }
+
+
+                else if (
+                    data.match_winner_id ===
+                    {{ match.team2_id }}
+                ) {
+
+                    winnerName.textContent =
+                        "{{ match.team2_name }}";
+
+                }
+
+            }
+
+        }
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Live score update failed:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   FIRST LOAD
+========================================================= */
+
+updateLiveScore();
+
+
+
+/* =========================================================
+   LIVE POLLING
+   Every 2 seconds
+========================================================= */
+
+setInterval(
+    updateLiveScore,
+    2000
+);
+
+</script>
+
+
+
+<!-- =========================================================
+     SCORE CHANGE ANIMATION CSS
+========================================================= -->
+
+<style>
+
+.score-changed {
+    animation: scoreChangedAnimation 0.6s ease;
+}
+
+
+@keyframes scoreChangedAnimation {
+
+    0% {
+        transform: scale(1);
+    }
+
+    35% {
+        transform: scale(1.25);
+    }
+
+    70% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+</style>
+
+
+{% endblock %}

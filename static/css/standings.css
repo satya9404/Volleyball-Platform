@@ -1,0 +1,573 @@
+/* =========================================================
+   STANDINGS PAGE
+   NIT NAGALAND VOLLEYBALL
+========================================================= */
+
+.standings-page {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 45px 24px 60px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.standings-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.standings-label {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+.standings-header h1 {
+    margin: 0;
+    font-size: 38px;
+    line-height: 1.2;
+    font-weight: 800;
+    color: #172033;
+}
+
+.standings-header p {
+    margin: 12px auto 0;
+    max-width: 650px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #667085;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.standings-card {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.standings-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 25px 30px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fafbfc;
+}
+
+.section-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #667085;
+}
+
+.standings-card-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 750;
+    color: #172033;
+}
+
+.team-count {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.standings-table {
+    width: 100%;
+}
+
+.standing-row {
+    display: grid;
+    grid-template-columns:
+        70px
+        minmax(220px, 1fr)
+        65px
+        65px
+        65px
+        70px
+        70px
+        80px
+        85px;
+
+    align-items: center;
+    min-height: 70px;
+    border-bottom: 1px solid #edf0f3;
+    padding: 0 22px;
+    box-sizing: border-box;
+
+    text-align: center;
+    color: #344054;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.standing-row > div {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   TABLE HEADING
+========================================================= */
+
+.standing-heading {
+    min-height: 50px;
+    background: #f8fafc;
+
+    color: #667085;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+}
+
+.standing-heading .team-column {
+    text-align: left;
+}
+
+
+/* =========================================================
+   TEAM COLUMN
+========================================================= */
+
+.team-column {
+    text-align: left;
+    padding-right: 15px;
+}
+
+.team-name {
+    display: block;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: #172033;
+    font-size: 15px;
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   POSITION
+========================================================= */
+
+.position {
+    font-size: 16px;
+    font-weight: 800;
+    color: #475467;
+}
+
+
+/* =========================================================
+   WON / LOST
+========================================================= */
+
+.won {
+    color: #15803d;
+    font-weight: 800;
+}
+
+.lost {
+    color: #dc2626;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   SET DIFFERENCE
+========================================================= */
+
+.set-difference {
+    font-weight: 800;
+}
+
+.set-difference.positive {
+    color: #15803d;
+}
+
+.set-difference.negative {
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   POINTS
+========================================================= */
+
+.points-column {
+    font-weight: 800;
+}
+
+.points {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 42px;
+    height: 36px;
+
+    margin: 0 auto;
+
+    border-radius: 10px;
+
+    background: #172033;
+    color: #ffffff;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   TOP THREE
+========================================================= */
+
+.first-place {
+    background: #fffcf0;
+}
+
+.second-place {
+    background: #fafafa;
+}
+
+.third-place {
+    background: #fffaf7;
+}
+
+.first-place .team-name {
+    color: #92400e;
+}
+
+.second-place .team-name {
+    color: #344054;
+}
+
+.third-place .team-name {
+    color: #9a3412;
+}
+
+
+/* =========================================================
+   LEGEND
+========================================================= */
+
+.standings-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+
+    padding: 20px 30px;
+
+    background: #fafbfc;
+    border-top: 1px solid #e5e7eb;
+
+    color: #667085;
+    font-size: 12px;
+}
+
+.standings-legend div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.standings-legend strong {
+    color: #344054;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.no-standings {
+    text-align: center;
+    padding: 75px 25px;
+}
+
+.no-standings-icon {
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: #eff6ff;
+
+    font-size: 30px;
+}
+
+.no-standings h2 {
+    margin: 0 0 10px;
+
+    color: #172033;
+    font-size: 24px;
+}
+
+.no-standings p {
+    max-width: 500px;
+    margin: 0 auto 25px;
+
+    color: #667085;
+    line-height: 1.6;
+}
+
+.matches-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+    padding: 0 20px;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.matches-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   BACK HOME
+========================================================= */
+
+.back-section {
+    text-align: center;
+    margin-top: 28px;
+}
+
+.back-section a {
+    color: #475467;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 650;
+
+    transition: color 0.2s ease;
+}
+
+.back-section a:hover {
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .standings-page {
+        padding: 35px 18px 50px;
+    }
+
+    .standing-row {
+        grid-template-columns:
+            55px
+            minmax(170px, 1fr)
+            55px
+            55px
+            55px
+            60px
+            60px
+            65px
+            70px;
+
+        padding: 0 14px;
+        font-size: 13px;
+    }
+
+    .team-name {
+        font-size: 14px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .standings-page {
+        padding: 28px 12px 45px;
+    }
+
+    .standings-header {
+        margin-bottom: 24px;
+    }
+
+    .standings-header h1 {
+        font-size: 28px;
+    }
+
+    .standings-header p {
+        font-size: 14px;
+    }
+
+
+    /* Card */
+
+    .standings-card {
+        border-radius: 14px;
+    }
+
+
+    /* Card header */
+
+    .standings-card-header {
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .standings-card-header h2 {
+        font-size: 20px;
+    }
+
+    .team-count {
+        font-size: 11px;
+        padding: 7px 10px;
+    }
+
+
+    /*
+       Horizontal scrolling is intentionally used
+       for the table.
+
+       This keeps ALL columns visible without
+       destroying the table layout on phones.
+    */
+
+    .standings-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .standing-row {
+        width: 720px;
+
+        grid-template-columns:
+            55px
+            210px
+            55px
+            55px
+            55px
+            60px
+            60px
+            65px
+            70px;
+
+        padding: 0 12px;
+    }
+
+    .standing-heading {
+        min-height: 46px;
+    }
+
+    .standing-row:not(.standing-heading) {
+        min-height: 65px;
+    }
+
+
+    /* Legend */
+
+    .standings-legend {
+        padding: 17px 18px;
+        gap: 8px 15px;
+        font-size: 11px;
+    }
+
+
+    /* Empty */
+
+    .no-standings {
+        padding: 55px 20px;
+    }
+
+    .no-standings h2 {
+        font-size: 21px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .standings-page {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .standings-header h1 {
+        font-size: 25px;
+    }
+
+    .standings-card-header {
+        padding: 16px;
+    }
+
+    .standings-card-header h2 {
+        font-size: 18px;
+    }
+
+    .standings-legend {
+        padding: 15px;
+    }
+
+}

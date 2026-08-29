@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block title %}
+Results | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/results.css') }}">
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="results-page">
+
+    <!-- PAGE HEADER -->
+
+    <section class="results-header">
+
+        <div class="results-label">
+            MATCH RESULTS
+        </div>
+
+        <h1>
+            Volleyball Results
+        </h1>
+
+        <p>
+            View completed matches, winners and set scores.
+        </p>
+
+    </section>
+
+
+    <!-- RESULTS -->
+
+    <section class="results-container">
+
+        {% if results %}
+
+            {% for result in results %}
+
+            <article class="result-card">
+
+                <!-- TOP -->
+
+                <div class="result-top">
+
+                    <div>
+
+                        <span class="completed-badge">
+                            ✓ COMPLETED
+                        </span>
+
+                    </div>
+
+                    {% if result.round_name %}
+
+                    <div class="round-name">
+                        {{ result.round_name }}
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- TOURNAMENT -->
+
+                <div class="tournament-name">
+
+                    🏆 {{ result.tournament_name }}
+
+                </div>
+
+
+                <!-- TEAMS -->
+
+                <div class="result-teams">
+
+                    <!-- TEAM 1 -->
+
+                    <div class="result-team
+                        {% if result.winner_id == result.team1_id %}
+                            winner
+                        {% endif %}">
+
+                        <h2>
+                            {{ result.team1_name }}
+                        </h2>
+
+                        {% if result.winner_id == result.team1_id %}
+
+                            <span class="winner-label">
+                                WINNER
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- VS -->
+
+                    <div class="result-vs">
+                        VS
+                    </div>
+
+
+                    <!-- TEAM 2 -->
+
+                    <div class="result-team
+                        {% if result.winner_id == result.team2_id %}
+                            winner
+                        {% endif %}">
+
+                        <h2>
+                            {{ result.team2_name }}
+                        </h2>
+
+                        {% if result.winner_id == result.team2_id %}
+
+                            <span class="winner-label">
+                                WINNER
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- SET SCORES -->
+
+                <div class="sets-section">
+
+                    <h3>
+                        Set Scores
+                    </h3>
+
+                    {% if result.sets %}
+
+                        <div class="sets-table">
+
+                            <div class="set-header">
+
+                                <span>SET</span>
+                                <span>{{ result.team1_name }}</span>
+                                <span>{{ result.team2_name }}</span>
+
+                            </div>
+
+
+                            {% for set in result.sets %}
+
+                            <div class="set-row">
+
+                                <span>
+                                    Set {{ set.set_number }}
+                                </span>
+
+                                <strong>
+                                    {{ set.team1_score }}
+                                </strong>
+
+                                <strong>
+                                    {{ set.team2_score }}
+                                </strong>
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <p class="no-score">
+                            No set scores available.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- MATCH INFORMATION -->
+
+                <div class="result-info">
+
+                    <div>
+
+                        <span class="info-label">
+                            DATE
+                        </span>
+
+                        <span>
+                            📅 {{ result.match_date }}
+                        </span>
+
+                    </div>
+
+
+                    {% if result.match_time %}
+
+                    <div>
+
+                        <span class="info-label">
+                            TIME
+                        </span>
+
+                        <span>
+                            🕐 {{ result.match_time }}
+                        </span>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if result.venue_name %}
+
+                    <div>
+
+                        <span class="info-label">
+                            VENUE
+                        </span>
+
+                        <span>
+                            📍 {{ result.venue_name }}
+
+                            {% if result.venue_location %}
+                                — {{ result.venue_location }}
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ACTION -->
+
+                <div class="result-action">
+
+                    <a
+                        href="{{ url_for(
+                            'match_details',
+                            match_id=result.id
+                        ) }}"
+                        class="view-result-btn"
+                    >
+                        👁 View Match Details
+                    </a>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        {% else %}
+
+            <!-- EMPTY -->
+
+            <div class="no-results">
+
+                <div class="no-results-icon">
+                    🏐
+                </div>
+
+                <h2>
+                    No Results Yet
+                </h2>
+
+                <p>
+                    Completed match results will appear here.
+                </p>
+
+                <a
+                    href="{{ url_for('matches') }}"
+                    class="matches-btn"
+                >
+                    View Matches
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- BACK -->
+
+    <div class="back-home">
+
+        <a href="{{ url_for('home') }}">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

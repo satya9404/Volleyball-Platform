@@ -1,0 +1,786 @@
+/* =========================================================
+   TEAM DETAILS PAGE
+   NIT NAGALAND VOLLEYBALL PLATFORM
+========================================================= */
+
+.team-details-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 30px 80px;
+}
+
+
+/* =========================================================
+   TEAM HEADER
+========================================================= */
+
+.team-details-header {
+    display: flex;
+    align-items: center;
+    gap: 45px;
+
+    padding: 45px;
+
+    background: linear-gradient(
+        135deg,
+        #ffffff,
+        #f1f6ff
+    );
+
+    border: 1px solid #d8e2f2;
+    border-radius: 28px;
+
+    box-shadow: 0 15px 40px rgba(15, 45, 85, 0.10);
+
+    margin-bottom: 35px;
+}
+
+
+/* LOGO */
+
+.team-logo-large {
+    width: 190px;
+    height: 190px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #eef4ff;
+
+    border: 6px solid #d6e5ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 25px rgba(30, 70, 130, 0.12);
+}
+
+.team-logo-large img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.team-logo-large span {
+    font-size: 70px;
+}
+
+
+/* HEADER TEXT */
+
+.team-header-info {
+    flex: 1;
+}
+
+.team-header-info .section-label {
+    display: block;
+
+    font-size: 17px;
+    font-weight: 800;
+
+    letter-spacing: 4px;
+
+    color: #ff6542;
+
+    margin-bottom: 10px;
+}
+
+.team-header-info h1 {
+    margin: 0 0 12px;
+
+    font-size: 52px;
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    color: #08264d;
+}
+
+.team-header-info p {
+    margin: 0;
+
+    font-size: 22px;
+
+    color: #58718f;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.team-details-page > a,
+.team-details-page a[href*="add_team"],
+.team-details-page a[href*="captain"] {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 14px 22px;
+
+    margin-right: 12px;
+    margin-bottom: 30px;
+
+    border-radius: 10px;
+
+    background: #ff6542;
+    color: white !important;
+
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    transition: 0.25s ease;
+}
+
+.team-details-page > a:hover,
+.team-details-page a[href*="add_team"]:hover,
+.team-details-page a[href*="captain"]:hover {
+    background: #e9502e;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(255, 101, 66, 0.25);
+}
+
+
+/* =========================================================
+   TEAM INFORMATION CARDS
+========================================================= */
+
+.team-info-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 22px;
+
+    margin-bottom: 55px;
+}
+
+.team-info-card {
+    min-height: 150px;
+
+    padding: 28px;
+
+    background: white;
+
+    border: 1px solid #dbe4f0;
+
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+
+    box-shadow: 0 10px 30px rgba(20, 50, 90, 0.07);
+
+    transition: 0.25s ease;
+}
+
+.team-info-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 15px 35px rgba(20, 50, 90, 0.12);
+}
+
+
+/* ICON */
+
+.team-info-card .info-icon {
+    width: 70px;
+    height: 70px;
+
+    flex-shrink: 0;
+
+    border-radius: 16px;
+
+    background: #edf4ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 35px;
+}
+
+
+/* LABEL */
+
+.team-info-card .info-label {
+    display: block;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    color: #7b94b1;
+
+    margin-bottom: 8px;
+}
+
+
+/* VALUE */
+
+.team-info-card h3 {
+    margin: 0;
+
+    font-size: 23px;
+
+    font-weight: 800;
+
+    color: #09284f;
+}
+
+
+/* =========================================================
+   PLAYERS SECTION
+========================================================= */
+
+.players-section {
+    margin-top: 30px;
+
+    margin-bottom: 70px;
+}
+
+
+/* SECTION HEADING */
+
+.section-heading {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    margin-bottom: 28px;
+}
+
+.section-heading .section-label {
+    display: block;
+
+    color: #ff6542;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 7px;
+}
+
+.section-heading h2 {
+    margin: 0;
+
+    font-size: 36px;
+
+    color: #08264d;
+
+    font-weight: 800;
+}
+
+
+/* COUNT */
+
+.player-count {
+    padding: 10px 18px;
+
+    background: #eaf2ff;
+
+    color: #1f63c6;
+
+    border-radius: 30px;
+
+    font-weight: 800;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   PLAYER GRID
+========================================================= */
+
+.players-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 22px;
+}
+
+
+/* PLAYER CARD */
+
+.player-card {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    min-height: 130px;
+
+    padding: 25px;
+
+    background: white;
+
+    border: 1px solid #dbe4f0;
+
+    border-radius: 20px;
+
+    box-shadow: 0 8px 25px rgba(20, 50, 90, 0.07);
+
+    transition: 0.25s ease;
+}
+
+.player-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 14px 32px rgba(20, 50, 90, 0.12);
+}
+
+
+/* PLAYER NUMBER */
+
+.player-number {
+    width: 55px;
+    height: 55px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #edf4ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #1e5eb8;
+
+    font-size: 21px;
+
+    font-weight: 800;
+}
+
+
+/* PLAYER INFO */
+
+.player-info {
+    flex: 1;
+}
+
+.player-info h3 {
+    margin: 0 0 7px;
+
+    font-size: 22px;
+
+    color: #09284f;
+}
+
+.player-info p {
+    margin: 4px 0;
+
+    font-size: 15px;
+
+    color: #6e829b;
+}
+
+
+/* PLAYER ROLE */
+
+.player-role {
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+.captain-role {
+    background: #fff0dc;
+    color: #d47700;
+}
+
+.vice-role {
+    background: #eeeaff;
+    color: #654bd8;
+}
+
+
+/* =========================================================
+   NO PLAYERS
+========================================================= */
+
+.no-players {
+    text-align: center;
+
+    padding: 70px 30px;
+
+    background: white;
+
+    border: 1px solid #dbe4f0;
+
+    border-radius: 24px;
+
+    box-shadow: 0 10px 30px rgba(20, 50, 90, 0.06);
+}
+
+.no-players > div {
+    font-size: 55px;
+
+    margin-bottom: 15px;
+}
+
+.no-players h3 {
+    margin: 0 0 10px;
+
+    font-size: 27px;
+
+    color: #09284f;
+}
+
+.no-players p {
+    margin: 0 0 20px;
+
+    color: #71849b;
+
+    font-size: 16px;
+}
+
+
+/* ADD FIRST MEMBER */
+
+.no-players a {
+    display: inline-block;
+
+    padding: 13px 20px;
+
+    background: #ff6542;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TEAM MATCHES
+========================================================= */
+
+.team-matches-section {
+    margin-top: 60px;
+
+    margin-bottom: 50px;
+}
+
+.team-matches-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 24px;
+}
+
+
+/* MATCH CARD */
+
+.team-match-card {
+    background: white;
+
+    border: 1px solid #dbe4f0;
+
+    border-radius: 22px;
+
+    padding: 28px;
+
+    box-shadow: 0 10px 30px rgba(20, 50, 90, 0.07);
+
+    transition: 0.25s ease;
+}
+
+.team-match-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 15px 35px rgba(20, 50, 90, 0.12);
+}
+
+
+/* ROUND */
+
+.match-round {
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    background: #edf4ff;
+
+    color: #2165bf;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    margin-bottom: 20px;
+}
+
+
+/* TEAMS */
+
+.team-match-teams {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+.team-match-teams strong {
+    font-size: 20px;
+
+    color: #09284f;
+
+    text-align: center;
+}
+
+.team-match-vs {
+    font-weight: 900;
+
+    color: #ff6542;
+
+    font-size: 15px;
+}
+
+
+/* MATCH INFO */
+
+.team-match-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+    padding: 17px 0;
+
+    border-top: 1px solid #edf1f6;
+
+    border-bottom: 1px solid #edf1f6;
+
+    color: #71849b;
+
+    font-size: 14px;
+}
+
+
+/* STATUS */
+
+.team-match-status {
+    display: inline-block;
+
+    margin-top: 18px;
+
+    padding: 7px 13px;
+
+    border-radius: 20px;
+
+    background: #e9f8ef;
+
+    color: #168044;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+
+/* VIEW MATCH */
+
+.view-match-button {
+    display: block;
+
+    margin-top: 18px;
+
+    padding: 13px;
+
+    text-align: center;
+
+    background: #09284f;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+
+    transition: 0.25s ease;
+}
+
+.view-match-button:hover {
+    background: #174779;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-section {
+    margin-top: 45px;
+
+    padding-top: 30px;
+
+    border-top: 1px solid #dbe4f0;
+}
+
+.back-button {
+    display: inline-block;
+
+    padding: 13px 20px;
+
+    background: #edf4ff;
+
+    color: #1e5eb8;
+
+    text-decoration: none;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+
+    transition: 0.25s ease;
+}
+
+.back-button:hover {
+    background: #dceaff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .team-details-page {
+        padding: 35px 20px 60px;
+    }
+
+    .team-details-header {
+        padding: 30px;
+
+        gap: 25px;
+    }
+
+    .team-logo-large {
+        width: 145px;
+        height: 145px;
+    }
+
+    .team-header-info h1 {
+        font-size: 40px;
+    }
+
+    .team-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .players-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-matches-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .team-details-page {
+        padding: 25px 15px 50px;
+    }
+
+    .team-details-header {
+        flex-direction: column;
+
+        text-align: center;
+
+        padding: 30px 20px;
+    }
+
+    .team-logo-large {
+        width: 150px;
+        height: 150px;
+    }
+
+    .team-header-info h1 {
+        font-size: 34px;
+    }
+
+    .team-header-info p {
+        font-size: 18px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .section-heading h2 {
+        font-size: 30px;
+    }
+
+    .player-card {
+        padding: 20px;
+
+        align-items: flex-start;
+    }
+
+    .player-role {
+        position: absolute;
+
+        right: 15px;
+
+        top: 15px;
+    }
+
+    .team-match-teams {
+        flex-direction: column;
+    }
+}

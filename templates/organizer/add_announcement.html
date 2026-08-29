@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Announcement | NIT Nagaland Volleyball
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/add-announcement.css') }}"
+>
+
+<style>
+
+    /* =====================================================
+       ATTACHMENT
+    ====================================================== */
+
+    .attachment-group {
+        margin-top: 10px;
+    }
+
+    .attachment-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        background: #f9fafb;
+        font-size: 14px;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    .attachment-input:hover {
+        border-color: #9ca3af;
+    }
+
+    .file-help {
+        display: block;
+        margin-top: 7px;
+        color: #6b7280;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="announcement-form-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="announcement-form-header">
+
+        <div class="announcement-header-icon">
+            📢
+        </div>
+
+        <div>
+
+            <div class="announcement-eyebrow">
+                ANNOUNCEMENT MANAGEMENT
+            </div>
+
+            <h1>
+                Create Announcement
+            </h1>
+
+            <p>
+                Publish an important tournament update for
+                students and visitors.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FORM CARD
+    ====================================================== -->
+
+    <div class="announcement-form-card">
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+
+            <!-- =================================================
+                 TOURNAMENT
+            ================================================== -->
+
+            <div class="form-group">
+
+                <label for="tournament_id">
+                    Tournament
+                </label>
+
+                <select
+                    id="tournament_id"
+                    name="tournament_id"
+                    required
+                >
+
+                    <option
+                        value=""
+                        disabled
+                        selected
+                    >
+                        Select tournament
+                    </option>
+
+
+                    {% for tournament in tournaments %}
+
+                    <option value="{{ tournament.id }}">
+
+                        {{ tournament.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 TITLE
+            ================================================== -->
+
+            <div class="form-group">
+
+                <label for="title">
+                    Announcement Title
+                </label>
+
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Enter announcement title"
+                    maxlength="200"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MESSAGE
+            ================================================== -->
+
+            <div class="form-group">
+
+                <label for="message">
+                    Announcement Message
+                </label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    rows="7"
+                    placeholder="Write the announcement here..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ATTACHMENT
+            ================================================== -->
+
+            <div class="form-group attachment-group">
+
+                <label for="attachment">
+                    📎 Attachment
+                </label>
+
+                <input
+                    type="file"
+                    id="attachment"
+                    name="attachment"
+                    class="attachment-input"
+                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                >
+
+                <small class="file-help">
+
+                    Optional attachment.
+
+                    Allowed file types:
+                    PDF, DOC, DOCX, JPG, JPEG and PNG.
+
+                </small>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 BUTTONS
+            ================================================== -->
+
+            <div class="form-actions">
+
+
+                <button
+                    type="submit"
+                    class="publish-button"
+                >
+
+                    <span>
+                        📢
+                    </span>
+
+                    Publish Announcement
+
+                </button>
+
+
+
+                <a
+                    href="{{ url_for('announcements') }}"
+                    class="cancel-button"
+                >
+
+                    Cancel
+
+                </a>
+
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         INFORMATION
+    ====================================================== -->
+
+    <div class="announcement-info">
+
+        <div class="info-icon">
+            💡
+        </div>
+
+
+        <div>
+
+            <h3>
+                Announcement Guidelines
+            </h3>
+
+
+            <p>
+
+                Keep announcements clear and useful.
+                Include important information such as
+                match updates, registration details,
+                schedules and tournament notices.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

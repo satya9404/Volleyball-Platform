@@ -1,0 +1,480 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ team.team_name }} | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block content %}
+
+<section class="content-section team-details-page">
+
+
+    <!-- ==========================================
+         TEAM HEADER
+    =========================================== -->
+
+    <div class="team-details-header">
+
+        <div class="team-logo-large">
+
+            {% if team.team_logo %}
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='uploads/' + team.team_logo
+                    ) }}"
+                    alt="{{ team.team_name }}"
+                >
+
+            {% else %}
+
+                <span>🏐</span>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="team-header-info">
+
+            <span class="section-label">
+                TEAM
+            </span>
+
+            <h1>
+                {{ team.team_name }}
+            </h1>
+
+            <p>
+                🏆 {{ team.tournament_name }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         TEAM MANAGEMENT BUTTONS
+    =========================================== -->
+
+    {% if session.get("user_role") in ["admin", "organizer"] %}
+
+        <div class="team-management-buttons">
+
+            <!-- ADD TEAM MEMBER -->
+
+            <a
+                href="{{ url_for(
+                    'add_team_player',
+                    team_id=team.id
+                ) }}"
+                class="primary-button"
+            >
+                + Add Team Member
+            </a>
+
+
+            <!-- ASSIGN CAPTAIN -->
+
+            <a
+                href="{{ url_for(
+                    'assign_captains',
+                    team_id=team.id
+                ) }}"
+                class="primary-button"
+            >
+                👑 Assign Captain & Vice Captain
+            </a>
+
+        </div>
+
+    {% endif %}
+
+
+
+    <!-- ==========================================
+         TEAM INFORMATION
+    =========================================== -->
+
+    <div class="team-info-grid">
+
+
+        <!-- CAPTAIN -->
+
+        <div class="team-info-card">
+
+            <span class="info-icon">
+                👑
+            </span>
+
+            <div>
+
+                <span class="info-label">
+                    CAPTAIN
+                </span>
+
+                <h3>
+                    {{ team.captain_name or "Not assigned" }}
+                </h3>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- VICE CAPTAIN -->
+
+        <div class="team-info-card">
+
+            <span class="info-icon">
+                ⭐
+            </span>
+
+            <div>
+
+                <span class="info-label">
+                    VICE CAPTAIN
+                </span>
+
+                <h3>
+                    {{ team.vice_captain_name or "Not assigned" }}
+                </h3>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PLAYER COUNT -->
+
+        <div class="team-info-card">
+
+            <span class="info-icon">
+                🏐
+            </span>
+
+            <div>
+
+                <span class="info-label">
+                    PLAYERS
+                </span>
+
+                <h3>
+                    {{ players|length }}
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         PLAYERS
+    =========================================== -->
+
+    <div class="players-section">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    TEAM SQUAD
+                </span>
+
+                <h2>
+                    Players
+                </h2>
+
+            </div>
+
+
+            <span class="player-count">
+                {{ players|length }} Players
+            </span>
+
+        </div>
+
+
+
+        {% if players %}
+
+            <div class="players-grid">
+
+                {% for player in players %}
+
+                    <div class="player-card">
+
+
+                        <!-- PLAYER NUMBER -->
+
+                        <div class="player-number">
+                            {{ loop.index }}
+                        </div>
+
+
+
+                        <!-- PLAYER INFORMATION -->
+
+                        <div class="player-info">
+
+                            <h3>
+                                {{ player.name }}
+                            </h3>
+
+                            <p>
+                                Roll No: {{ player.roll_number }}
+                            </p>
+
+                            <p>
+                                {{ player.department }}
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- PLAYER ROLE -->
+
+                        {% if player.id == team.captain_id %}
+
+                            <span class="player-role captain-role">
+                                👑 Captain
+                            </span>
+
+                        {% elif player.id == team.vice_captain_id %}
+
+                            <span class="player-role vice-role">
+                                ⭐ Vice Captain
+                            </span>
+
+                        {% endif %}
+
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- NO PLAYERS -->
+
+            <div class="no-players">
+
+                <div>
+                    🏐
+                </div>
+
+                <h3>
+                    No players registered
+                </h3>
+
+                <p>
+                    Players for this team have not been added yet.
+                </p>
+
+
+                {% if session.get("user_role") in ["admin", "organizer"] %}
+
+                    <a
+                        href="{{ url_for(
+                            'add_team_player',
+                            team_id=team.id
+                        ) }}"
+                        class="primary-button"
+                    >
+                        + Add First Team Member
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+
+    <!-- ==========================================
+         TEAM MATCHES
+    =========================================== -->
+
+    <div class="team-matches-section">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    MATCH SCHEDULE
+                </span>
+
+                <h2>
+                    Team Matches
+                </h2>
+
+            </div>
+
+
+            <span class="player-count">
+                {{ matches|length }} Matches
+            </span>
+
+        </div>
+
+
+
+        {% if matches %}
+
+            <div class="team-matches-grid">
+
+                {% for match in matches %}
+
+                    <div class="team-match-card">
+
+
+                        <!-- ROUND -->
+
+                        <span class="match-round">
+                            {{ match.round_name or "Match" }}
+                        </span>
+
+
+
+                        <!-- TEAMS -->
+
+                        <div class="team-match-teams">
+
+                            <strong>
+                                {{ match.team1_name }}
+                            </strong>
+
+                            <span class="team-match-vs">
+                                VS
+                            </span>
+
+                            <strong>
+                                {{ match.team2_name }}
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- MATCH INFORMATION -->
+
+                        <div class="team-match-info">
+
+                            <span>
+                                📅 {{ match.match_date }}
+                            </span>
+
+                            <span>
+                                🕐 {{ match.match_time }}
+                            </span>
+
+
+                            {% if match.venue_name %}
+
+                                <span>
+                                    📍 {{ match.venue_name }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+
+                        <!-- STATUS -->
+
+                        <span class="team-match-status">
+                            {{ match.status|upper }}
+                        </span>
+
+
+
+                        <!-- VIEW MATCH -->
+
+                        <a
+                            href="{{ url_for(
+                                'match_details',
+                                match_id=match.id
+                            ) }}"
+                            class="view-match-button"
+                        >
+                            View Match →
+                        </a>
+
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- NO MATCHES -->
+
+            <div class="no-players">
+
+                <div>
+                    🏐
+                </div>
+
+                <h3>
+                    No matches scheduled
+                </h3>
+
+                <p>
+                    This team has no matches scheduled yet.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+
+    <!-- ==========================================
+         BACK BUTTON
+    =========================================== -->
+
+    <div class="back-section">
+
+        <a
+            href="{{ url_for(
+                'tournament_details',
+                tournament_id=team.tournament_id
+            ) }}"
+            class="back-button"
+        >
+            ← Back to Tournament
+        </a>
+
+    </div>
+
+
+</section>
+
+{% endblock %}

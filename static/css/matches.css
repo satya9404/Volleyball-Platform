@@ -1,0 +1,1035 @@
+/* =========================================================
+   NIT NAGALAND VOLLEYBALL
+   MATCHES PAGE
+   Responsive Desktop + Tablet + Mobile
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.matches-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 55px 28px 70px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.matches-header {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        "label button"
+        "title button"
+        "description button";
+
+    align-items: center;
+
+    margin-bottom: 35px;
+}
+
+.header-label {
+    grid-area: label;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    color: #ff5f4f;
+}
+
+.matches-header h1 {
+    grid-area: title;
+
+    margin: 0;
+
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.05;
+    font-weight: 800;
+
+    color: #092f5f;
+    letter-spacing: -1.5px;
+}
+
+.matches-header > p {
+    grid-area: description;
+
+    margin: 10px 0 0;
+
+    font-size: 17px;
+    line-height: 1.6;
+
+    color: #667892;
+}
+
+
+/* =========================================================
+   ADD MATCH
+   ========================================================= */
+
+.add-match-container {
+    grid-area: button;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 30px;
+}
+
+.add-match-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 48px;
+    padding: 0 25px;
+
+    border-radius: 12px;
+
+    background: #1769e0;
+    color: #ffffff !important;
+
+    font-size: 15px;
+    font-weight: 800;
+    text-decoration: none !important;
+
+    box-shadow: 0 8px 20px rgba(23, 105, 224, 0.20);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.add-match-button:hover {
+    background: #0f58c5;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 12px 25px rgba(23, 105, 224, 0.28);
+}
+
+.add-match-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   MATCHES CONTAINER
+   ========================================================= */
+
+.matches-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+
+/* =========================================================
+   MATCH CARD
+   ========================================================= */
+
+.match-card {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: grid;
+
+    grid-template-columns:
+        155px
+        minmax(220px, 1fr)
+        155px
+        minmax(350px, 1.5fr);
+
+    grid-template-areas:
+        "status teams info actions";
+
+    gap: 25px;
+
+    align-items: center;
+
+    padding: 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #dce5f0;
+    border-radius: 22px;
+
+    box-shadow:
+        0 8px 25px rgba(20, 55, 90, 0.06);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.match-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #c8d7e9;
+
+    box-shadow:
+        0 15px 35px rgba(20, 55, 90, 0.10);
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.match-status {
+    grid-area: status;
+
+    display: flex;
+    justify-content: flex-start;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 125px;
+    min-height: 42px;
+
+    padding: 0 15px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+    text-align: center;
+}
+
+
+/* COMPLETED */
+
+.status.completed {
+    background: #e3f7ed;
+    color: #07834f;
+}
+
+
+/* LIVE */
+
+.status.live {
+    background: #ffe7e4;
+    color: #e84d3d;
+
+    animation: livePulse 1.5s infinite;
+}
+
+
+/* CANCELLED */
+
+.status.cancelled {
+    background: #fce9eb;
+    color: #bd3040;
+}
+
+
+/* SCHEDULED */
+
+.status.scheduled {
+    background: #eaf1ff;
+    color: #2864c7;
+}
+
+
+@keyframes livePulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(232, 77, 61, 0.20);
+    }
+
+    70% {
+        box-shadow: 0 0 0 8px rgba(232, 77, 61, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(232, 77, 61, 0);
+    }
+}
+
+
+/* =========================================================
+   ROUND
+   ========================================================= */
+
+.match-round {
+    margin-top: 10px;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    color: #70829a;
+
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   TEAMS
+   ========================================================= */
+
+.teams-row {
+    grid-area: teams;
+
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+}
+
+.team {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.team h2 {
+    margin: 0;
+
+    font-size: 23px;
+    line-height: 1.25;
+
+    font-weight: 800;
+
+    color: #092f5f;
+
+    overflow-wrap: anywhere;
+}
+
+.team-left {
+    text-align: left;
+}
+
+.team-right {
+    text-align: right;
+}
+
+
+/* =========================================================
+   VS
+   ========================================================= */
+
+.vs-circle {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+
+    margin: 0 12px;
+
+    border-radius: 50%;
+
+    background: #edf3fb;
+    color: #52708f;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   DATE + TIME
+   ========================================================= */
+
+.match-info {
+    grid-area: info;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+
+    min-height: 62px;
+
+    padding: 10px 13px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #e0e8f2;
+    border-radius: 14px;
+
+    background: #fbfcfe;
+}
+
+.info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+
+    margin-right: 8px;
+
+    font-size: 17px;
+}
+
+.info-item > div {
+    min-width: 0;
+}
+
+.info-label {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    color: #71839b;
+}
+
+.info-value {
+    display: block;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #35516f;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   VENUE
+   ========================================================= */
+
+.venue-info {
+    display: flex;
+    align-items: flex-start;
+
+    margin-top: 18px;
+    padding-top: 17px;
+
+    border-top: 1px solid #e5ebf3;
+
+    grid-column: 2 / -1;
+}
+
+.venue-icon {
+    margin-right: 10px;
+
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.match-actions {
+    grid-area: actions;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    flex-wrap: wrap;
+}
+
+
+/* ALL ACTION LINKS */
+
+.match-actions a,
+.match-actions button {
+    box-sizing: border-box;
+
+    min-height: 42px;
+
+    padding: 9px 13px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    text-decoration: none !important;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* VIEW */
+
+.view-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #edf4ff;
+    color: #1764c0 !important;
+
+    border: 1px solid #d3e2f7;
+}
+
+.view-btn:hover {
+    background: #1769e0;
+    color: #ffffff !important;
+
+    border-color: #1769e0;
+
+    transform: translateY(-1px);
+}
+
+
+/* EDIT */
+
+.edit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fff4e8;
+    color: #b75a08 !important;
+
+    border: 1px solid #f4d7b4;
+}
+
+.edit-btn:hover {
+    background: #e97912;
+    color: #ffffff !important;
+
+    border-color: #e97912;
+
+    transform: translateY(-1px);
+}
+
+
+/* SCORE MANAGEMENT */
+
+.score-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f1ecff;
+    color: #6842b6 !important;
+
+    border: 1px solid #ddd2f7;
+}
+
+.score-btn:hover {
+    background: #6842b6;
+    color: #ffffff !important;
+
+    border-color: #6842b6;
+
+    transform: translateY(-1px);
+}
+
+
+/* DELETE */
+
+.delete-form {
+    margin: 0;
+    padding: 0;
+}
+
+.delete-btn {
+    border: 1px solid #f0c8cd;
+
+    background: #fff1f2;
+    color: #c5303d;
+
+    white-space: nowrap;
+}
+
+.delete-btn:hover {
+    background: #d83a47;
+    color: #ffffff;
+
+    border-color: #d83a47;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   NO MATCHES
+   ========================================================= */
+
+.no-matches {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 300px;
+
+    padding: 40px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #dce5f0;
+    border-radius: 22px;
+
+    box-shadow:
+        0 8px 25px rgba(20, 55, 90, 0.06);
+}
+
+.no-matches-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 72px;
+    height: 72px;
+
+    margin-bottom: 18px;
+
+    border-radius: 50%;
+
+    background: #edf3fb;
+
+    font-size: 30px;
+}
+
+.no-matches h2 {
+    margin: 0 0 8px;
+
+    font-size: 26px;
+
+    color: #092f5f;
+}
+
+.no-matches p {
+    margin: 0 0 22px;
+
+    color: #70829a;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   BACK HOME
+   ========================================================= */
+
+.back-home {
+    display: flex;
+    justify-content: center;
+
+    margin-top: 40px;
+    padding-top: 28px;
+
+    border-top: 1px solid #dce5ef;
+}
+
+.back-home a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 0 20px;
+
+    border-radius: 10px;
+
+    background: #edf4ff;
+    color: #1764c0 !important;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    text-decoration: none !important;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.back-home a:hover {
+    background: #dceaff;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .matches-page {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .match-card {
+        grid-template-columns:
+            135px
+            minmax(180px, 1fr)
+            135px;
+
+        grid-template-areas:
+            "status teams info"
+            "actions actions actions";
+
+        gap: 20px;
+
+        padding: 23px;
+    }
+
+    .match-actions {
+        justify-content: flex-start;
+
+        padding-top: 16px;
+
+        border-top: 1px solid #e7edf4;
+    }
+
+    .venue-info {
+        grid-column: 1 / -1;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .matches-page {
+        padding: 32px 15px 50px;
+    }
+
+
+    /* HEADER */
+
+    .matches-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        margin-bottom: 25px;
+    }
+
+    .header-label {
+        margin-bottom: 7px;
+
+        font-size: 12px;
+        letter-spacing: 2.3px;
+    }
+
+    .matches-header h1 {
+        font-size: 36px;
+        letter-spacing: -0.8px;
+    }
+
+    .matches-header > p {
+        margin-top: 8px;
+
+        font-size: 15px;
+    }
+
+    .add-match-container {
+        width: 100%;
+
+        margin: 18px 0 0;
+
+        justify-content: flex-start;
+    }
+
+    .add-match-button {
+        width: 100%;
+
+        min-height: 48px;
+    }
+
+
+    /* MATCH CARD */
+
+    .match-card {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 0;
+
+        padding: 19px;
+
+        border-radius: 18px;
+    }
+
+
+    /* STATUS */
+
+    .match-status {
+        justify-content: flex-start;
+
+        margin-bottom: 16px;
+    }
+
+    .status {
+        min-width: auto;
+
+        min-height: 36px;
+
+        padding: 0 13px;
+
+        font-size: 11px;
+    }
+
+
+    /* ROUND */
+
+    .match-round {
+        margin: 0 0 12px;
+
+        font-size: 11px;
+    }
+
+
+    /* TEAMS */
+
+    .teams-row {
+        display: grid;
+
+        grid-template-columns: 1fr 42px 1fr;
+
+        align-items: center;
+
+        width: 100%;
+
+        padding: 15px 0;
+
+        border-top: 1px solid #edf1f6;
+        border-bottom: 1px solid #edf1f6;
+    }
+
+    .team h2 {
+        font-size: 19px;
+        line-height: 1.25;
+    }
+
+    .team-left {
+        text-align: left;
+    }
+
+    .team-right {
+        text-align: right;
+    }
+
+    .vs-circle {
+        width: 36px;
+        height: 36px;
+
+        margin: 0 auto;
+
+        font-size: 10px;
+    }
+
+
+    /* DATE / TIME */
+
+    .match-info {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 9px;
+
+        margin-top: 15px;
+    }
+
+    .info-item {
+        min-height: 66px;
+
+        padding: 9px;
+
+        border-radius: 12px;
+    }
+
+    .info-icon {
+        width: 27px;
+
+        margin-right: 5px;
+
+        font-size: 15px;
+    }
+
+    .info-label {
+        font-size: 9px;
+
+        letter-spacing: 1px;
+    }
+
+    .info-value {
+        font-size: 12px;
+    }
+
+
+    /* VENUE */
+
+    .venue-info {
+        width: 100%;
+
+        margin-top: 15px;
+        padding-top: 15px;
+    }
+
+
+    /* ACTIONS */
+
+    .match-actions {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 9px;
+
+        width: 100%;
+
+        margin-top: 17px;
+        padding-top: 17px;
+
+        border-top: 1px solid #e7edf4;
+    }
+
+    .match-actions a,
+    .match-actions button {
+        width: 100%;
+
+        min-height: 44px;
+
+        padding: 9px 8px;
+
+        font-size: 11px;
+    }
+
+    .delete-form {
+        width: 100%;
+    }
+
+    .delete-btn {
+        width: 100%;
+    }
+
+
+    /* NO MATCHES */
+
+    .no-matches {
+        min-height: 250px;
+
+        padding: 30px 20px;
+
+        border-radius: 18px;
+    }
+
+    .no-matches h2 {
+        font-size: 22px;
+    }
+
+    .no-matches p {
+        font-size: 14px;
+    }
+
+
+    /* BACK */
+
+    .back-home {
+        margin-top: 30px;
+        padding-top: 22px;
+    }
+
+    .back-home a {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .matches-page {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .matches-header h1 {
+        font-size: 31px;
+    }
+
+    .match-card {
+        padding: 15px;
+    }
+
+    .team h2 {
+        font-size: 17px;
+    }
+
+    .teams-row {
+        grid-template-columns: 1fr 38px 1fr;
+    }
+
+    .vs-circle {
+        width: 32px;
+        height: 32px;
+    }
+
+    .match-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .match-actions a,
+    .match-actions button {
+        min-height: 43px;
+
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}
+Update Match Score | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block content %}
+
+<section class="content-section score-page">
+
+    <!-- ==========================================
+         PAGE HEADER
+    =========================================== -->
+
+    <div class="section-title">
+
+        <div>
+
+            <span class="section-label">
+                MATCH MANAGEMENT
+            </span>
+
+            <h2>
+                Update Match Score
+            </h2>
+
+            <p>
+                Enter or update the scores for each set.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         MATCH TEAMS
+    =========================================== -->
+
+    <div class="score-match-card">
+
+        <div class="score-team">
+            🏐
+            <strong>
+                {{ match.team1_name }}
+            </strong>
+        </div>
+
+
+        <div class="score-vs">
+            VS
+        </div>
+
+
+        <div class="score-team">
+            🏐
+            <strong>
+                {{ match.team2_name }}
+            </strong>
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         SCORE FORM
+    =========================================== -->
+
+    <form method="POST" class="score-form">
+
+        <!-- ======================================
+             SETS
+        ======================================= -->
+
+        <div class="sets-container">
+
+            {% for set_number in range(1, 6) %}
+
+                {% set existing = namespace(found=None) %}
+
+                {% for s in sets %}
+
+                    {% if s.set_number == set_number %}
+
+                        {% set existing.found = s %}
+
+                    {% endif %}
+
+                {% endfor %}
+
+
+                <div class="set-card">
+
+                    <div class="set-title">
+
+                        <span>
+                            SET {{ set_number }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="score-row">
+
+
+                        <!-- TEAM 1 -->
+
+                        <div class="team-score">
+
+                            <label>
+                                {{ match.team1_name }}
+                            </label>
+
+                            <input
+                                type="number"
+                                name="team1_score_{{ set_number }}"
+                                min="0"
+                                max="99"
+                                placeholder="0"
+                                value="{% if existing.found %}{{ existing.found.team1_score }}{% endif %}"
+                            >
+
+                        </div>
+
+
+                        <!-- VS -->
+
+                        <div class="score-vs-small">
+                            -
+                        </div>
+
+
+                        <!-- TEAM 2 -->
+
+                        <div class="team-score">
+
+                            <label>
+                                {{ match.team2_name }}
+                            </label>
+
+                            <input
+                                type="number"
+                                name="team2_score_{{ set_number }}"
+                                min="0"
+                                max="99"
+                                placeholder="0"
+                                value="{% if existing.found %}{{ existing.found.team2_score }}{% endif %}"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- ==========================================
+             BUTTONS
+        =========================================== -->
+
+        <div class="score-actions">
+
+            <button
+                type="submit"
+                class="save-score-button"
+            >
+                🏆 Save Score
+            </button>
+
+
+            <a
+                href="{{ url_for('match_details', match_id=match.id) }}"
+                class="cancel-score-button"
+            >
+                ← Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

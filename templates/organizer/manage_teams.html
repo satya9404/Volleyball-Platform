@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}
+Manage Teams | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block content %}
+
+<div class="organizer-page">
+
+    <div class="dashboard-container">
+
+        <div class="dashboard-header">
+
+            <div>
+
+                <span class="section-label">
+                    TOURNAMENT MANAGEMENT
+                </span>
+
+                <h2>
+                    {{ tournament.name }}
+                </h2>
+
+                <p>
+                    Add and manage teams participating
+                    in this tournament.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-panel">
+
+            <h3>Teams</h3>
+
+
+            {% if teams %}
+
+                <div class="tournament-list">
+
+                    {% for team in teams %}
+
+                        <div class="organizer-tournament-card">
+
+                            <div class="tournament-details">
+
+                                <h3>
+                                    {{ team.team_name }}
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-dashboard">
+
+                    <h3>No teams added yet</h3>
+
+                    <p>
+                        Add the participating college teams
+                        for this tournament.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Match | Volleyball Platform</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/edit-match.css') }}">
+
+</head>
+
+<body>
+
+<main class="edit-match-page">
+
+    <div class="edit-match-container">
+
+        <div class="page-header">
+
+            <p class="section-label">
+                MATCH MANAGEMENT
+            </p>
+
+            <h1>
+                Edit Match
+            </h1>
+
+            <p>
+                Update the match information below.
+            </p>
+
+        </div>
+
+
+        {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST"
+              class="match-form">
+
+
+            <!-- Tournament -->
+
+            <div class="form-group">
+
+                <label for="tournament_id">
+                    Tournament
+                </label>
+
+                <select
+                    id="tournament_id"
+                    name="tournament_id"
+                    required
+                >
+
+                    <option value="">
+                        Select Tournament
+                    </option>
+
+                    {% for tournament in tournaments %}
+
+                        <option
+                            value="{{ tournament.id }}"
+                            {% if match.tournament_id == tournament.id %}
+                                selected
+                            {% endif %}
+                        >
+
+                            {{ tournament.name }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Teams -->
+
+            <div class="form-row">
+
+
+                <!-- Team 1 -->
+
+                <div class="form-group">
+
+                    <label for="team1_id">
+                        Team 1
+                    </label>
+
+                    <select
+                        id="team1_id"
+                        name="team1_id"
+                        required
+                    >
+
+                        <option value="">
+                            Select Team 1
+                        </option>
+
+                        {% for team in teams %}
+
+                            <option
+                                value="{{ team.id }}"
+                                {% if match.team1_id == team.id %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ team.team_name }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Team 2 -->
+
+                <div class="form-group">
+
+                    <label for="team2_id">
+                        Team 2
+                    </label>
+
+                    <select
+                        id="team2_id"
+                        name="team2_id"
+                        required
+                    >
+
+                        <option value="">
+                            Select Team 2
+                        </option>
+
+                        {% for team in teams %}
+
+                            <option
+                                value="{{ team.id }}"
+                                {% if match.team2_id == team.id %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ team.team_name }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- Date and Time -->
+
+            <div class="form-row">
+
+
+                <!-- Date -->
+
+                <div class="form-group">
+
+                    <label for="match_date">
+                        Match Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="match_date"
+                        name="match_date"
+                        value="{{ match.match_date }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Time -->
+
+                <div class="form-group">
+
+                    <label for="match_time">
+                        Match Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="match_time"
+                        name="match_time"
+                        value="{{ match.match_time }}"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Venue -->
+
+            <div class="form-group">
+
+                <label for="venue_id">
+                    Venue
+                </label>
+
+                <select
+                    id="venue_id"
+                    name="venue_id"
+                >
+
+                    <option value="">
+                        Select Venue
+                    </option>
+
+                    {% for venue in venues %}
+
+                        <option
+                            value="{{ venue.id }}"
+                            {% if match.venue_id == venue.id %}
+                                selected
+                            {% endif %}
+                        >
+
+                            {{ venue.name }}
+
+                            {% if venue.location %}
+                                - {{ venue.location }}
+                            {% endif %}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Round -->
+
+            <div class="form-group">
+
+                <label for="round_name">
+                    Round
+                </label>
+
+                <input
+                    type="text"
+                    id="round_name"
+                    name="round_name"
+                    value="{{ match.round_name or '' }}"
+                    placeholder="Example: League / Semi Final / Final"
+                >
+
+            </div>
+
+
+            <!-- Status -->
+
+            <div class="form-group">
+
+                <label for="status">
+                    Status
+                </label>
+
+                <select
+                    id="status"
+                    name="status"
+                    required
+                >
+
+                    <option
+                        value="scheduled"
+                        {% if match.status == "scheduled" %}
+                            selected
+                        {% endif %}
+                    >
+                        Scheduled
+                    </option>
+
+                    <option
+                        value="live"
+                        {% if match.status == "live" %}
+                            selected
+                        {% endif %}
+                    >
+                        Live
+                    </option>
+
+                    <option
+                        value="completed"
+                        {% if match.status == "completed" %}
+                            selected
+                        {% endif %}
+                    >
+                        Completed
+                    </option>
+
+                    <option
+                        value="cancelled"
+                        {% if match.status == "cancelled" %}
+                            selected
+                        {% endif %}
+                    >
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="form-actions">
+
+                <a
+                    href="{{ url_for('matches') }}"
+                    class="cancel-button"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="save-button"
+                >
+                    Update Match
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block title %}
+Tournaments | NIT Nagaland Volleyball
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/tournaments.css') }}">
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="tournaments-page">
+
+    <!-- ==========================================
+         PAGE HEADER
+    =========================================== -->
+
+    <section class="tournaments-header">
+
+        <div class="header-label">
+            COMPETITIONS
+        </div>
+
+        <h1>
+            Volleyball Tournaments
+        </h1>
+
+        <p>
+            View all volleyball tournaments and their details.
+        </p>
+
+    </section>
+
+
+    <!-- ==========================================
+         TOURNAMENT LIST
+    =========================================== -->
+
+    {% if tournaments %}
+
+        <div class="tournament-grid">
+
+            {% for tournament in tournaments %}
+
+                <article class="tournament-card">
+
+
+                    <!-- ==================================
+                         TOURNAMENT IMAGE
+                    =================================== -->
+
+                    <div class="tournament-image">
+
+                        <div class="volleyball-icon">
+                            🏐
+                        </div>
+
+                    </div>
+
+
+                    <!-- ==================================
+                         TOURNAMENT INFORMATION
+                    =================================== -->
+
+                    <div class="tournament-info">
+
+
+                        <!-- STATUS -->
+
+                        <div class="tournament-status">
+
+                            <span class="status-badge
+                                status-{{ tournament.status|lower }}">
+
+                                {{ tournament.status|upper }}
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- NAME -->
+
+                        <h2 class="tournament-name">
+
+                            {{ tournament.name }}
+
+                        </h2>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <p class="tournament-description">
+
+                            {{ tournament.description or
+                               "No description available." }}
+
+                        </p>
+
+
+                        <!-- ==================================
+                             DATE
+                        =================================== -->
+
+                        <div class="tournament-detail">
+
+                            <span class="detail-icon">
+                                📅
+                            </span>
+
+                            <div>
+
+                                <span class="detail-label">
+                                    START DATE
+                                </span>
+
+                                <span class="detail-value">
+                                    {{ tournament.start_date }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ==================================
+                             LOCATION
+                        =================================== -->
+
+                        <div class="tournament-detail">
+
+                            <span class="detail-icon">
+                                📍
+                            </span>
+
+                            <div>
+
+                                <span class="detail-label">
+                                    LOCATION
+                                </span>
+
+                                <span class="detail-value">
+
+                                    {{ tournament.location or
+                                       "Location not specified" }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ==================================
+                             FORMAT
+                        =================================== -->
+
+                        <div class="tournament-detail">
+
+                            <span class="detail-icon">
+                                🏆
+                            </span>
+
+                            <div>
+
+                                <span class="detail-label">
+                                    FORMAT
+                                </span>
+
+                                <span class="detail-value">
+
+                                    {{ tournament.format|replace(
+                                        "_", " "
+                                    )|title }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ==================================
+                             ACTION BUTTONS
+                        =================================== -->
+
+                        <div class="tournament-actions">
+
+
+                            <!-- VIEW TOURNAMENT -->
+
+                            <a
+                                href="{{ url_for(
+                                    'tournament_details',
+                                    tournament_id=tournament.id
+                                ) }}"
+                                class="tournament-button view-button"
+                            >
+
+                                <span>🏐</span>
+
+                                <span>
+                                    View Tournament
+                                </span>
+
+                            </a>
+
+
+                            <!-- STANDINGS -->
+
+                            <a
+                                href="{{ url_for(
+                                    'standings',
+                                    tournament_id=tournament.id
+                                ) }}"
+                                class="tournament-button standings-button"
+                            >
+
+                                <span>📊</span>
+
+                                <span>
+                                    Standings
+                                </span>
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- ==========================================
+             NO TOURNAMENTS
+        =========================================== -->
+
+        <div class="empty-tournaments">
+
+            <div class="empty-icon">
+                🏐
+            </div>
+
+            <h2>
+                No Tournaments Available
+            </h2>
+
+            <p>
+
+                Tournament information will appear here
+                once an organizer creates a tournament.
+
+            </p>
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

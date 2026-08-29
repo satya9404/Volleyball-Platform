@@ -1,0 +1,882 @@
+{% extends "base.html" %}
+
+{% block title %}
+Live Score | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/add-match-score.css') }}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="live-score-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="live-score-header">
+
+        <span class="page-label">
+            LIVE SCORE CONTROL
+        </span>
+
+        <h1>
+            {{ match.team1_name }}
+            <span>VS</span>
+            {{ match.team2_name }}
+        </h1>
+
+        <div
+            id="match-status"
+            class="live-status"
+        >
+            ● LIVE
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SET SELECTOR
+    ====================================================== -->
+
+    <div class="set-selector">
+
+        <button
+            type="button"
+            class="set-tab active"
+            data-set="1"
+            onclick="selectSet(1)"
+        >
+            SET 1
+        </button>
+
+        <button
+            type="button"
+            class="set-tab"
+            data-set="2"
+            onclick="selectSet(2)"
+        >
+            SET 2
+        </button>
+
+        <button
+            type="button"
+            class="set-tab"
+            data-set="3"
+            onclick="selectSet(3)"
+        >
+            SET 3
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         LIVE SCOREBOARD
+    ====================================================== -->
+
+    <div class="live-score-card">
+
+
+        <!-- TEAM 1 -->
+
+        <div class="score-team">
+
+            <div class="team-label">
+                TEAM 1
+            </div>
+
+            <h2>
+                {{ match.team1_name }}
+            </h2>
+
+            <div
+                class="live-score"
+                id="team1-score"
+            >
+                0
+            </div>
+
+            <div class="score-controls">
+
+                <button
+                    type="button"
+                    class="score-control minus"
+                    onclick="changeScore(1, -1)"
+                >
+                    −
+                </button>
+
+                <button
+                    type="button"
+                    class="score-control plus"
+                    onclick="changeScore(1, 1)"
+                >
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- VS -->
+
+        <div class="score-vs">
+
+            <span>
+                VS
+            </span>
+
+            <small>
+                SET <strong id="current-set">1</strong>
+            </small>
+
+        </div>
+
+
+
+        <!-- TEAM 2 -->
+
+        <div class="score-team">
+
+            <div class="team-label">
+                TEAM 2
+            </div>
+
+            <h2>
+                {{ match.team2_name }}
+            </h2>
+
+            <div
+                class="live-score"
+                id="team2-score"
+            >
+                0
+            </div>
+
+            <div class="score-controls">
+
+                <button
+                    type="button"
+                    class="score-control minus"
+                    onclick="changeScore(2, -1)"
+                >
+                    −
+                </button>
+
+                <button
+                    type="button"
+                    class="score-control plus"
+                    onclick="changeScore(2, 1)"
+                >
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SET STATUS
+    ====================================================== -->
+
+    <div class="set-status">
+
+        <div>
+
+            <span>
+                SETS WON
+            </span>
+
+            <strong>
+
+                {{ team1_sets }}
+
+                <b>−</b>
+
+                {{ team2_sets }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                CURRENT SET
+            </span>
+
+            <strong id="current-set-display">
+                SET 1
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         END SET
+    ====================================================== -->
+
+    <button
+        type="button"
+        class="end-set-button"
+        onclick="endCurrentSet()"
+    >
+        🏆 END SET
+    </button>
+
+
+
+    <!-- =====================================================
+         SET HISTORY
+    ====================================================== -->
+
+    <div class="set-history">
+
+        <div class="section-title">
+
+            <span>
+                MATCH SCORE
+            </span>
+
+            <h2>
+                Set History
+            </h2>
+
+        </div>
+
+
+        <div id="set-history-list">
+
+            {% if sets %}
+
+                {% for set in sets %}
+
+                <div
+                    class="history-row"
+                    data-history-set="{{ set.set_number }}"
+                >
+
+                    <span>
+                        Set {{ set.set_number }}
+                    </span>
+
+
+                    <strong>
+
+                        {{ set.team1_score }}
+
+                        <b>−</b>
+
+                        {{ set.team2_score }}
+
+                    </strong>
+
+
+                    <span>
+
+                        {% if set.winner_id == match.team1_id %}
+
+                            🏆 {{ match.team1_name }}
+
+                        {% elif set.winner_id == match.team2_id %}
+
+                            🏆 {{ match.team2_name }}
+
+                        {% else %}
+
+                            LIVE
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-history">
+                    No sets completed yet.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         BACK
+    ====================================================== -->
+
+    <div class="back-section">
+
+        <a
+            href="{{ url_for(
+                'score_management',
+                match_id=match.id
+            ) }}"
+        >
+            ← Back to Score Management
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     LIVE SCORE JAVASCRIPT
+========================================================= -->
+
+<script>
+
+const MATCH_ID = {{ match.id }};
+
+let currentSet = 1;
+
+let scores = {
+    1: {
+        team1: 0,
+        team2: 0
+    },
+    2: {
+        team1: 0,
+        team2: 0
+    },
+    3: {
+        team1: 0,
+        team2: 0
+    }
+};
+
+
+
+/* =========================================================
+   LOAD EXISTING SCORES
+========================================================= */
+
+async function loadScores() {
+
+    try {
+
+        const response = await fetch(
+            `/api/match/${MATCH_ID}/score`,
+            {
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+            return;
+        }
+
+
+        data.sets.forEach(set => {
+
+            if (scores[set.set_number]) {
+
+                scores[set.set_number].team1 =
+                    set.team1_score;
+
+                scores[set.set_number].team2 =
+                    set.team2_score;
+
+            }
+
+        });
+
+
+        updateScoreDisplay();
+
+        updateHistory(data.sets);
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to load live score:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SELECT SET
+========================================================= */
+
+function selectSet(setNumber) {
+
+    currentSet = setNumber;
+
+
+    document
+        .querySelectorAll(".set-tab")
+        .forEach(button => {
+
+            button.classList.remove("active");
+
+        });
+
+
+    const selectedButton =
+        document.querySelector(
+            `.set-tab[data-set="${setNumber}"]`
+        );
+
+
+    if (selectedButton) {
+
+        selectedButton.classList.add("active");
+
+    }
+
+
+    document.getElementById(
+        "current-set"
+    ).textContent = setNumber;
+
+
+    document.getElementById(
+        "current-set-display"
+    ).textContent = `SET ${setNumber}`;
+
+
+    updateScoreDisplay();
+
+}
+
+
+
+/* =========================================================
+   UPDATE DISPLAY
+========================================================= */
+
+function updateScoreDisplay() {
+
+    document.getElementById(
+        "team1-score"
+    ).textContent =
+        scores[currentSet].team1;
+
+
+    document.getElementById(
+        "team2-score"
+    ).textContent =
+        scores[currentSet].team2;
+
+}
+
+
+
+/* =========================================================
+   CHANGE SCORE
+========================================================= */
+
+async function changeScore(team, amount) {
+
+    const score =
+        scores[currentSet];
+
+
+    if (team === 1) {
+
+        score.team1 += amount;
+
+    }
+
+    else {
+
+        score.team2 += amount;
+
+    }
+
+
+    /* Never allow negative score */
+
+    if (score.team1 < 0) {
+        score.team1 = 0;
+    }
+
+
+    if (score.team2 < 0) {
+        score.team2 = 0;
+    }
+
+
+    updateScoreDisplay();
+
+
+    /* Send immediately to Flask */
+
+    try {
+
+        const response = await fetch(
+            `/api/organizer/match/${MATCH_ID}/score/update`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    set_number: currentSet,
+
+                    team1_score:
+                        score.team1,
+
+                    team2_score:
+                        score.team2
+
+                })
+
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            alert(
+                data.message ||
+                "Unable to update score."
+            );
+
+            return;
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to connect to server."
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   END CURRENT SET
+========================================================= */
+
+async function endCurrentSet() {
+
+    const score =
+        scores[currentSet];
+
+
+    if (
+        score.team1 ===
+        score.team2
+    ) {
+
+        alert(
+            "A set cannot end with equal scores."
+        );
+
+        return;
+
+    }
+
+
+    const confirmEnd =
+        confirm(
+            `End Set ${currentSet}?\n\n` +
+            `${score.team1} - ${score.team2}`
+        );
+
+
+    if (!confirmEnd) {
+        return;
+    }
+
+
+    try {
+
+        const response = await fetch(
+            `/api/organizer/match/${MATCH_ID}/score/end-set`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    set_number:
+                        currentSet
+
+                })
+
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            alert(
+                data.message ||
+                "Unable to end set."
+            );
+
+            return;
+
+        }
+
+
+        updateHistory(
+            data.sets
+        );
+
+
+        /* =============================================
+           MATCH COMPLETED
+        ============================================= */
+
+        if (
+            data.status ===
+            "completed"
+        ) {
+
+            document.getElementById(
+                "match-status"
+            ).textContent =
+                "✓ MATCH COMPLETED";
+
+
+            document.getElementById(
+                "match-status"
+            ).classList.add(
+                "completed"
+            );
+
+
+            alert(
+                "Match completed!"
+            );
+
+
+            return;
+
+        }
+
+
+        /* =============================================
+           MOVE TO NEXT SET
+        ============================================= */
+
+        if (currentSet < 3) {
+
+            selectSet(
+                currentSet + 1
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to end set."
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   UPDATE SET HISTORY
+========================================================= */
+
+function updateHistory(sets) {
+
+    const container =
+        document.getElementById(
+            "set-history-list"
+        );
+
+
+    if (!sets || sets.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-history">
+                No sets completed yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    sets.forEach(set => {
+
+        let winner = "LIVE";
+
+
+        if (
+            set.winner_id ===
+            {{ match.team1_id }}
+        ) {
+
+            winner =
+                `🏆 ${escapeHTML(
+                    "{{ match.team1_name }}"
+                )}`;
+
+        }
+
+        else if (
+            set.winner_id ===
+            {{ match.team2_id }}
+        ) {
+
+            winner =
+                `🏆 ${escapeHTML(
+                    "{{ match.team2_name }}"
+                )}`;
+
+        }
+
+
+        html += `
+
+            <div
+                class="history-row"
+                data-history-set="${set.set_number}"
+            >
+
+                <span>
+                    Set ${set.set_number}
+                </span>
+
+
+                <strong>
+
+                    ${set.team1_score}
+
+                    <b>−</b>
+
+                    ${set.team2_score}
+
+                </strong>
+
+
+                <span>
+                    ${winner}
+                </span>
+
+            </div>
+
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+
+}
+
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
+
+}
+
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadScores();
+
+
+/*
+    Keep organizer screen synchronized.
+*/
+
+setInterval(
+    loadScores,
+    2000
+);
+
+</script>
+
+
+{% endblock %}

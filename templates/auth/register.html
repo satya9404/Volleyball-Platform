@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block content %}
+<meta name="author" content="satya">
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <span>🏐</span>
+            <h2>Create Account</h2>
+            <p>Join the NIT Nagaland Volleyball Platform</p>
+        </div>
+
+        <form method="POST">
+
+            <label>Name</label>
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter your name"
+                required
+            >
+
+            <label>Email</label>
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label>Password</label>
+            <input
+                type="password"
+                name="password"
+                placeholder="Create a password"
+                required
+            >
+
+            <button type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+        <p class="auth-link">
+            Already have an account?
+            <a href="{{ url_for('login') }}">Login</a>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

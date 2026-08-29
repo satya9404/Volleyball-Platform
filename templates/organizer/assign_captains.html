@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}
+Assign Captains | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/assign-captains.css') }}">
+<section class="content-section">
+
+    <div class="page-header">
+
+        <span class="section-label">
+            TEAM MANAGEMENT
+        </span>
+
+        <h1>
+            Assign Captain & Vice Captain
+        </h1>
+
+        <p>
+            {{ team.team_name }}
+        </p>
+
+    </div>
+
+
+    <div class="form-card">
+
+        {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        {% if players %}
+
+            <form method="POST">
+
+                <!-- CAPTAIN -->
+
+                <div class="form-group">
+
+                    <label for="captain_id">
+                        Captain
+                    </label>
+
+                    <select
+                        name="captain_id"
+                        id="captain_id"
+                        required
+                    >
+
+                        <option value="">
+                            -- Select Captain --
+                        </option>
+
+                        {% for player in players %}
+
+                            <option
+                                value="{{ player.id }}"
+                                {% if player.id == team.captain_id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ player.name }}
+                                - {{ player.roll_number }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- VICE CAPTAIN -->
+
+                <div class="form-group">
+
+                    <label for="vice_captain_id">
+                        Vice Captain
+                    </label>
+
+                    <select
+                        name="vice_captain_id"
+                        id="vice_captain_id"
+                        required
+                    >
+
+                        <option value="">
+                            -- Select Vice Captain --
+                        </option>
+
+                        {% for player in players %}
+
+                            <option
+                                value="{{ player.id }}"
+                                {% if player.id == team.vice_captain_id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ player.name }}
+                                - {{ player.roll_number }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Save Captains
+                    </button>
+
+                    <a
+                        href="{{ url_for(
+                            'team_details',
+                            team_id=team.id
+                        ) }}"
+                        class="secondary-button"
+                    >
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        {% else %}
+
+            <h3>
+                No players in this team
+            </h3>
+
+            <p>
+                Add team members before assigning Captain and Vice Captain.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

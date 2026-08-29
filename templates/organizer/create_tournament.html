@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Tournament | NIT Nagaland Volleyball
+{% endblock %}
+
+{% block content %}
+
+<div class="auth-page">
+
+    <div class="auth-card" style="max-width: 650px;">
+
+        <div class="auth-header">
+
+            <span>🏆</span>
+
+            <h2>Create Tournament</h2>
+
+            <p>
+                Add a new volleyball tournament
+            </p>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+                <div class="flash-message">
+
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form method="POST">
+
+            <label>
+                Tournament Name
+            </label>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Example: NIT Nagaland Volleyball Championship 2026"
+                required
+            >
+
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                placeholder="Enter tournament description"
+                rows="5"
+                style="
+                    padding:13px;
+                    border:1px solid #d9dee7;
+                    border-radius:7px;
+                    resize:vertical;
+                    font-family:inherit;
+                "
+            ></textarea>
+
+
+            <label>
+                Start Date
+            </label>
+
+            <input
+                type="date"
+                name="start_date"
+                required
+            >
+
+
+            <label>
+                End Date
+            </label>
+
+            <input
+                type="date"
+                name="end_date"
+            >
+
+
+            <label>
+                Location
+            </label>
+
+            <input
+                type="text"
+                name="location"
+                placeholder="Example: NIT Nagaland Indoor Stadium"
+            >
+
+
+            <label>
+                Tournament Format
+            </label>
+
+            <select
+                name="format"
+                required
+                style="
+                    padding:13px;
+                    border:1px solid #d9dee7;
+                    border-radius:7px;
+                    background:white;
+                    font-size:14px;
+                "
+            >
+
+                <option value="">
+                    Select format
+                </option>
+
+                <option value="league">
+                    League
+                </option>
+
+                <option value="knockout">
+                    Knockout
+                </option>
+
+                <option value="league_knockout">
+                    League + Knockout
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+                Create Tournament
+            </button>
+
+        </form>
+
+
+        <p class="auth-link">
+
+            <a href="{{ url_for('organizer_dashboard') }}">
+                ← Back to Dashboard
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

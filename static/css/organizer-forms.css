@@ -1,0 +1,158 @@
+/* =========================================
+   ORGANIZER FORMS
+   Add Team + Add Player
+   ========================================= */
+
+.organizer-form-page {
+    min-height: 100vh;
+    padding: 60px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.15), transparent 35%),
+        #f8fafc;
+}
+
+.organizer-form-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+    animation: formAppear 0.6s ease;
+}
+
+.organizer-form-card h1 {
+    margin: 0 0 10px;
+    font-size: 34px;
+    color: #172554;
+}
+
+.organizer-form-card .subtitle {
+    margin-bottom: 30px;
+    color: #64748b;
+}
+
+
+/* Form group */
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.form-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    outline: none;
+    font-size: 15px;
+    background: #f8fafc;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.form-group input:focus {
+    background: white;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+
+/* Button */
+
+.organizer-form-button {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.organizer-form-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+}
+
+
+/* Error */
+
+.form-error {
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+
+/* Back link */
+
+.organizer-form-back {
+    display: inline-block;
+    margin-top: 25px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.organizer-form-back:hover {
+    text-decoration: underline;
+}
+
+
+/* Animation */
+
+@keyframes formAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .organizer-form-page {
+        padding: 30px 15px;
+    }
+
+    .organizer-form-card {
+        padding: 25px;
+        border-radius: 18px;
+    }
+
+    .organizer-form-card h1 {
+        font-size: 28px;
+    }
+}

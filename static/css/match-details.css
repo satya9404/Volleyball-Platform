@@ -1,0 +1,1583 @@
+/* =========================================================
+   NIT NAGALAND VOLLEYBALL
+   MATCH DETAILS
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.match-details-page {
+
+    width: 100%;
+
+    max-width: 1180px;
+
+    margin: 0 auto;
+
+    padding: 50px 30px 80px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.match-hero {
+
+    background:
+        linear-gradient(
+            135deg,
+            #082b55 0%,
+            #0b3d73 55%,
+            #12558f 100%
+        );
+
+    border-radius: 24px;
+
+    padding: 55px 40px;
+
+    text-align: center;
+
+    color: white;
+
+    box-shadow:
+        0 18px 45px rgba(8, 43, 85, 0.18);
+
+    margin-bottom: 25px;
+
+}
+
+
+.hero-label {
+
+    color: #ff725c;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: 4px;
+
+    margin-bottom: 16px;
+
+}
+
+
+.match-title {
+
+    margin: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+    font-size: clamp(30px, 5vw, 52px);
+
+    line-height: 1.15;
+
+    font-weight: 850;
+
+}
+
+
+.team-name {
+
+    color: white;
+
+}
+
+
+.vs-text {
+
+    color: #ff725c;
+
+    font-size: 18px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+}
+
+
+.tournament-title {
+
+    margin: 20px 0 22px;
+
+    color: #c9d9eb;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+}
+
+
+.match-status-row {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.status-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 9px 17px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    font-weight: 850;
+
+    letter-spacing: 0.7px;
+
+}
+
+
+.status-badge.live {
+
+    background: #ffe4df;
+
+    color: #d9432b;
+
+}
+
+
+.status-badge.completed {
+
+    background: #dff6e9;
+
+    color: #137b4c;
+
+}
+
+
+.status-badge.scheduled {
+
+    background: #e3efff;
+
+    color: #155fa4;
+
+}
+
+
+.status-badge.cancelled {
+
+    background: #f5e0e3;
+
+    color: #a72f3e;
+
+}
+
+
+.round-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 9px 17px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,0.13);
+
+    border: 1px solid rgba(255,255,255,0.22);
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================================
+   INFORMATION CARDS
+   ========================================================= */
+
+.match-information {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 55px;
+
+}
+
+
+.information-card {
+
+    min-height: 105px;
+
+    padding: 21px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: white;
+
+    border: 1px solid #dce6f0;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 7px 22px rgba(9, 47, 92, 0.06);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.information-card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 13px 30px rgba(9, 47, 92, 0.10);
+
+}
+
+
+.information-icon {
+
+    width: 50px;
+
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #edf4fc;
+
+    font-size: 23px;
+
+}
+
+
+.information-content {
+
+    min-width: 0;
+
+}
+
+
+.information-label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #7890aa;
+
+    font-size: 10px;
+
+    font-weight: 850;
+
+    letter-spacing: 2px;
+
+}
+
+
+.information-content strong {
+
+    display: block;
+
+    color: #092f5c;
+
+    font-size: 15px;
+
+    line-height: 1.4;
+
+    word-break: break-word;
+
+}
+
+
+.information-content small {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #71859c;
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================================
+   SECTION LABEL
+   ========================================================= */
+
+.section-label {
+
+    display: block;
+
+    color: #ff6650;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+}
+
+
+/* =========================================================
+   SCORE SECTION
+   ========================================================= */
+
+.scores-section {
+
+    margin-top: 10px;
+
+}
+
+
+.scores-heading {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.scores-heading h2 {
+
+    margin: 8px 0 5px;
+
+    color: #092f5c;
+
+    font-size: 43px;
+
+    line-height: 1.05;
+
+    font-weight: 850;
+
+}
+
+
+.scores-heading p {
+
+    margin: 0;
+
+    color: #6f849c;
+
+    font-size: 15px;
+
+}
+
+
+.sets-count {
+
+    padding: 10px 17px;
+
+    border-radius: 999px;
+
+    background: #edf4fc;
+
+    color: #092f5c;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   SCORE CARD
+   ========================================================= */
+
+.scores-card {
+
+    overflow: hidden;
+
+    background: white;
+
+    border: 1px solid #dce6f0;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(9, 47, 92, 0.07);
+
+}
+
+
+/* =========================================================
+   SCORE HEADER
+   ========================================================= */
+
+.score-header {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1.4fr 1.4fr 1.5fr;
+
+    align-items: center;
+
+    min-height: 55px;
+
+    padding: 0 25px;
+
+    background: #092f5c;
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+}
+
+
+.score-header > div {
+
+    text-align: center;
+
+}
+
+
+.score-header > div:first-child {
+
+    text-align: left;
+
+}
+
+
+/* =========================================================
+   SCORE ROW
+   ========================================================= */
+
+.score-row {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1.4fr 1.4fr 1.5fr;
+
+    align-items: center;
+
+    min-height: 82px;
+
+    padding: 0 25px;
+
+    border-bottom: 1px solid #e7edf4;
+
+}
+
+
+.score-row:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.score-row > div {
+
+    text-align: center;
+
+}
+
+
+.score-row > div:first-child {
+
+    text-align: left;
+
+}
+
+
+.set-number {
+
+    color: #627c99;
+
+    font-size: 16px;
+
+    font-weight: 850;
+
+}
+
+
+.score-number {
+
+    color: #092f5c;
+
+    font-size: 30px;
+
+    font-weight: 850;
+
+}
+
+
+.score-number.winning-score {
+
+    color: #168654;
+
+}
+
+
+.set-winner {
+
+    display: flex;
+
+    justify-content: center;
+
+}
+
+
+.winner-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    max-width: 100%;
+
+    padding: 9px 15px;
+
+    border-radius: 999px;
+
+    background: #e3f6eb;
+
+    color: #147b4c;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+}
+
+
+.no-winner {
+
+    color: #9aabba;
+
+    font-size: 20px;
+
+}
+
+
+/* =========================================================
+   SETS SUMMARY
+   ========================================================= */
+
+.sets-summary {
+
+    margin-top: 18px;
+
+    padding: 23px 28px;
+
+    background: white;
+
+    border: 1px solid #dce6f0;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 7px 22px rgba(9, 47, 92, 0.05);
+
+}
+
+
+.summary-label {
+
+    display: block;
+
+    margin-bottom: 15px;
+
+    color: #7890aa;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+}
+
+
+.summary-teams {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 25px;
+
+}
+
+
+.summary-team {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    color: #092f5c;
+
+    font-size: 17px;
+
+}
+
+
+.summary-team span {
+
+    width: 45px;
+
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #edf4fc;
+
+    color: #092f5c;
+
+    font-size: 21px;
+
+    font-weight: 900;
+
+}
+
+
+.summary-divider {
+
+    color: #9aabba;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================================
+   MATCH WINNER
+   ========================================================= */
+
+.match-winner-card {
+
+    margin-top: 18px;
+
+    padding: 32px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #092f5c,
+            #12538f
+        );
+
+    color: white;
+
+    text-align: center;
+
+    box-shadow:
+        0 15px 35px rgba(9, 47, 92, 0.16);
+
+}
+
+
+.winner-label {
+
+    margin-bottom: 10px;
+
+    color: #ffd166;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+}
+
+
+.match-winner-card h3 {
+
+    margin: 0;
+
+    color: white;
+
+    font-size: 31px;
+
+    font-weight: 850;
+
+}
+
+
+.match-winner-card p {
+
+    margin: 8px 0 0;
+
+    color: #cbdced;
+
+    font-size: 14px;
+
+}
+
+
+/* =========================================================
+   NO SCORE
+   ========================================================= */
+
+.no-score-card {
+
+    padding: 65px 25px;
+
+    background: white;
+
+    border: 1px solid #dce6f0;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 30px rgba(9, 47, 92, 0.06);
+
+}
+
+
+.no-score-icon {
+
+    width: 65px;
+
+    height: 65px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eef4fa;
+
+    font-size: 30px;
+
+}
+
+
+.no-score-card h3 {
+
+    margin: 0;
+
+    color: #092f5c;
+
+    font-size: 26px;
+
+}
+
+
+.no-score-card p {
+
+    margin: 10px 0 0;
+
+    color: #7189a4;
+
+    font-size: 15px;
+
+}
+
+
+/* =========================================================
+   ADMINISTRATION
+   ========================================================= */
+
+.administration-section {
+
+    margin-top: 55px;
+
+    padding-top: 40px;
+
+    border-top: 1px solid #dce5ee;
+
+}
+
+
+.administration-header {
+
+    margin-bottom: 22px;
+
+}
+
+
+.administration-header h2 {
+
+    margin: 7px 0 5px;
+
+    color: #092f5c;
+
+    font-size: 32px;
+
+    font-weight: 850;
+
+}
+
+
+.administration-header p {
+
+    margin: 0;
+
+    color: #71859c;
+
+    font-size: 15px;
+
+}
+
+
+/* =========================================================
+   MANAGEMENT BUTTONS
+   ========================================================= */
+
+.management-buttons {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+
+}
+
+
+.management-button {
+
+    min-height: 115px;
+
+    padding: 22px 24px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 17px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    border: 1px solid #d7e3ef;
+
+    background: white;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 8px 25px rgba(9, 47, 92, 0.07);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.management-button:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 15px 32px rgba(9, 47, 92, 0.13);
+
+    text-decoration: none;
+
+}
+
+
+.management-button::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    width: 5px;
+
+}
+
+
+.score-button::before {
+
+    background: #168654;
+
+}
+
+
+.edit-button::before {
+
+    background: #ff6650;
+
+}
+
+
+/* =========================================================
+   MANAGEMENT ICON
+   ========================================================= */
+
+.management-icon {
+
+    width: 55px;
+
+    height: 55px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #edf4fc;
+
+    font-size: 25px;
+
+}
+
+
+.score-button .management-icon {
+
+    background: #e4f6ec;
+
+}
+
+
+.edit-button .management-icon {
+
+    background: #fff0ec;
+
+}
+
+
+/* =========================================================
+   MANAGEMENT TEXT
+   ========================================================= */
+
+.management-content {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+.management-content strong {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #092f5c;
+
+    font-size: 18px;
+
+    font-weight: 850;
+
+}
+
+
+.management-content small {
+
+    display: block;
+
+    color: #7288a0;
+
+    font-size: 13px;
+
+    line-height: 1.45;
+
+}
+
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.management-arrow {
+
+    width: 38px;
+
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #edf4fc;
+
+    color: #092f5c;
+
+    font-size: 20px;
+
+    font-weight: 900;
+
+    transition:
+        transform 0.2s ease;
+
+}
+
+
+.management-button:hover .management-arrow {
+
+    transform: translateX(4px);
+
+}
+
+
+.score-button .management-arrow {
+
+    background: #e4f6ec;
+
+    color: #168654;
+
+}
+
+
+.edit-button .management-arrow {
+
+    background: #fff0ec;
+
+    color: #e6533c;
+
+}
+
+
+/* =========================================================
+   SET FORMAT
+   ========================================================= */
+
+.set-format-section {
+
+    margin-top: 30px;
+
+}
+
+
+.set-format-card {
+
+    display: flex;
+
+    gap: 22px;
+
+    padding: 28px;
+
+    box-sizing: border-box;
+
+    background: white;
+
+    border: 1px solid #dce6f0;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(9, 47, 92, 0.05);
+
+}
+
+
+.format-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #edf4fc;
+
+    font-size: 27px;
+
+}
+
+
+.format-content {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+.format-content h2 {
+
+    margin: 7px 0 8px;
+
+    color: #092f5c;
+
+    font-size: 27px;
+
+    font-weight: 850;
+
+}
+
+
+.format-content p {
+
+    margin: 0;
+
+    max-width: 850px;
+
+    color: #6f849c;
+
+    font-size: 15px;
+
+    line-height: 1.65;
+
+}
+
+
+.format-content p strong {
+
+    color: #092f5c;
+
+}
+
+
+/* =========================================================
+   FORMAT OPTIONS
+   ========================================================= */
+
+.format-options {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin-top: 20px;
+
+}
+
+
+.format-option {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 15px;
+
+    box-sizing: border-box;
+
+    background: #f8fbfe;
+
+    border: 1px solid #dce6f0;
+
+    border-radius: 14px;
+
+}
+
+
+.format-number {
+
+    width: 42px;
+
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #092f5c;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 900;
+
+}
+
+
+.format-option strong {
+
+    display: block;
+
+    color: #092f5c;
+
+    font-size: 14px;
+
+}
+
+
+.format-option small {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7890a8;
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-section {
+
+    margin-top: 40px;
+
+    padding-top: 30px;
+
+    border-top: 1px solid #dce5ee;
+
+    display: flex;
+
+    justify-content: center;
+
+}
+
+
+.back-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 180px;
+
+    padding: 13px 22px;
+
+    border-radius: 12px;
+
+    background: #edf4ff;
+
+    color: #145da3;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.back-button:hover {
+
+    background: #dfeeff;
+
+    transform: translateY(-2px);
+
+    text-decoration: none;
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .match-information {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+
+    .management-buttons {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    .match-details-page {
+
+        padding: 25px 15px 55px;
+
+    }
+
+
+    .match-hero {
+
+        padding: 38px 20px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .match-title {
+
+        flex-direction: column;
+
+        gap: 8px;
+
+        font-size: 31px;
+
+    }
+
+
+    .vs-text {
+
+        font-size: 13px;
+
+    }
+
+
+    .match-information {
+
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+
+        margin-bottom: 40px;
+
+    }
+
+
+    .scores-heading {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 12px;
+
+    }
+
+
+    .scores-heading h2 {
+
+        font-size: 34px;
+
+    }
+
+
+    .scores-card {
+
+        overflow-x: auto;
+
+    }
+
+
+    .score-header,
+    .score-row {
+
+        min-width: 650px;
+
+    }
+
+
+    .sets-summary {
+
+        padding: 20px;
+
+    }
+
+
+    .summary-teams {
+
+        flex-direction: column;
+
+        gap: 12px;
+
+    }
+
+
+    .summary-divider {
+
+        transform: rotate(90deg);
+
+    }
+
+
+    .management-buttons {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .management-button {
+
+        min-height: 100px;
+
+        padding: 18px;
+
+    }
+
+
+    .management-content strong {
+
+        font-size: 16px;
+
+    }
+
+
+    .management-content small {
+
+        font-size: 12px;
+
+    }
+
+
+    .set-format-card {
+
+        flex-direction: column;
+
+        padding: 22px;
+
+    }
+
+
+    .format-options {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .format-content h2 {
+
+        font-size: 24px;
+
+    }
+
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Team | NIT Nagaland Volleyball</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/organizer-forms.css') }}">
+</head>
+
+<body>
+
+<main class="organizer-form-page">
+
+    <div class="organizer-form-card">
+
+        <h1>Manage Team</h1>
+
+        <p class="subtitle">
+            {{ team.team_name }}
+        </p>
+
+        {% if error %}
+            <div class="form-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if players %}
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label for="captain_id">
+                    Captain
+                </label>
+
+                <select
+                    id="captain_id"
+                    name="captain_id">
+
+                    <option value="">
+                        Select Captain
+                    </option>
+
+                    {% for player in players %}
+
+                    <option
+                        value="{{ player.id }}"
+                        {% if team.captain_id == player.id %}
+                            selected
+                        {% endif %}>
+
+                        {{ player.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="vice_captain_id">
+                    Vice-Captain
+                </label>
+
+                <select
+                    id="vice_captain_id"
+                    name="vice_captain_id">
+
+                    <option value="">
+                        Select Vice-Captain
+                    </option>
+
+                    {% for player in players %}
+
+                    <option
+                        value="{{ player.id }}"
+                        {% if team.vice_captain_id == player.id %}
+                            selected
+                        {% endif %}>
+
+                        {{ player.name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="organizer-form-button">
+
+                Save Team
+
+            </button>
+
+        </form>
+
+        {% else %}
+
+            <div class="form-error">
+                Add players to this team before selecting
+                Captain and Vice-Captain.
+            </div>
+
+        {% endif %}
+
+
+        <a
+            href="{{ url_for(
+                'team_details',
+                team_id=team.id
+            ) }}"
+            class="organizer-form-back">
+
+            ← Back to Team
+
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

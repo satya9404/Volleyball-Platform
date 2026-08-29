@@ -1,0 +1,166 @@
+.add-player-page {
+    min-height: calc(100vh - 150px);
+    background: #f4f7fc;
+    padding: 70px 30px 100px;
+}
+
+.add-player-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+/* HEADER */
+
+.page-header {
+    margin-bottom: 35px;
+}
+
+.section-label {
+    display: block;
+    color: #ff633f;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+
+.page-header h1 {
+    margin: 0;
+    color: #0b2a4a;
+    font-size: 52px;
+    font-weight: 800;
+}
+
+.page-header p {
+    margin: 12px 0;
+    color: #718096;
+    font-size: 21px;
+}
+
+.tournament-name {
+    display: inline-block;
+    margin-top: 8px;
+    color: #1d4ed8;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+/* ERROR */
+
+.error-message {
+    background: #fff1f0;
+    border: 1px solid #ffb4ab;
+    color: #c62828;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+
+/* FORM CARD */
+
+.player-form-card {
+    background: white;
+    border: 1px solid #dce4ef;
+    border-radius: 24px;
+    padding: 45px;
+    box-shadow: 0 15px 40px rgba(20, 50, 90, 0.08);
+}
+
+
+/* FORM GROUP */
+
+.form-group {
+    margin-bottom: 27px;
+}
+
+.form-group label {
+    display: block;
+    color: #0b2a4a;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #172b4d;
+    font-size: 17px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #ff633f;
+    box-shadow: 0 0 0 4px rgba(255, 99, 63, 0.12);
+}
+
+
+/* BUTTON */
+
+.add-player-button {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 17px;
+    background: #ff633f;
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.add-player-button:hover {
+    background: #e9502f;
+    transform: translateY(-1px);
+}
+
+
+/* BACK */
+
+.back-section {
+    margin-top: 28px;
+}
+
+.back-button {
+    display: inline-block;
+    color: #1d4ed8;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .add-player-page {
+        padding: 40px 18px 70px;
+    }
+
+    .page-header h1 {
+        font-size: 38px;
+    }
+
+    .player-form-card {
+        padding: 25px;
+        border-radius: 18px;
+    }
+
+}

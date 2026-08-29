@@ -1,0 +1,1 @@
+console.log("Volleyball Platform JavaScript loaded");

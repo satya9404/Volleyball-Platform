@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin - Tournament Approval
+{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <div class="admin-header">
+        <div class="admin-label">ADMINISTRATION</div>
+
+        <h1>Tournament Approval</h1>
+
+        <p>
+            Review and approve volleyball tournaments.
+        </p>
+    </div>
+
+
+    <div class="approval-card">
+
+        <div class="table-wrapper">
+
+            <table class="approval-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tournament</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for tournament in tournaments %}
+
+                    <tr>
+
+                        <td>
+                            {{ tournament.id }}
+                        </td>
+
+                        <td class="tournament-name">
+                            {{ tournament.name }}
+                        </td>
+
+                        <td>
+
+                            {% if tournament.status == "approved" %}
+
+                                <span class="status approved">
+                                    ✓ APPROVED
+                                </span>
+
+                            {% elif tournament.status == "draft" %}
+
+                                <span class="status draft">
+                                    DRAFT
+                                </span>
+
+                            {% else %}
+
+                                <span class="status">
+                                    {{ tournament.status }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if tournament.status != "approved" %}
+
+                                <form
+                                    action="{{ url_for(
+                                        'approve_tournament',
+                                        tournament_id=tournament.id
+                                    ) }}"
+                                    method="POST"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="approve-button"
+                                        onclick="return confirm(
+                                            'Are you sure you want to approve this tournament?'
+                                        );"
+                                    >
+                                        ✓ Approve
+                                    </button>
+
+                                </form>
+
+                            {% else %}
+
+                                <span class="already-approved">
+                                    ✓ Already Approved
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <div class="back-dashboard">
+
+        <a href="{{ url_for('organizer_dashboard') }}">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

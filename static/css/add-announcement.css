@@ -1,0 +1,600 @@
+/* =========================================================
+   ADD ANNOUNCEMENT PAGE
+   NIT NAGALAND VOLLEYBALL
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.announcement-form-page {
+
+    width: min(950px, calc(100% - 40px));
+
+    margin: 0 auto;
+
+    padding: 55px 0 80px;
+
+    color: #102f50;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.announcement-form-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 24px;
+
+    margin-bottom: 30px;
+
+    padding: 30px 32px;
+
+    background: #ffffff;
+
+    border: 1px solid #dce6f1;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(20, 50, 90, 0.07);
+}
+
+
+/* HEADER ICON */
+
+.announcement-header-icon {
+
+    width: 68px;
+
+    height: 68px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #fff2ed;
+
+    border: 1px solid #f7d9d0;
+
+    border-radius: 17px;
+
+    font-size: 32px;
+}
+
+
+/* EYEBROW */
+
+.announcement-eyebrow {
+
+    margin-bottom: 7px;
+
+    color: #ff634f;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2.5px;
+}
+
+
+/* TITLE */
+
+.announcement-form-header h1 {
+
+    margin: 0;
+
+    color: #082f5b;
+
+    font-size: 38px;
+
+    font-weight: 800;
+
+    line-height: 1.2;
+}
+
+
+/* DESCRIPTION */
+
+.announcement-form-header p {
+
+    margin: 8px 0 0;
+
+    color: #70849c;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM CARD
+   ========================================================= */
+
+.announcement-form-card {
+
+    padding: 34px;
+
+    background: #ffffff;
+
+    border: 1px solid #dce6f1;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(20, 50, 90, 0.07);
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.form-group {
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #123c68;
+
+    font-size: 15px;
+
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   INPUT / SELECT / TEXTAREA
+   ========================================================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    box-sizing: border-box;
+
+    width: 100%;
+
+    display: block;
+
+    padding: 14px 16px;
+
+    background: #fafdff;
+
+    color: #173b60;
+
+    border: 1px solid #cbd8e7;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+/* INPUT */
+
+.form-group input {
+
+    height: 52px;
+}
+
+
+/* SELECT */
+
+.form-group select {
+
+    height: 52px;
+
+    cursor: pointer;
+}
+
+
+/* TEXTAREA */
+
+.form-group textarea {
+
+    min-height: 165px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+
+/* PLACEHOLDER */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+
+    color: #9aaabd;
+}
+
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    background: #ffffff;
+
+    border-color: #2876c7;
+
+    box-shadow:
+        0 0 0 4px rgba(40, 118, 199, 0.10);
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.form-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding-top: 8px;
+
+    border-top: 1px solid #e7edf4;
+}
+
+
+/* =========================================================
+   PUBLISH BUTTON
+   ========================================================= */
+
+.publish-button {
+
+    min-height: 48px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 0 20px;
+
+    border: 1px solid #0a396d;
+
+    border-radius: 9px;
+
+    background: #0a396d;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.publish-button:hover {
+
+    background: #124f8d;
+
+    border-color: #124f8d;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(10, 57, 109, 0.20);
+}
+
+
+.publish-button:active {
+
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   CANCEL BUTTON
+   ========================================================= */
+
+.cancel-button {
+
+    min-height: 48px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0 21px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    color: #526b85;
+
+    border: 1px solid #cbd8e7;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.cancel-button:hover {
+
+    background: #f4f7fa;
+
+    border-color: #aebdcd;
+
+    color: #173b60;
+}
+
+
+/* =========================================================
+   INFORMATION BOX
+   ========================================================= */
+
+.announcement-info {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-top: 22px;
+
+    padding: 20px 22px;
+
+    background: #f4f8fd;
+
+    border: 1px solid #dce8f4;
+
+    border-radius: 14px;
+}
+
+
+/* INFO ICON */
+
+.info-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #ffffff;
+
+    border: 1px solid #d9e5f1;
+
+    border-radius: 10px;
+
+    font-size: 19px;
+}
+
+
+/* INFO TITLE */
+
+.announcement-info h3 {
+
+    margin: 1px 0 5px;
+
+    color: #163f68;
+
+    font-size: 15px;
+
+    font-weight: 750;
+}
+
+
+/* INFO TEXT */
+
+.announcement-info p {
+
+    margin: 0;
+
+    color: #6b7f96;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .announcement-form-page {
+
+        width: calc(100% - 24px);
+
+        padding: 30px 0 55px;
+    }
+
+
+    .announcement-form-header {
+
+        align-items: flex-start;
+
+        gap: 17px;
+
+        padding: 23px;
+
+        border-radius: 16px;
+    }
+
+
+    .announcement-header-icon {
+
+        width: 54px;
+
+        height: 54px;
+
+        border-radius: 13px;
+
+        font-size: 26px;
+    }
+
+
+    .announcement-form-header h1 {
+
+        font-size: 30px;
+    }
+
+
+    .announcement-form-header p {
+
+        font-size: 14px;
+    }
+
+
+    .announcement-form-card {
+
+        padding: 23px 20px;
+
+        border-radius: 16px;
+    }
+
+
+    .form-group {
+
+        margin-bottom: 21px;
+    }
+
+
+    .form-group input,
+    .form-group select {
+
+        height: 50px;
+
+        font-size: 14px;
+    }
+
+
+    .form-group textarea {
+
+        min-height: 145px;
+
+        font-size: 14px;
+    }
+
+
+    .form-actions {
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .publish-button,
+    .cancel-button {
+
+        width: 100%;
+    }
+
+
+    .announcement-info {
+
+        padding: 17px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+    .announcement-form-header {
+
+        display: block;
+    }
+
+
+    .announcement-header-icon {
+
+        margin-bottom: 16px;
+    }
+
+
+    .announcement-form-header h1 {
+
+        font-size: 27px;
+    }
+
+
+    .announcement-eyebrow {
+
+        font-size: 11px;
+
+        letter-spacing: 2px;
+    }
+}

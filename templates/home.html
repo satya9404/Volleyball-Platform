@@ -1,0 +1,1015 @@
+{% extends "base.html" %}
+
+{% block title %}
+NIT Nagaland Volleyball
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/home.css') }}">
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="home-page">
+
+
+    <!-- =====================================================
+         HERO SECTION
+    ====================================================== -->
+
+    <section class="hero-section">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                NIT NAGALAND SPORTS
+            </div>
+
+            <h1>
+                Volleyball.
+                <span>Competition.</span>
+                <br>
+                <strong>Passion.</strong>
+            </h1>
+
+            <p>
+                Your central platform for volleyball tournaments,
+                matches, live scores, results and announcements.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="{{ url_for('tournaments') }}"
+                   class="hero-btn primary">
+                    Explore Tournaments
+                    <span>→</span>
+                </a>
+
+                <a href="{{ url_for('matches') }}"
+                   class="hero-btn secondary">
+                    View Matches
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="hero-ball">
+            🏐
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <section class="stats-section">
+
+        <div class="stats-container">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🏆
+                </div>
+
+                <div class="stat-number">
+                    {{ tournament_count }}
+                </div>
+
+                <div class="stat-label">
+                    Tournaments
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👥
+                </div>
+
+                <div class="stat-number">
+                    {{ team_count }}
+                </div>
+
+                <div class="stat-label">
+                    Teams
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🏐
+                </div>
+
+                <div class="stat-number">
+                    {{ player_count }}
+                </div>
+
+                <div class="stat-label">
+                    Players
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⚔️
+                </div>
+
+                <div class="stat-number">
+                    {{ match_count }}
+                </div>
+
+                <div class="stat-label">
+                    Matches
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         LIVE MATCH
+    ====================================================== -->
+
+    <section class="content-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label live-label">
+                    ● LIVE NOW
+                </span>
+
+                <h2>
+                    Live Match
+                </h2>
+
+            </div>
+
+            <a href="{{ url_for('matches') }}"
+               class="section-link">
+                View all matches →
+            </a>
+
+        </div>
+
+
+        {% if live_match %}
+
+        <a href="{{ url_for('match_details',
+                            match_id=live_match.id) }}"
+           class="live-match-link">
+
+            <div class="live-match-card">
+
+
+                <div class="live-match-header">
+
+                    <span class="live-status">
+                        <span class="live-dot"></span>
+                        LIVE
+                    </span>
+
+                    <span class="live-tournament">
+                        {{ live_match.tournament_name }}
+                    </span>
+
+                </div>
+
+
+
+                <div class="live-teams">
+
+
+                    <div class="live-team">
+
+                        <div class="team-ball">
+                            🏐
+                        </div>
+
+                        <h3>
+                            {{ live_match.team1_name }}
+                        </h3>
+
+                    </div>
+
+
+
+                    <div class="live-vs">
+
+                        <strong>
+                            VS
+                        </strong>
+
+                        {% if live_match.round_name %}
+
+                        <span>
+                            {{ live_match.round_name }}
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <div class="live-team">
+
+                        <div class="team-ball">
+                            🏐
+                        </div>
+
+                        <h3>
+                            {{ live_match.team2_name }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+
+                {% if live_match.venue_name %}
+
+                <div class="live-venue">
+
+                    📍
+
+                    {{ live_match.venue_name }}
+
+                    {% if live_match.venue_location %}
+                        — {{ live_match.venue_location }}
+                    {% endif %}
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </a>
+
+
+        {% else %}
+
+
+        <div class="empty-card">
+
+            <div class="empty-icon">
+                🏐
+            </div>
+
+            <h3>
+                No Live Match Currently
+            </h3>
+
+            <p>
+                There is no match being played right now.
+            </p>
+
+            <a href="{{ url_for('matches') }}"
+               class="small-button">
+                View Match Schedule →
+            </a>
+
+        </div>
+
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- =====================================================
+         UPCOMING MATCHES
+    ====================================================== -->
+
+    <section class="content-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    SCHEDULE
+                </span>
+
+                <h2>
+                    Upcoming Matches
+                </h2>
+
+            </div>
+
+            <a href="{{ url_for('matches') }}"
+               class="section-link">
+                View schedule →
+            </a>
+
+        </div>
+
+
+        {% if upcoming_matches %}
+
+        <div class="upcoming-grid">
+
+
+            {% for match in upcoming_matches %}
+
+
+            <a href="{{ url_for('match_details',
+                                match_id=match.id) }}"
+               class="upcoming-card">
+
+
+                <div class="match-date">
+
+                    <strong>
+
+                        {% if match.match_date %}
+                            {{ match.match_date.strftime('%d') }}
+                        {% endif %}
+
+                    </strong>
+
+                    <span>
+
+                        {% if match.match_date %}
+                            {{ match.match_date.strftime('%b')|upper }}
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="upcoming-details">
+
+
+                    <span class="tournament-name">
+                        {{ match.tournament_name }}
+                    </span>
+
+
+                    <div class="teams">
+
+                        <strong>
+                            {{ match.team1_name }}
+                        </strong>
+
+                        <span>
+                            VS
+                        </span>
+
+                        <strong>
+                            {{ match.team2_name }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="match-meta">
+
+
+                        {% if match.match_time %}
+
+                        <span>
+                            🕐
+
+                            {{ match.match_time.strftime('%I:%M %p') }}
+
+                        </span>
+
+                        {% endif %}
+
+
+                        {% if match.venue_name %}
+
+                        <span>
+                            📍
+                            {{ match.venue_name }}
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if match.round_name %}
+
+                    <div class="round-name">
+                        {{ match.round_name }}
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="card-arrow">
+                    →
+                </div>
+
+
+            </a>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="empty-card">
+
+            <div class="empty-icon">
+                📅
+            </div>
+
+            <h3>
+                No Upcoming Matches
+            </h3>
+
+            <p>
+                There are currently no scheduled matches.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FEATURED TOURNAMENTS
+    ====================================================== -->
+
+    <section class="tournament-section">
+
+        <div class="content-section">
+
+            <div class="section-heading light-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        COMPETE
+                    </span>
+
+                    <h2>
+                        Featured Tournaments
+                    </h2>
+
+                </div>
+
+                <a href="{{ url_for('tournaments') }}"
+                   class="section-link">
+                    All tournaments →
+                </a>
+
+            </div>
+
+
+
+            {% if active_tournaments %}
+
+
+            <div class="tournament-grid">
+
+
+                {% for tournament in active_tournaments %}
+
+
+                <a href="{{ url_for(
+                            'tournament_details',
+                            tournament_id=tournament.id
+                           ) }}"
+                   class="tournament-card">
+
+
+                    <div class="tournament-visual">
+
+                        <span>
+                            🏐
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="tournament-info">
+
+
+                        <span class="tournament-status">
+
+                            {% if tournament.status == "ongoing" %}
+
+                                ONGOING
+
+                            {% else %}
+
+                                UPCOMING
+
+                            {% endif %}
+
+                        </span>
+
+
+
+                        <h3>
+                            {{ tournament.name }}
+                        </h3>
+
+
+
+                        {% if tournament.description %}
+
+                        <p>
+                            {{ tournament.description }}
+                        </p>
+
+                        {% else %}
+
+                        <p>
+                            Volleyball tournament at
+                            NIT Nagaland.
+                        </p>
+
+                        {% endif %}
+
+
+
+                        <div class="tournament-meta">
+
+
+                            {% if tournament.start_date %}
+
+                            <span>
+                                📅
+
+                                {{ tournament.start_date.strftime('%d %b %Y') }}
+
+                            </span>
+
+                            {% endif %}
+
+
+
+                            {% if tournament.location %}
+
+                            <span>
+                                📍
+                                {{ tournament.location }}
+                            </span>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </a>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="empty-tournament">
+
+                <div class="empty-icon">
+                    🏆
+                </div>
+
+                <h3>
+                    No Active Tournaments
+                </h3>
+
+                <p>
+                    There are currently no approved or ongoing tournaments.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RECENT RESULTS
+    ====================================================== -->
+
+    <section class="content-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    RESULTS
+                </span>
+
+                <h2>
+                    Recent Results
+                </h2>
+
+            </div>
+
+            <a href="{{ url_for('results') }}"
+               class="section-link">
+                View all results →
+            </a>
+
+        </div>
+
+
+
+        {% if recent_results %}
+
+
+        <div class="results-grid">
+
+
+            {% for result in recent_results %}
+
+
+            <a href="{{ url_for(
+                        'match_details',
+                        match_id=result.id
+                       ) }}"
+               class="result-card">
+
+
+                <div class="result-header">
+
+                    <span>
+                        {{ result.tournament_name }}
+                    </span>
+
+                    {% if result.match_date %}
+
+                    <small>
+                        {{ result.match_date.strftime('%d %b %Y') }}
+                    </small>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <div class="result-teams">
+
+
+                    <div class="result-team">
+
+                        <strong>
+                            {{ result.team1_name }}
+                        </strong>
+
+
+                        {% if result.winner_id == result.team1_id %}
+
+                        <span class="winner-badge">
+                            WIN
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <div class="result-vs">
+                        VS
+                    </div>
+
+
+
+                    <div class="result-team">
+
+                        <strong>
+                            {{ result.team2_name }}
+                        </strong>
+
+
+                        {% if result.winner_id == result.team2_id %}
+
+                        <span class="winner-badge">
+                            WIN
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+            </a>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="empty-card">
+
+            <div class="empty-icon">
+                🏅
+            </div>
+
+            <h3>
+                No Results Yet
+            </h3>
+
+            <p>
+                Completed match results will appear here.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ANNOUNCEMENTS
+    ====================================================== -->
+
+    <section class="content-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    UPDATES
+                </span>
+
+                <h2>
+                    Latest Announcements
+                </h2>
+
+            </div>
+
+            <a href="{{ url_for('announcements') }}"
+               class="section-link">
+                View all →
+            </a>
+
+        </div>
+
+
+
+        {% if latest_announcements %}
+
+
+        <div class="announcement-grid">
+
+
+            {% for announcement in latest_announcements %}
+
+
+            <a href="{{ url_for('announcements') }}"
+               class="announcement-card">
+
+
+                <span class="announcement-label">
+                    📢 ANNOUNCEMENT
+                </span>
+
+
+                <h3>
+                    {{ announcement.title }}
+                </h3>
+
+
+                <p>
+                    {{ announcement.message }}
+                </p>
+
+
+                <div class="announcement-meta">
+
+
+                    {% if announcement.created_at %}
+
+                    <span>
+                        📅
+                        {{ announcement.created_at.strftime('%d %b %Y') }}
+                    </span>
+
+                    {% endif %}
+
+
+                    {% if announcement.tournament_name %}
+
+                    <span>
+                        🏆
+                        {{ announcement.tournament_name }}
+                    </span>
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </a>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="empty-card">
+
+            <div class="empty-icon">
+                📢
+            </div>
+
+            <h3>
+                No Announcements Yet
+            </h3>
+
+            <p>
+                Tournament announcements and updates will appear here.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUICK ACCESS
+    ====================================================== -->
+
+    <section class="quick-access-section">
+
+        <div class="quick-access">
+
+
+            <div class="quick-heading">
+
+                <span class="section-label">
+                    EXPLORE
+                </span>
+
+                <h2>
+                    Volleyball Platform
+                </h2>
+
+                <p>
+                    Everything you need to follow volleyball
+                    tournaments at NIT Nagaland.
+                </p>
+
+            </div>
+
+
+
+            <div class="quick-links">
+
+
+                <a href="{{ url_for('tournaments') }}">
+
+                    <span>🏆</span>
+
+                    <strong>
+                        Tournaments
+                    </strong>
+
+                    <small>
+                        Explore tournaments
+                    </small>
+
+                </a>
+
+
+
+                <a href="{{ url_for('matches') }}">
+
+                    <span>🏐</span>
+
+                    <strong>
+                        Matches
+                    </strong>
+
+                    <small>
+                        View match schedule
+                    </small>
+
+                </a>
+
+
+
+                <a href="{{ url_for('results') }}">
+
+                    <span>🏅</span>
+
+                    <strong>
+                        Results
+                    </strong>
+
+                    <small>
+                        Check match results
+                    </small>
+
+                </a>
+
+
+
+                <a href="{{ url_for('announcements') }}">
+
+                    <span>📢</span>
+
+                    <strong>
+                        Announcements
+                    </strong>
+
+                    <small>
+                        Latest updates
+                    </small>
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</div>
+
+{% endblock %}
