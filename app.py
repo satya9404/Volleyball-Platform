@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import mysql.connector
+from mysql.connector import pooling
 import os
 import time
 
@@ -52,19 +53,42 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 
 
+
+# ============================================================
+# DATABASE CONNECTION POOL
+# ============================================================
+
+db_pool = pooling.MySQLConnectionPool(
+    pool_name="volleyball_pool",
+    pool_size=5,
+    pool_reset_session=True,
+
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME"),
+    port=int(os.getenv("DB_PORT")),
+
+    ssl_disabled=False,
+    ssl_verify_cert=False,
+    ssl_verify_identity=False,
+
+    connection_timeout=10
+)
+
+
 def get_db_connection():
-    connection = mysql.connector.connect(
-        host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        database=os.getenv("DB_NAME"),
-        port=int(os.getenv("DB_PORT")),
-        ssl_disabled=False,
-        ssl_verify_cert=False,
-        ssl_verify_identity=False
-     )
+    connection = db_pool.get_connection()
+
+    # Make sure the pooled connection is still alive
+    connection.ping(
+        reconnect=True,
+        attempts=3,
+        delay=1
+    )
 
     return connection
+
 
 
 
