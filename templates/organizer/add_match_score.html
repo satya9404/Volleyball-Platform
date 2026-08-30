@@ -502,96 +502,113 @@ function updateScoreDisplay() {
     ).textContent = Number(score.team2);
 }
 
-
 /* =========================================================
-   SCORE UPDATE QUEUE
+   SCORE UPDATE
 ========================================================= */
 
 let scoreRequestQueue = Promise.resolve();
 
 function changeScore(team, amount) {
 
-    scoreRequestQueue = scoreRequestQueue.then(async () => {
+    const setNumber = currentSet;
 
-        const setNumber = currentSet;
+    // ------------------------------------------
+    // CALCULATE NEW LOCAL SCORE
+    // ------------------------------------------
 
-        try {
+    const currentTeam1 =
+        Number(scores[setNumber].team1);
 
-            const response = await fetch(
-                `/api/organizer/match/${MATCH_ID}/score/update`,
-                {
-                    method: "POST",
+    const currentTeam2 =
+        Number(scores[setNumber].team2);
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+    let newTeam1 = currentTeam1;
+    let newTeam2 = currentTeam2;
 
-                    body: JSON.stringify({
-                        set_number: setNumber,
-                        team: team,
-                        amount: amount
-                    })
-                }
-            );
+    if (team === 1) {
+        newTeam1 += amount;
+    } else {
+        newTeam2 += amount;
+    }
+
+    // Prevent negative score
+    if (newTeam1 < 0) {
+        return;
+    }
+
+    if (newTeam2 < 0) {
+        return;
+    }
 
 
-            const data = await response.json();
+    // ------------------------------------------
+    // UPDATE SCREEN IMMEDIATELY
+    // ------------------------------------------
+
+    scores[setNumber].team1 = newTeam1;
+    scores[setNumber].team2 = newTeam2;
+
+    updateScoreDisplay();
 
 
-            if (!response.ok || !data.success) {
+    // ------------------------------------------
+    // SAVE REQUEST IN ORDER
+    // ------------------------------------------
 
-                alert(
-                    data.message ||
-                    "Unable to update score."
+    scoreRequestQueue =
+        scoreRequestQueue.then(async () => {
+
+            try {
+
+                const response = await fetch(
+                    `/api/organizer/match/${MATCH_ID}/score/update`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            set_number: setNumber,
+                            team1_score: newTeam1,
+                            team2_score: newTeam2
+                        })
+                    }
                 );
 
-                return;
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok || !data.success) {
+
+                    console.error(
+                        "Score save failed:",
+                        data.message
+                    );
+
+                    await loadScores();
+
+                    return;
+                }
+
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Score update error:",
+                    error
+                );
+
+                await loadScores();
+
             }
 
+        });
 
-            /*
-             * Update ONLY the current set
-             * using the database-confirmed values.
-             */
-
-            const updatedSet = data.set;
-
-
-            if (!updatedSet) {
-                return;
-            }
-
-
-            scores[setNumber].team1 =
-                Number(updatedSet.team1_score);
-
-
-            scores[setNumber].team2 =
-                Number(updatedSet.team2_score);
-
-
-            updateScoreDisplay();
-
-            updateHistory([updatedSet]);
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Score update error:",
-                error
-            );
-
-            alert(
-                "Unable to connect to server."
-            );
-
-        }
-
-    });
-
-    return scoreRequestQueue;
 }
 
 /* =========================================================
