@@ -44,6 +44,12 @@ def allowed_file(filename):
 
 app.secret_key = os.getenv("SECRET_KEY")
 
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SECURE"] = os.getenv(
+    "SESSION_COOKIE_SECURE", "False"
+).lower() == "true"
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+
 
 
 def get_db_connection():
@@ -4829,10 +4835,6 @@ def reject_organizer_request(request_id):
 
     return redirect(url_for("organizer_requests"))
 
-print("DB HOST:", os.getenv("DB_HOST"))
-print("DB PORT:", os.getenv("DB_PORT"))
-print("DB USER:", os.getenv("DB_USER"))
-print("DB NAME:", os.getenv("DB_NAME"))
  
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
