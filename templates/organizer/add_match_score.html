@@ -485,125 +485,114 @@ function selectSet(setNumber) {
 }
 
 
-
 /* =========================================================
    UPDATE DISPLAY
 ========================================================= */
 
 function updateScoreDisplay() {
 
+    const score = scores[currentSet];
+
     document.getElementById(
         "team1-score"
-    ).textContent =
-        scores[currentSet].team1;
-
+    ).textContent = Number(score.team1);
 
     document.getElementById(
         "team2-score"
-    ).textContent =
-        scores[currentSet].team2;
-
+    ).textContent = Number(score.team2);
 }
-
 
 
 /* =========================================================
-   CHANGE SCORE
+   SCORE UPDATE QUEUE
 ========================================================= */
 
-async function changeScore(team, amount) {
+let scoreRequestQueue = Promise.resolve();
 
-    const score =
-        scores[currentSet];
+function changeScore(team, amount) {
 
+    scoreRequestQueue = scoreRequestQueue.then(async () => {
 
-    if (team === 1) {
+        const setNumber = currentSet;
 
-        score.team1 += amount;
+        try {
 
-    }
+            const response = await fetch(
+                `/api/organizer/match/${MATCH_ID}/score/update`,
+                {
+                    method: "POST",
 
-    else {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-        score.team2 += amount;
-
-    }
-
-
-    /* Never allow negative score */
-
-    if (score.team1 < 0) {
-        score.team1 = 0;
-    }
-
-
-    if (score.team2 < 0) {
-        score.team2 = 0;
-    }
-
-
-    updateScoreDisplay();
-
-
-    /* Send immediately to Flask */
-
-    try {
-
-        const response = await fetch(
-            `/api/organizer/match/${MATCH_ID}/score/update`,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    set_number: currentSet,
-
-                    team1_score:
-                        score.team1,
-
-                    team2_score:
-                        score.team2
-
-                })
-
-            }
-        );
-
-
-        const data =
-            await response.json();
-
-
-        if (!data.success) {
-
-            alert(
-                data.message ||
-                "Unable to update score."
+                    body: JSON.stringify({
+                        set_number: setNumber,
+                        team: team,
+                        amount: amount
+                    })
+                }
             );
 
-            return;
+
+            const data = await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                alert(
+                    data.message ||
+                    "Unable to update score."
+                );
+
+                return;
+            }
+
+
+            /*
+             * Update ONLY the current set
+             * using the database-confirmed values.
+             */
+
+            const updatedSet = data.set;
+
+
+            if (!updatedSet) {
+                return;
+            }
+
+
+            scores[setNumber].team1 =
+                Number(updatedSet.team1_score);
+
+
+            scores[setNumber].team2 =
+                Number(updatedSet.team2_score);
+
+
+            updateScoreDisplay();
+
+            updateHistory([updatedSet]);
 
         }
 
-    }
+        catch (error) {
 
-    catch (error) {
+            console.error(
+                "Score update error:",
+                error
+            );
 
-        console.error(error);
+            alert(
+                "Unable to connect to server."
+            );
 
-        alert(
-            "Unable to connect to server."
-        );
+        }
 
-    }
+    });
 
+    return scoreRequestQueue;
 }
-
-
 
 /* =========================================================
    END CURRENT SET
@@ -871,10 +860,6 @@ loadScores();
     Keep organizer screen synchronized.
 */
 
-setInterval(
-    loadScores,
-    2000
-);
 
 </script>
 
