@@ -3888,14 +3888,19 @@ def standings(tournament_id):
     for team in teams:
 
         standings_data[team["id"]] = {
+
             "team_id": team["id"],
+
             "team_name": team["team_name"],
 
             "played": 0,
+
             "won": 0,
+
             "lost": 0,
 
             "sets_won": 0,
+
             "sets_lost": 0,
 
             "points": 0
@@ -3930,8 +3935,15 @@ def standings(tournament_id):
     for match in matches:
 
         team1_id = match["team1_id"]
+
         team2_id = match["team2_id"]
+
         winner_id = match["winner_id"]
+
+
+        # -------------------------------------------------
+        # MAKE SURE BOTH TEAMS BELONG TO THIS TOURNAMENT
+        # -------------------------------------------------
 
         if team1_id not in standings_data:
             continue
@@ -3940,29 +3952,13 @@ def standings(tournament_id):
             continue
 
 
-        # Played
+        # =================================================
+        # MATCHES PLAYED
+        # =================================================
 
         standings_data[team1_id]["played"] += 1
+
         standings_data[team2_id]["played"] += 1
-
-
-        # Won / Lost
-
-        if winner_id == team1_id:
-
-            standings_data[team1_id]["won"] += 1
-            standings_data[team2_id]["lost"] += 1
-
-            # Volleyball points
-            standings_data[team1_id]["points"] += 3
-
-        elif winner_id == team2_id:
-
-            standings_data[team2_id]["won"] += 1
-            standings_data[team1_id]["lost"] += 1
-
-            # Volleyball points
-            standings_data[team2_id]["points"] += 3
 
 
         # =================================================
@@ -3976,24 +3972,102 @@ def standings(tournament_id):
             FROM match_sets
 
             WHERE match_id = %s
+              AND winner_id IS NOT NULL
+
+            ORDER BY set_number
         """, (match["id"],))
 
         match_sets = cursor.fetchall()
+
+
+        # =================================================
+        # COUNT SETS WON
+        # =================================================
+
+        team1_sets_won = 0
+
+        team2_sets_won = 0
 
 
         for match_set in match_sets:
 
             set_winner = match_set["winner_id"]
 
+
             if set_winner == team1_id:
 
+                team1_sets_won += 1
+
                 standings_data[team1_id]["sets_won"] += 1
+
                 standings_data[team2_id]["sets_lost"] += 1
+
 
             elif set_winner == team2_id:
 
+                team2_sets_won += 1
+
                 standings_data[team2_id]["sets_won"] += 1
+
                 standings_data[team1_id]["sets_lost"] += 1
+
+
+        # =================================================
+        # MATCH WIN / LOSS
+        # =================================================
+
+        if winner_id == team1_id:
+
+            standings_data[team1_id]["won"] += 1
+
+            standings_data[team2_id]["lost"] += 1
+
+
+            # ---------------------------------------------
+            # TEAM 1 WON 2-0
+            # ---------------------------------------------
+
+            if team1_sets_won == 2 and team2_sets_won == 0:
+
+                standings_data[team1_id]["points"] += 3
+
+
+            # ---------------------------------------------
+            # TEAM 1 WON 2-1
+            # ---------------------------------------------
+
+            elif team1_sets_won == 2 and team2_sets_won == 1:
+
+                standings_data[team1_id]["points"] += 2
+
+                standings_data[team2_id]["points"] += 1
+
+
+        elif winner_id == team2_id:
+
+            standings_data[team2_id]["won"] += 1
+
+            standings_data[team1_id]["lost"] += 1
+
+
+            # ---------------------------------------------
+            # TEAM 2 WON 2-0
+            # ---------------------------------------------
+
+            if team2_sets_won == 2 and team1_sets_won == 0:
+
+                standings_data[team2_id]["points"] += 3
+
+
+            # ---------------------------------------------
+            # TEAM 2 WON 2-1
+            # ---------------------------------------------
+
+            elif team2_sets_won == 2 and team1_sets_won == 1:
+
+                standings_data[team2_id]["points"] += 2
+
+                standings_data[team1_id]["points"] += 1
 
 
     # =====================================================
@@ -4010,7 +4084,8 @@ def standings(tournament_id):
     for team in standings:
 
         team["set_difference"] = (
-            team["sets_won"] -
+            team["sets_won"]
+            -
             team["sets_lost"]
         )
 
@@ -4034,25 +4109,34 @@ def standings(tournament_id):
     # POSITION
     # =====================================================
 
-    for position, team in enumerate(standings, start=1):
+    for position, team in enumerate(
+        standings,
+        start=1
+    ):
 
         team["position"] = position
 
 
+    # =====================================================
+    # CLOSE DATABASE
+    # =====================================================
+
     cursor.close()
+
     connection.close()
 
 
     # =====================================================
-    # DISPLAY
+    # DISPLAY STANDINGS
     # =====================================================
 
     return render_template(
         "standings.html",
+
         tournament=tournament,
+
         standings=standings
     )
-
 # ============================================================
 # LIVE SCORE API
 # ============================================================
