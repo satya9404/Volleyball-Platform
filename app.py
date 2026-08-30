@@ -132,13 +132,16 @@ def home():
         # TOTAL PLAYERS
         # =====================================================
 
+        # =====================================================
+        # TOTAL REGISTERED TEAM PLAYERS
+        # =====================================================
+
         cursor.execute("""
-            SELECT COUNT(*) AS total
-            FROM players
-        """)
+            SELECT COUNT(DISTINCT player_id) AS total
+            FROM team_players
+            """)
 
         player_count = cursor.fetchone()["total"]
-
 
         # =====================================================
         # TOTAL MATCHES
