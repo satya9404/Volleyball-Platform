@@ -1,0 +1,351 @@
+/* =========================================
+   NIT NAGALAND VOLLEYBALL PLATFORM
+   LOGIN PAGE
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255, 107, 61, 0.10), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(20, 65, 120, 0.12), transparent 30%),
+        #f4f7fb;
+    color: #102f57;
+}
+
+
+/* =========================================
+   LOGIN PAGE
+   ========================================= */
+
+.login-page {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px 80px;
+}
+
+
+/* =========================================
+   LOGIN CARD
+   ========================================= */
+
+.login-container {
+    width: 100%;
+    max-width: 520px;
+    background: #ffffff;
+    border: 1px solid #e3eaf3;
+    border-radius: 24px;
+    padding: 45px 50px;
+    box-shadow:
+        0 20px 50px rgba(15, 47, 87, 0.10),
+        0 5px 15px rgba(15, 47, 87, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* Top decorative line */
+
+.login-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(
+        90deg,
+        #ff633f,
+        #ff8060,
+        #123f73
+    );
+}
+
+
+/* =========================================
+   LOGO / ICON
+   ========================================= */
+
+.login-logo {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        #eef5ff,
+        #ffffff
+    );
+    border: 2px solid #dbe6f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(18, 63, 115, 0.08);
+}
+
+.login-logo img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.login-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.login-header h1 {
+    font-size: 34px;
+    font-weight: 750;
+    color: #0d3768;
+    letter-spacing: -0.7px;
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: #7185a0;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   FORM
+   ========================================= */
+
+.login-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 23px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #173c67;
+}
+
+
+/* Inputs */
+
+.form-group input {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    border: 1px solid #d5dfeb;
+    border-radius: 11px;
+    background: #f9fbfd;
+    color: #17385e;
+    font-size: 15px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #9aaabd;
+}
+
+.form-group input:hover {
+    border-color: #b9c9db;
+}
+
+.form-group input:focus {
+    background: #ffffff;
+    border-color: #ff6843;
+    box-shadow: 0 0 0 4px rgba(255, 104, 67, 0.10);
+}
+
+
+/* =========================================
+   LOGIN BUTTON
+   ========================================= */
+
+.login-btn {
+    width: 100%;
+    height: 53px;
+    border: none;
+    border-radius: 11px;
+    background: linear-gradient(
+        135deg,
+        #ff633f,
+        #ff7653
+    );
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(255, 99, 63, 0.22);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(255, 99, 63, 0.30);
+    background: linear-gradient(
+        135deg,
+        #f95734,
+        #ff6845
+    );
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================
+   LINKS
+   ========================================= */
+
+.login-links {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.login-links p {
+    color: #7185a0;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.login-links a {
+    color: #ff633f;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.login-links a:hover {
+    color: #d94728;
+    text-decoration: underline;
+}
+
+
+/* =========================================
+   ORGANIZER SECTION
+   ========================================= */
+
+.organizer-register {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #e6edf5;
+    text-align: center;
+}
+
+.organizer-register p {
+    color: #526d8d;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.organizer-register a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 18px;
+    border: 1px solid #dce5ef;
+    border-radius: 10px;
+    color: #123f73;
+    background: #f7faff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.organizer-register a:hover {
+    color: #ffffff;
+    background: #123f73;
+    border-color: #123f73;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   FLASH MESSAGES
+   ========================================= */
+
+.flash-message {
+    padding: 13px 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.flash-message.error,
+.alert-error {
+    background: #fff1ef;
+    color: #b83220;
+    border: 1px solid #ffd0c8;
+}
+
+.flash-message.success,
+.alert-success {
+    background: #eefaf3;
+    color: #187342;
+    border: 1px solid #c8ecd7;
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .login-page {
+        padding: 35px 15px 60px;
+        align-items: flex-start;
+    }
+
+    .login-container {
+        padding: 38px 25px;
+        border-radius: 20px;
+    }
+
+    .login-header h1 {
+        font-size: 29px;
+    }
+
+    .login-logo {
+        width: 62px;
+        height: 62px;
+    }
+
+    .login-logo img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .form-group input {
+        height: 50px;
+    }
+
+    .login-btn {
+        height: 51px;
+    }
+}

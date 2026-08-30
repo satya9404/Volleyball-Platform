@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Organizer Requests{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/organizer-requests.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="organizer-requests-page">
+
+    <div class="page-header">
+        <h1>Organizer Requests</h1>
+        <p>Review and manage tournament organizer applications.</p>
+    </div>
+
+    {% if requests_list %}
+
+        <div class="requests-container">
+
+            {% for req in requests_list %}
+
+            <div class="request-card">
+
+                <div class="request-header">
+
+                    <div>
+                        <h2>{{ req.name }}</h2>
+                        <p class="email">{{ req.email }}</p>
+                    </div>
+
+                    <span class="status {{ req.status }}">
+                        {{ req.status|capitalize }}
+                    </span>
+
+                </div>
+
+                <div class="request-details">
+
+                    <div class="detail">
+                        <strong>Organization / College</strong>
+                        <span>{{ req.organization }}</span>
+                    </div>
+
+                    <div class="detail">
+                        <strong>Reason</strong>
+                        <p>{{ req.reason }}</p>
+                    </div>
+
+                    <div class="detail">
+                        <strong>Submitted</strong>
+                        <span>{{ req.created_at }}</span>
+                    </div>
+
+                </div>
+
+                {% if req.status == "pending" %}
+
+                <div class="request-actions">
+
+                    <form method="POST"
+                          action="{{ url_for(
+                              'approve_organizer_request',
+                              request_id=req.id
+                          ) }}">
+
+                        <button type="submit"
+                                class="approve-btn"
+                                onclick="return confirm(
+                                    'Approve this organizer request?'
+                                );">
+                            Approve
+                        </button>
+
+                    </form>
+
+                    <form method="POST"
+                          action="{{ url_for(
+                              'reject_organizer_request',
+                              request_id=req.id
+                          ) }}">
+
+                        <button type="submit"
+                                class="reject-btn"
+                                onclick="return confirm(
+                                    'Reject this organizer request?'
+                                );">
+                            Reject
+                        </button>
+
+                    </form>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <h2>No Organizer Requests</h2>
+            <p>There are currently no organizer applications.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

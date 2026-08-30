@@ -5,7 +5,9 @@ Organizer Dashboard | NIT Nagaland Volleyball
 {% endblock %}
 
 {% block content %}
+
 <meta name="author" content="satya">
+
 <link rel="stylesheet"
       href="{{ url_for('static', filename='css/organizer.css') }}">
 
@@ -23,18 +25,33 @@ Organizer Dashboard | NIT Nagaland Volleyball
                 </p>
             </div>
 
-		<a
-    		href="{{ url_for('create_tournament') }}"
-    		class="create-btn"
-		>
-    		+ Create Tournament
-		</a>
-		
-		    {% if session.get('user_role') == 'admin' %}
-    		<a href="{{ url_for('admin_tournaments') }}" class="approval-btn">
-        		✓ Tournament Approvals
-    			</a>
-    			{% endif %}
+
+            <a
+                href="{{ url_for('create_tournament') }}"
+                class="create-btn"
+            >
+                + Create Tournament
+            </a>
+
+
+            {% if session.get('user_role') == 'admin' %}
+
+                <a
+                    href="{{ url_for('admin_tournaments') }}"
+                    class="approval-btn"
+                >
+                    ✓ Tournament Approvals
+                </a>
+
+                <a
+                    href="{{ url_for('organizer_requests') }}"
+                    class="approval-btn"
+                >
+                    👤 Organizer Requests
+                </a>
+
+            {% endif %}
+
         </div>
 
 
@@ -66,74 +83,76 @@ Organizer Dashboard | NIT Nagaland Volleyball
         <div class="dashboard-panel">
 
             <h3>Your Tournaments</h3>
-	{% if tournaments %}
 
-    	<div class="tournament-list">
+            {% if tournaments %}
 
-        	{% for tournament in tournaments %}
+                <div class="tournament-list">
 
-            	<div class="organizer-tournament-card">
+                    {% for tournament in tournaments %}
 
-                	<div class="tournament-details">
+                        <div class="organizer-tournament-card">
 
-                    	<span class="status">
-                        	{{ tournament.status|upper }}
-                    	</span>
+                            <div class="tournament-details">
 
-                    	<h3>
-                        	{{ tournament.name }}
-                    	</h3>
+                                <span class="status">
+                                    {{ tournament.status|upper }}
+                                </span>
 
-                    	<p>
-                        	📅 {{ tournament.start_date }}
+                                <h3>
+                                    {{ tournament.name }}
+                                </h3>
 
-                        	{% if tournament.end_date %}
-                           	 → {{ tournament.end_date }}
-                        	{% endif %}
-                    	</p>
+                                <p>
+                                    📅 {{ tournament.start_date }}
 
-                    	<p>
-                        	📍 {{ tournament.location or "Location not specified" }}
-                    	</p>
+                                    {% if tournament.end_date %}
+                                        → {{ tournament.end_date }}
+                                    {% endif %}
+                                </p>
 
-                    	<p>
-                        	🏆 {{ tournament.format }}
-                    	</p>
+                                <p>
+                                    📍 {{ tournament.location or "Location not specified" }}
+                                </p>
 
-                	</div>
+                                <p>
+                                    🏆 {{ tournament.format }}
+                                </p>
+
+                            </div>
 
 
-                <div class="tournament-actions">
+                            <div class="tournament-actions">
 
-                    <a
-                        href="{{ url_for(
-                            'manage_teams',
-                            tournament_id=tournament.id
-                        ) }}"
-                        class="create-btn"
-                    >
-                        Manage Teams
-                    </a>
+                                <a
+                                    href="{{ url_for(
+                                        'manage_teams',
+                                        tournament_id=tournament.id
+                                    ) }}"
+                                    class="create-btn"
+                                >
+                                    Manage Teams
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
 
                 </div>
 
-            </div>
+            {% else %}
 
-        {% endfor %}
+                <div class="empty-dashboard">
 
-    </div>
+                    <p>
+                        You haven't created any tournaments yet.
+                    </p>
 
-{% else %}
+                </div>
 
-    <div class="empty-dashboard">
+            {% endif %}
 
-        <p>
-            You haven't created any tournaments yet.
-        </p>
-
-    </div>
-
-{% endif %}
         </div>
 
     </div>

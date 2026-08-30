@@ -45,16 +45,21 @@ def allowed_file(filename):
 app.secret_key = os.getenv("SECRET_KEY")
 
 
+
 def get_db_connection():
     connection = mysql.connector.connect(
         host=os.getenv("DB_HOST"),
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASSWORD"),
         database=os.getenv("DB_NAME"),
-        port=os.getenv("DB_PORT")
-    )
+        port=int(os.getenv("DB_PORT")),
+        ssl_disabled=False,
+        ssl_verify_cert=False,
+        ssl_verify_identity=False
+     )
 
     return connection
+
 
 
 @app.route("/")
@@ -4575,6 +4580,259 @@ def end_live_set(match_id):
 
 
 
+@app.route("/register-organizer", methods=["GET", "POST"])
+def register_organizer():
+
+    if request.method == "POST":
+
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+        organization = request.form.get("organization", "").strip()
+        reason = request.form.get("reason", "").strip()
+
+        # Basic validation
+        if not name or not email or not password:
+            flash("Please fill in all required fields.")
+            return redirect(url_for("register_organizer"))
+
+        connection = None
+        cursor = None
+
+        try:
+            connection = get_db_connection()
+
+            cursor = connection.cursor(dictionary=True)
+
+            # Check whether email already exists
+            cursor.execute(
+                """
+                SELECT id, role
+                FROM users
+                WHERE email = %s
+                """,
+                (email,)
+            )
+
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                flash(
+                    "An account with this email already exists. "
+                    "Please login and use your existing account."
+                )
+                return redirect(url_for("login"))
+
+            # Create normal user account
+            password_hash = generate_password_hash(password)
+
+            cursor.execute(
+                """
+                INSERT INTO users
+                    (name, email, password_hash, role)
+                VALUES
+                    (%s, %s, %s, 'user')
+                """,
+                (name, email, password_hash)
+            )
+
+            user_id = cursor.lastrowid
+
+            # Create organizer request
+            cursor.execute(
+                """
+                INSERT INTO organizer_requests
+                    (user_id, organization, reason)
+                VALUES
+                    (%s, %s, %s)
+                """,
+                (user_id, organization, reason)
+            )
+
+            connection.commit()
+
+            flash(
+                "Organizer request submitted successfully. "
+                "Please wait for admin approval."
+            )
+
+            return redirect(url_for("login"))
+
+        except Exception as e:
+
+            if connection:
+                connection.rollback()
+
+            print("Organizer registration error:", e)
+
+            flash(
+                "Unable to submit the organizer request. "
+                "Please try again."
+            )
+
+            return redirect(url_for("register_organizer"))
+
+        finally:
+
+            if cursor:
+                cursor.close()
+
+            if connection:
+                connection.close()
+
+    return render_template("auth/register-organizer.html")
+
+@app.route("/admin/organizer-requests")
+def organizer_requests():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if session.get("user_role") != "admin":
+        flash("Access denied.")
+        return redirect(url_for("home"))
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    try:
+        cursor.execute("""
+            SELECT
+                r.id,
+                r.organization,
+                r.reason,
+                r.status,
+                r.created_at,
+                u.name,
+                u.email
+            FROM organizer_requests r
+            JOIN users u ON r.user_id = u.id
+            ORDER BY r.created_at DESC
+        """)
+
+        requests_list = cursor.fetchall()
+
+    finally:
+        cursor.close()
+        connection.close()
+
+    return render_template(
+        "organizer/organizer_requests.html",
+        requests_list=requests_list
+    )
+
+@app.route(
+    "/admin/organizer-requests/<int:request_id>/approve",
+    methods=["POST"]
+)
+def approve_organizer_request(request_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if session.get("user_role") != "admin":
+        flash("Access denied.")
+        return redirect(url_for("home"))
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    try:
+        cursor.execute("""
+            SELECT *
+            FROM organizer_requests
+            WHERE id = %s
+            AND status = 'pending'
+        """, (request_id,))
+
+        organizer_request = cursor.fetchone()
+
+        if not organizer_request:
+            flash("Organizer request not found.")
+            return redirect(url_for("organizer_requests"))
+
+        # IMPORTANT:
+        # Use the user_id stored with the request.
+        user_id = organizer_request["user_id"]
+
+        cursor.execute("""
+            UPDATE users
+            SET role = 'organizer'
+            WHERE id = %s
+        """, (user_id,))
+
+        cursor.execute("""
+            UPDATE organizer_requests
+            SET
+                status = 'approved',
+                reviewed_by = %s,
+                reviewed_at = NOW()
+            WHERE id = %s
+        """, (session["user_id"], request_id))
+
+        connection.commit()
+
+        flash("Organizer request approved.")
+
+    except Exception as e:
+        connection.rollback()
+        print("APPROVE ORGANIZER ERROR:", e)
+        flash("Failed to approve organizer request.")
+
+    finally:
+        cursor.close()
+        connection.close()
+
+    return redirect(url_for("organizer_requests"))
+
+
+
+@app.route(
+    "/admin/organizer-requests/<int:request_id>/reject",
+    methods=["POST"]
+)
+def reject_organizer_request(request_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if session.get("user_role") != "admin":
+        flash("Access denied.")
+        return redirect(url_for("home"))
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    try:
+        cursor.execute("""
+            UPDATE organizer_requests
+            SET
+                status = 'rejected',
+                reviewed_by = %s,
+                reviewed_at = NOW()
+            WHERE id = %s
+            AND status = 'pending'
+        """, (session["user_id"], request_id))
+
+        connection.commit()
+
+        flash("Organizer request rejected.")
+
+    except Exception as e:
+        connection.rollback()
+        print("REJECT ORGANIZER ERROR:", e)
+        flash("Failed to reject organizer request.")
+
+    finally:
+        cursor.close()
+        connection.close()
+
+    return redirect(url_for("organizer_requests"))
+
+print("DB HOST:", os.getenv("DB_HOST"))
+print("DB PORT:", os.getenv("DB_PORT"))
+print("DB USER:", os.getenv("DB_USER"))
+print("DB NAME:", os.getenv("DB_NAME"))
  
 if __name__ == "__main__":
     app.run()

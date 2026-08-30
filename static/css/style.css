@@ -2582,3 +2582,382 @@ body {
         font-size: 28px;
     }
 }
+
+/* ================================
+   LOGIN PAGE
+================================ */
+
+.auth-page {
+    min-height: calc(100vh - 160px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 60px 20px;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(255, 107, 61, 0.10),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(30, 90, 160, 0.08),
+            transparent 35%
+        ),
+        #f5f7fb;
+}
+
+
+/* ================================
+   LOGIN CARD
+================================ */
+
+.auth-card {
+    width: 100%;
+    max-width: 540px;
+
+    background: #ffffff;
+
+    padding: 48px;
+
+    border-radius: 22px;
+
+    border: 1px solid #e1e7ef;
+
+    box-shadow:
+        0 20px 50px rgba(15, 40, 70, 0.10);
+
+    box-sizing: border-box;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.auth-header {
+    text-align: center;
+
+    margin-bottom: 38px;
+}
+
+
+.volleyball-icon {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #f1e7ff,
+        #d9c2f7
+    );
+
+    font-size: 34px;
+
+    box-shadow:
+        0 8px 20px rgba(100, 60, 150, 0.15);
+}
+
+
+.auth-header h2 {
+    margin: 0;
+
+    color: #082f63;
+
+    font-size: 38px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+
+.auth-header p {
+    margin: 8px 0 0;
+
+    color: #6b7f99;
+
+    font-size: 16px;
+}
+
+
+/* ================================
+   FLASH MESSAGE
+================================ */
+
+.flash-message {
+    margin-bottom: 25px;
+
+    padding: 14px 16px;
+
+    border-radius: 10px;
+
+    background: #fff0ec;
+
+    border: 1px solid #ffd5ca;
+
+    color: #d9482f;
+
+    font-size: 14px;
+}
+
+
+.flash-message p {
+    margin: 0;
+}
+
+
+/* ================================
+   FORM
+================================ */
+
+.login-form {
+    width: 100%;
+}
+
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #082f63;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+.form-group input {
+    width: 100%;
+
+    height: 54px;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d3ddea;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+    color: #172b4d;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.form-group input::placeholder {
+    color: #8b9bb0;
+}
+
+
+.form-group input:focus {
+    background: #ffffff;
+
+    border-color: #2878d4;
+
+    box-shadow:
+        0 0 0 4px rgba(40, 120, 212, 0.12);
+}
+
+
+/* ================================
+   LOGIN BUTTON
+================================ */
+
+.login-btn {
+    width: 100%;
+
+    height: 56px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #ff6338,
+        #ff4f2f
+    );
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.login-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 22px rgba(255, 91, 54, 0.25);
+}
+
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ================================
+   CREATE ACCOUNT
+================================ */
+
+.auth-link {
+    text-align: center;
+
+    margin: 28px 0 0;
+
+    color: #71839b;
+
+    font-size: 15px;
+}
+
+
+.auth-link a {
+    color: #ff5b36;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* ================================
+   ORGANIZER SECTION
+================================ */
+
+.organizer-request-link {
+    margin-top: 28px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid #e5eaf1;
+
+    text-align: center;
+}
+
+
+.organizer-request-link p {
+    margin: 0 0 14px;
+
+    color: #526982;
+
+    font-size: 15px;
+
+    font-weight: 500;
+}
+
+
+/* ================================
+   ORGANIZER BUTTON
+================================ */
+
+.organizer-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 46px;
+
+    padding: 0 22px;
+
+    border-radius: 9px;
+
+    background: #082f63;
+
+    color: #ffffff !important;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    text-decoration: none !important;
+
+    border: 1px solid #082f63;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.organizer-btn:hover {
+    background: #0d438a;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 18px rgba(8, 47, 99, 0.20);
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+    .auth-page {
+        padding: 35px 15px;
+    }
+
+    .auth-card {
+        padding: 32px 22px;
+
+        border-radius: 18px;
+    }
+
+    .auth-header h2 {
+        font-size: 30px;
+    }
+
+    .organizer-btn {
+        width: 100%;
+
+        box-sizing: border-box;
+    }
+}
