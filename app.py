@@ -391,113 +391,6 @@ def home():
         cursor.close()
         connection.close()
 
-        
-@app.route("/api/match/<int:match_id>/score")
-def get_live_score(match_id):
-
-    connection = get_db_connection()
-
-    cursor = connection.cursor(
-        dictionary=True,
-        buffered=True
-    )
-
-    # Get match information
-    cursor.execute("""
-        SELECT
-            m.id,
-            m.team1_id,
-            m.team2_id,
-            m.status,
-            m.winner_id,
-            t1.team_name AS team1_name,
-            t2.team_name AS team2_name
-        FROM matches m
-
-        JOIN teams t1
-            ON m.team1_id = t1.id
-
-        JOIN teams t2
-            ON m.team2_id = t2.id
-
-        WHERE m.id = %s
-    """, (match_id,))
-
-    match = cursor.fetchone()
-
-    if not match:
-        cursor.close()
-        connection.close()
-
-        return {
-            "success": False,
-            "message": "Match not found"
-        }, 404
-
-
-    # Get latest set scores
-    cursor.execute("""
-        SELECT
-            set_number,
-            team1_score,
-            team2_score,
-            winner_id
-        FROM match_sets
-        WHERE match_id = %s
-        ORDER BY set_number
-    """, (match_id,))
-
-    sets = cursor.fetchall()
-
-
-    # Calculate sets won
-    team1_sets = 0
-    team2_sets = 0
-
-    for match_set in sets:
-
-        if match_set["winner_id"] == match["team1_id"]:
-            team1_sets += 1
-
-        elif match_set["winner_id"] == match["team2_id"]:
-            team2_sets += 1
-
-
-    cursor.close()
-    connection.close()
-
-
-    return {
-        "success": True,
-
-        "match_id": match["id"],
-
-        "team1": {
-            "id": match["team1_id"],
-            "name": match["team1_name"],
-            "sets": team1_sets
-        },
-
-        "team2": {
-            "id": match["team2_id"],
-            "name": match["team2_name"],
-            "sets": team2_sets
-        },
-
-        "status": match["status"],
-
-        "winner_id": match["winner_id"],
-
-        "sets": [
-            {
-                "set_number": s["set_number"],
-                "team1_score": s["team1_score"],
-                "team2_score": s["team2_score"],
-                "winner_id": s["winner_id"]
-            }
-            for s in sets
-        ]
-    }
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -3605,7 +3498,6 @@ def api_get_match_score(match_id):
         "sets": sets
     })
 
-
 # ============================================================
 # UPDATE ONE SCORE
 # ============================================================
@@ -4169,109 +4061,187 @@ def standings(tournament_id):
 # ============================================================
 # LIVE SCORE API
 # ============================================================
-
 @app.route(
     "/api/organizer/match/<int:match_id>/score/update",
     methods=["POST"]
 )
 def update_live_score(match_id):
 
+    # ==========================================
+    # AUTHORIZATION
+    # ==========================================
+
     if "user_id" not in session:
-        return {
+
+        return jsonify({
             "success": False,
             "message": "Login required"
-        }, 401
+        }), 401
+
 
     if session.get("user_role") not in ["admin", "organizer"]:
-        return {
+
+        return jsonify({
             "success": False,
             "message": "Unauthorized"
-        }, 403
+        }), 403
 
+
+    # ==========================================
+    # GET JSON
+    # ==========================================
 
     data = request.get_json(silent=True)
 
     if not data:
-        return {
+
+        return jsonify({
             "success": False,
-            "message": "No data received"
-        }, 400
+            "message": "Invalid request"
+        }), 400
 
 
     try:
-        set_number = int(data["set_number"])
-        team = int(data["team"])
-        amount = int(data["amount"])
 
-    except (KeyError, TypeError, ValueError):
+        set_number = int(
+            data.get("set_number")
+        )
 
-        return {
+        team1_score = int(
+            data.get("team1_score")
+        )
+
+        team2_score = int(
+            data.get("team2_score")
+        )
+
+    except (TypeError, ValueError):
+
+        return jsonify({
             "success": False,
             "message": "Invalid score data"
-        }, 400
+        }), 400
 
 
-    if set_number not in (1, 2, 3):
+    # ==========================================
+    # VALIDATION
+    # ==========================================
 
-        return {
+    if set_number < 1 or set_number > 3:
+
+        return jsonify({
             "success": False,
             "message": "Invalid set number"
-        }, 400
+        }), 400
 
 
-    if team not in (1, 2):
+    if team1_score < 0 or team2_score < 0:
 
-        return {
+        return jsonify({
             "success": False,
-            "message": "Invalid team"
-        }, 400
+            "message": "Score cannot be negative"
+        }), 400
 
 
-    if amount not in (-1, 1):
-
-        return {
-            "success": False,
-            "message": "Score can change only by 1"
-        }, 400
-
+    # ==========================================
+    # DATABASE
+    # ==========================================
 
     connection = get_db_connection()
 
     cursor = connection.cursor(
-        dictionary=True,
-        buffered=True
+        dictionary=True
     )
 
 
     try:
 
-        # ------------------------------------------
-        # Lock this exact set row
-        # ------------------------------------------
+        # --------------------------------------
+        # GET MATCH
+        # --------------------------------------
 
         cursor.execute("""
             SELECT
-                id,
-                team1_score,
-                team2_score,
-                winner_id
+                team1_id,
+                team2_id,
+                status
+            FROM matches
+            WHERE id = %s
+        """, (match_id,))
+
+        match = cursor.fetchone()
+
+
+        if not match:
+
+            return jsonify({
+                "success": False,
+                "message": "Match not found"
+            }), 404
+
+
+        # --------------------------------------
+        # DETERMINE SET WINNER
+        # --------------------------------------
+
+        if team1_score > team2_score:
+
+            winner_id = match["team1_id"]
+
+        elif team2_score > team1_score:
+
+            winner_id = match["team2_id"]
+
+        else:
+
+            winner_id = None
+
+
+        # --------------------------------------
+        # CHECK SET
+        # --------------------------------------
+
+        cursor.execute("""
+            SELECT id
             FROM match_sets
             WHERE match_id = %s
               AND set_number = %s
-            FOR UPDATE
         """, (
             match_id,
             set_number
         ))
 
-        match_set = cursor.fetchone()
+        existing_set = cursor.fetchone()
 
 
-        # ------------------------------------------
-        # Create set if it does not exist
-        # ------------------------------------------
+        # --------------------------------------
+        # UPDATE
+        # --------------------------------------
 
-        if not match_set:
+        if existing_set:
+
+            cursor.execute("""
+                UPDATE match_sets
+                SET
+                    team1_score = %s,
+                    team2_score = %s,
+                    winner_id = %s
+                WHERE match_id = %s
+                  AND set_number = %s
+            """, (
+                team1_score,
+                team2_score,
+                winner_id,
+                match_id,
+                set_number
+            ))
+
+
+        # --------------------------------------
+        # INSERT
+        # --------------------------------------
+
+        else:
 
             cursor.execute("""
                 INSERT INTO match_sets
@@ -4286,105 +4256,50 @@ def update_live_score(match_id):
                 (
                     %s,
                     %s,
-                    0,
-                    0,
-                    NULL
+                    %s,
+                    %s,
+                    %s
                 )
             """, (
                 match_id,
-                set_number
-            ))
-
-            cursor.execute("""
-                SELECT
-                    id,
-                    team1_score,
-                    team2_score,
-                    winner_id
-                FROM match_sets
-                WHERE match_id = %s
-                  AND set_number = %s
-                FOR UPDATE
-            """, (
-                match_id,
-                set_number
-            ))
-
-            match_set = cursor.fetchone()
-
-
-        # ------------------------------------------
-        # UPDATE ONLY THE REQUESTED TEAM
-        # ------------------------------------------
-
-        if team == 1:
-
-            cursor.execute("""
-                UPDATE match_sets
-                SET
-                    team1_score =
-                        GREATEST(0, team1_score + %s),
-                    winner_id = NULL
-                WHERE id = %s
-            """, (
-                amount,
-                match_set["id"]
-            ))
-
-        else:
-
-            cursor.execute("""
-                UPDATE match_sets
-                SET
-                    team2_score =
-                        GREATEST(0, team2_score + %s),
-                    winner_id = NULL
-                WHERE id = %s
-            """, (
-                amount,
-                match_set["id"]
-            ))
-
-
-        # ------------------------------------------
-        # Make match live
-        # ------------------------------------------
-
-        cursor.execute("""
-            UPDATE matches
-            SET status = 'live'
-            WHERE id = %s
-              AND status NOT IN ('completed', 'cancelled')
-        """, (match_id,))
-
-
-        connection.commit()
-
-
-        # ------------------------------------------
-        # Return ONLY the current set
-        # ------------------------------------------
-
-        cursor.execute("""
-            SELECT
-                id,
                 set_number,
                 team1_score,
                 team2_score,
                 winner_id
-            FROM match_sets
-            WHERE id = %s
-        """, (
-            match_set["id"],
-        ))
-
-        updated_set = cursor.fetchone()
+            ))
 
 
-        return {
+        # --------------------------------------
+        # COMMIT
+        # --------------------------------------
+
+        connection.commit()
+
+
+        # --------------------------------------
+        # RESPONSE
+        # --------------------------------------
+
+        return jsonify({
+
             "success": True,
-            "set": updated_set
-        }
+
+            "set": {
+
+                "set_number": set_number,
+
+                "team1_score":
+                    team1_score,
+
+                "team2_score":
+                    team2_score,
+
+                "winner_id":
+                    winner_id
+
+            }
+
+        })
 
 
     except Exception as e:
@@ -4396,10 +4311,10 @@ def update_live_score(match_id):
             e
         )
 
-        return {
+        return jsonify({
             "success": False,
-            "message": "Database error while updating score"
-        }, 500
+            "message": "Database error"
+        }), 500
 
 
     finally:
