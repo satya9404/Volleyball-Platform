@@ -136,6 +136,8 @@ def home():
         # TOTAL REGISTERED TEAM PLAYERS
         # =====================================================
 
+        # TOTAL PLAYERS
+
         cursor.execute("""
             SELECT COUNT(DISTINCT player_id) AS total
             FROM team_players
