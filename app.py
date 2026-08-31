@@ -3462,7 +3462,6 @@ def add_match_score(match_id):
 # ============================================================
 # GET CURRENT LIVE SCORES
 # ============================================================
-
 @app.route("/api/match/<int:match_id>/score", methods=["GET"])
 def api_get_match_score(match_id):
 
