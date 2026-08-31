@@ -9,49 +9,155 @@
 
 <link
     rel="stylesheet"
-    href="{{ url_for('static', filename='css/match-details.css') }}?v=13"
+    href="{{ url_for('static', filename='css/match-details.css') }}?v=14"
 >
 
 <style>
 
-    /* =====================================================
-       LAST UPDATED
-    ====================================================== */
+/* =====================================================
+   LAST UPDATED
+===================================================== */
+
+.last-updated {
+    display: inline-block;
+
+    margin-left: 10px;
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background: #f3f4f6;
+    color: #6b7280;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.last-updated.updated {
+    background: #e8f8ee;
+    color: #168044;
+}
+
+
+/* =====================================================
+   SCORE HEADER CONTROLS
+===================================================== */
+
+.score-heading-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+
+/* =====================================================
+   REFRESH SCORE BUTTON
+===================================================== */
+
+.refresh-score-button {
+    display: inline-flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 150px;
+
+    padding: 11px 18px;
+
+    border: 0 !important;
+    border-radius: 10px !important;
+
+    background: #0b3b6f !important;
+    color: #ffffff !important;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(11, 59, 111, 0.15);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.refresh-score-button:hover {
+    background: #082f59 !important;
+    color: #ffffff !important;
+
+    transform: translateY(-1px);
+}
+
+
+.refresh-score-button:active {
+    transform: translateY(0);
+}
+
+
+.refresh-score-button:disabled {
+    opacity: 0.65;
+
+    cursor: wait;
+
+    transform: none;
+}
+
+
+/* =====================================================
+   REFRESH STATUS
+===================================================== */
+
+.refresh-score-status {
+    font-size: 12px;
+    font-weight: 700;
+    color: #168044;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
 
     .last-updated {
-        display: inline-block;
-
-        margin-left: 10px;
-        padding: 6px 12px;
-
-        border-radius: 20px;
-
-        background: #f3f4f6;
-        color: #6b7280;
-
-        font-size: 11px;
-        font-weight: 700;
-
-        transition:
-            background 0.2s ease,
-            color 0.2s ease;
+        margin-left: 0;
+        margin-top: 8px;
     }
 
 
-    .last-updated.updated {
-        background: #e8f8ee;
-        color: #168044;
+    .score-heading-controls {
+        width: 100%;
+
+        margin-top: 12px;
+
+        flex-direction: column;
+        align-items: stretch;
     }
 
 
-    @media (max-width: 600px) {
-
-        .last-updated {
-            margin-left: 0;
-            margin-top: 8px;
-        }
-
+    .refresh-score-button {
+        width: 100%;
     }
+
+
+    .refresh-score-status {
+        text-align: center;
+    }
+
+}
 
 </style>
 
@@ -317,24 +423,53 @@
             </div>
 
 
-            <!-- SET COUNT -->
+            <!-- =================================================
+                 SCORE CONTROLS
+            ================================================= -->
 
-            <div
-                class="sets-count"
-                id="sets-count"
-            >
+            <div class="score-heading-controls">
 
-                {% if sets %}
 
-                    {{ sets|length }}
+                <!-- SET COUNT -->
 
-                    Set{% if sets|length != 1 %}s{% endif %}
+                <div
+                    class="sets-count"
+                    id="sets-count"
+                >
 
-                {% else %}
+                    {% if sets %}
 
-                    0 Sets
+                        {{ sets|length }}
 
-                {% endif %}
+                        Set{% if sets|length != 1 %}s{% endif %}
+
+                    {% else %}
+
+                        0 Sets
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- REFRESH SCORE -->
+
+                <button
+                    type="button"
+                    id="refresh-score-button"
+                    class="refresh-score-button"
+                    onclick="refreshScoreOnly()"
+                >
+                    ↻ Refresh Score
+                </button>
+
+
+                <span
+                    id="refresh-score-status"
+                    class="refresh-score-status"
+                    aria-live="polite"
+                ></span>
+
 
             </div>
 
@@ -378,7 +513,7 @@
 
             <!-- =================================================
                  SCORE ROWS
-            ================================================== -->
+            ================================================= -->
 
             <div id="score-rows">
 
@@ -881,11 +1016,17 @@ const MATCH_ID = {{ match.id }};
 
 
 /* =========================================================
-   KEEP TRACK OF PREVIOUS SCORES
+   PREVIOUS SCORES
 ========================================================= */
 
 let previousScores = {};
 
+
+/* =========================================================
+   PREVENT OVERLAPPING REQUESTS
+========================================================= */
+
+let scoreRequestRunning = false;
 
 
 /* =========================================================
@@ -934,9 +1075,8 @@ function updateLastUpdated() {
 }
 
 
-
 /* =========================================================
-   SCORE CHANGE ANIMATION
+   SCORE ANIMATION
 ========================================================= */
 
 function animateScore(element) {
@@ -951,11 +1091,6 @@ function animateScore(element) {
     );
 
 
-    /*
-        Force browser reflow so animation
-        can run again.
-    */
-
     void element.offsetWidth;
 
 
@@ -966,6 +1101,314 @@ function animateScore(element) {
 }
 
 
+/* =========================================================
+   UPDATE SET ROW
+========================================================= */
+
+function updateSetRow(set) {
+
+    const setNumber =
+        Number(set.set_number);
+
+
+    /* =====================================================
+       FIND EXISTING ROW
+    ===================================================== */
+
+    let row =
+        document.querySelector(
+            `.score-row[data-set="${setNumber}"]`
+        );
+
+
+    /* =====================================================
+       CREATE ROW IF NEEDED
+    ===================================================== */
+
+    if (!row) {
+
+        const scoreRows =
+            document.getElementById(
+                "score-rows"
+            );
+
+
+        if (!scoreRows) {
+            return;
+        }
+
+
+        row =
+            document.createElement(
+                "div"
+            );
+
+
+        row.className =
+            "score-row";
+
+
+        row.dataset.set =
+            setNumber;
+
+
+        row.innerHTML = `
+
+            <div class="set-number">
+                Set ${setNumber}
+            </div>
+
+
+            <div
+                class="score-number team1-score"
+                data-team1-set="${setNumber}"
+            >
+                ${set.team1_score}
+            </div>
+
+
+            <div
+                class="score-number team2-score"
+                data-team2-set="${setNumber}"
+            >
+                ${set.team2_score}
+            </div>
+
+
+            <div
+                class="set-winner"
+                data-winner-set="${setNumber}"
+            >
+                <span class="no-winner">
+                    LIVE
+                </span>
+            </div>
+
+        `;
+
+
+        scoreRows.appendChild(
+            row
+        );
+
+    }
+
+
+    /* =====================================================
+       GET SCORE ELEMENTS FROM THIS ROW ONLY
+       This prevents one team's score from accidentally
+       updating another set.
+    ===================================================== */
+
+    const team1Element =
+        row.querySelector(
+            `[data-team1-set="${setNumber}"]`
+        );
+
+
+    const team2Element =
+        row.querySelector(
+            `[data-team2-set="${setNumber}"]`
+        );
+
+
+    const winnerElement =
+        row.querySelector(
+            `[data-winner-set="${setNumber}"]`
+        );
+
+
+    /* =====================================================
+       TEAM 1 SCORE
+    ===================================================== */
+
+    if (team1Element) {
+
+        const newScore =
+            Number(set.team1_score);
+
+
+        const oldScore =
+            previousScores[setNumber]?.team1;
+
+
+        if (
+            typeof oldScore !== "undefined" &&
+            oldScore !== newScore
+        ) {
+
+            animateScore(
+                team1Element
+            );
+
+        }
+
+
+        team1Element.textContent =
+            newScore;
+
+    }
+
+
+    /* =====================================================
+       TEAM 2 SCORE
+    ===================================================== */
+
+    if (team2Element) {
+
+        const newScore =
+            Number(set.team2_score);
+
+
+        const oldScore =
+            previousScores[setNumber]?.team2;
+
+
+        if (
+            typeof oldScore !== "undefined" &&
+            oldScore !== newScore
+        ) {
+
+            animateScore(
+                team2Element
+            );
+
+        }
+
+
+        team2Element.textContent =
+            newScore;
+
+    }
+
+
+    /* =====================================================
+       WINNER
+    ===================================================== */
+
+    if (winnerElement) {
+
+        if (
+            Number(set.winner_id) ===
+            Number({{ match.team1_id }})
+        ) {
+
+            winnerElement.innerHTML = `
+
+                <span class="winner-badge">
+                    🏆 {{ match.team1_name }}
+                </span>
+
+            `;
+
+
+            if (team1Element) {
+
+                team1Element.classList.add(
+                    "winning-score"
+                );
+
+            }
+
+
+            if (team2Element) {
+
+                team2Element.classList.remove(
+                    "winning-score"
+                );
+
+            }
+
+        }
+
+
+        else if (
+            Number(set.winner_id) ===
+            Number({{ match.team2_id }})
+        ) {
+
+            winnerElement.innerHTML = `
+
+                <span class="winner-badge">
+                    🏆 {{ match.team2_name }}
+                </span>
+
+            `;
+
+
+            if (team2Element) {
+
+                team2Element.classList.add(
+                    "winning-score"
+                );
+
+            }
+
+
+            if (team1Element) {
+
+                team1Element.classList.remove(
+                    "winning-score"
+                );
+
+            }
+
+        }
+
+
+        else {
+
+            winnerElement.innerHTML = `
+
+                <span class="no-winner">
+                    LIVE
+                </span>
+
+            `;
+
+
+            if (team1Element) {
+
+                team1Element.classList.remove(
+                    "winning-score"
+                );
+
+            }
+
+
+            if (team2Element) {
+
+                team2Element.classList.remove(
+                    "winning-score"
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SAVE PREVIOUS SCORE
+    ===================================================== */
+
+    if (!previousScores[setNumber]) {
+
+        previousScores[setNumber] = {};
+
+    }
+
+
+    previousScores[setNumber].team1 =
+        Number(set.team1_score);
+
+
+    previousScores[setNumber].team2 =
+        Number(set.team2_score);
+
+}
+
 
 /* =========================================================
    UPDATE LIVE SCORE
@@ -973,17 +1416,32 @@ function animateScore(element) {
 
 async function updateLiveScore() {
 
+    /*
+        Do not start another request while the previous
+        request is still running.
+    */
+
+    if (scoreRequestRunning) {
+        return false;
+    }
+
+
+    scoreRequestRunning = true;
+
+
     try {
 
-        const response = await fetch(
-
-            `/api/match/${MATCH_ID}/score`,
-
-            {
-                cache: "no-store"
-            }
-
-        );
+        const response =
+            await fetch(
+                `/api/match/${MATCH_ID}/score`,
+                {
+                    method: "GET",
+                    cache: "no-store",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }
+            );
 
 
         if (!response.ok) {
@@ -993,7 +1451,7 @@ async function updateLiveScore() {
                 response.status
             );
 
-            return;
+            return false;
         }
 
 
@@ -1008,34 +1466,25 @@ async function updateLiveScore() {
                 data.message
             );
 
-            return;
+            return false;
         }
 
 
-
         /* =================================================
-           UPDATE TIME
+           LAST UPDATED
         ================================================= */
 
         updateLastUpdated();
 
 
-
         /* =================================================
-           SCORE ROW CONTAINER
+           NO SCORE CARD
         ================================================= */
-
-        const scoreRows =
-            document.getElementById(
-                "score-rows"
-            );
-
 
         const noScoreCard =
             document.getElementById(
                 "no-score-card"
             );
-
 
 
         /* =================================================
@@ -1055,328 +1504,11 @@ async function updateLiveScore() {
             }
 
 
-            data.sets.forEach(set => {
-
-
-                /* =========================================
-                   FIND EXISTING ROW
-                ========================================= */
-
-                let row =
-                    document.querySelector(
-                        `.score-row[data-set="${set.set_number}"]`
-                    );
-
-
-
-                /* =========================================
-                   CREATE ROW
-                ========================================= */
-
-                if (!row) {
-
-                    row =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    row.className =
-                        "score-row";
-
-
-                    row.dataset.set =
-                        set.set_number;
-
-
-                    row.innerHTML = `
-
-                        <div class="set-number">
-                            Set ${set.set_number}
-                        </div>
-
-
-                        <div
-                            class="score-number team1-score"
-                            data-team1-set="${set.set_number}"
-                        >
-                            ${set.team1_score}
-                        </div>
-
-
-                        <div
-                            class="score-number team2-score"
-                            data-team2-set="${set.set_number}"
-                        >
-                            ${set.team2_score}
-                        </div>
-
-
-                        <div
-                            class="set-winner"
-                            data-winner-set="${set.set_number}"
-                        >
-
-                            <span class="no-winner">
-                                LIVE
-                            </span>
-
-                        </div>
-
-                    `;
-
-
-                    if (scoreRows) {
-
-                        scoreRows.appendChild(
-                            row
-                        );
-
-                    }
-
-                }
-
-
-
-                /* =========================================
-                   TEAM 1 SCORE
-                ========================================= */
-
-                const team1Element =
-                    document.querySelector(
-                        `[data-team1-set="${set.set_number}"]`
-                    );
-
-
-                if (team1Element) {
-
-                    const newScore =
-                        Number(
-                            set.team1_score
-                        );
-
-
-                    const oldScore =
-                        previousScores[
-                            set.set_number
-                        ]?.team1;
-
-
-                    if (
-                        typeof oldScore !==
-                        "undefined" &&
-                        oldScore !== newScore
-                    ) {
-
-                        animateScore(
-                            team1Element
-                        );
-
-                    }
-
-
-                    team1Element.textContent =
-                        set.team1_score;
-
-                }
-
-
-
-                /* =========================================
-                   TEAM 2 SCORE
-                ========================================= */
-
-                const team2Element =
-                    document.querySelector(
-                        `[data-team2-set="${set.set_number}"]`
-                    );
-
-
-                if (team2Element) {
-
-                    const newScore =
-                        Number(
-                            set.team2_score
-                        );
-
-
-                    const oldScore =
-                        previousScores[
-                            set.set_number
-                        ]?.team2;
-
-
-                    if (
-                        typeof oldScore !==
-                        "undefined" &&
-                        oldScore !== newScore
-                    ) {
-
-                        animateScore(
-                            team2Element
-                        );
-
-                    }
-
-
-                    team2Element.textContent =
-                        set.team2_score;
-
-                }
-
-
-
-                /* =========================================
-                   WINNER
-                ========================================= */
-
-                const winnerElement =
-                    document.querySelector(
-                        `[data-winner-set="${set.set_number}"]`
-                    );
-
-
-                if (winnerElement) {
-
-
-                    if (
-                        set.winner_id ===
-                        {{ match.team1_id }}
-                    ) {
-
-                        winnerElement.innerHTML = `
-
-                            <span class="winner-badge">
-                                🏆 {{ match.team1_name }}
-                            </span>
-
-                        `;
-
-
-                        if (team1Element) {
-
-                            team1Element.classList.add(
-                                "winning-score"
-                            );
-
-                        }
-
-
-                        if (team2Element) {
-
-                            team2Element.classList.remove(
-                                "winning-score"
-                            );
-
-                        }
-
-                    }
-
-
-                    else if (
-                        set.winner_id ===
-                        {{ match.team2_id }}
-                    ) {
-
-                        winnerElement.innerHTML = `
-
-                            <span class="winner-badge">
-                                🏆 {{ match.team2_name }}
-                            </span>
-
-                        `;
-
-
-                        if (team2Element) {
-
-                            team2Element.classList.add(
-                                "winning-score"
-                            );
-
-                        }
-
-
-                        if (team1Element) {
-
-                            team1Element.classList.remove(
-                                "winning-score"
-                            );
-
-                        }
-
-                    }
-
-
-                    else {
-
-                        winnerElement.innerHTML = `
-
-                            <span class="no-winner">
-                                LIVE
-                            </span>
-
-                        `;
-
-
-                        if (team1Element) {
-
-                            team1Element.classList.remove(
-                                "winning-score"
-                            );
-
-                        }
-
-
-                        if (team2Element) {
-
-                            team2Element.classList.remove(
-                                "winning-score"
-                            );
-
-                        }
-
-                    }
-
-                }
-
-
-
-                /* =========================================
-                   SAVE CURRENT SCORE
-                ========================================= */
-
-                if (
-                    !previousScores[
-                        set.set_number
-                    ]
-                ) {
-
-                    previousScores[
-                        set.set_number
-                    ] = {};
-
-                }
-
-
-                previousScores[
-                    set.set_number
-                ].team1 =
-                    Number(
-                        set.team1_score
-                    );
-
-
-                previousScores[
-                    set.set_number
-                ].team2 =
-                    Number(
-                        set.team2_score
-                    );
-
-            });
+            data.sets.forEach(
+                updateSetRow
+            );
 
         }
-
 
         else {
 
@@ -1388,7 +1520,6 @@ async function updateLiveScore() {
             }
 
         }
-
 
 
         /* =================================================
@@ -1415,9 +1546,11 @@ async function updateLiveScore() {
         }
 
 
-
         /* =================================================
            SETS WON
+           API FORMAT:
+           data.team1.sets
+           data.team2.sets
         ================================================= */
 
         const team1Sets =
@@ -1434,27 +1567,24 @@ async function updateLiveScore() {
 
         if (
             team1Sets &&
-            typeof data.team1_sets !==
-            "undefined"
+            data.team1
         ) {
 
             team1Sets.textContent =
-                data.team1_sets;
+                data.team1.sets;
 
         }
 
 
         if (
             team2Sets &&
-            typeof data.team2_sets !==
-            "undefined"
+            data.team2
         ) {
 
             team2Sets.textContent =
-                data.team2_sets;
+                data.team2.sets;
 
         }
-
 
 
         /* =================================================
@@ -1469,10 +1599,8 @@ async function updateLiveScore() {
 
         if (statusBadge) {
 
-
             if (
-                data.status ===
-                "live"
+                data.status === "live"
             ) {
 
                 statusBadge.textContent =
@@ -1494,8 +1622,7 @@ async function updateLiveScore() {
 
 
             else if (
-                data.status ===
-                "completed"
+                data.status === "completed"
             ) {
 
                 statusBadge.textContent =
@@ -1515,12 +1642,36 @@ async function updateLiveScore() {
 
             }
 
-        }
 
+            else if (
+                data.status === "cancelled"
+            ) {
+
+                statusBadge.textContent =
+                    "✕ CANCELLED";
+
+
+                statusBadge.classList.remove(
+                    "scheduled",
+                    "live",
+                    "completed"
+                );
+
+
+                statusBadge.classList.add(
+                    "cancelled"
+                );
+
+            }
+
+        }
 
 
         /* =================================================
            MATCH WINNER
+
+           API FORMAT:
+           data.winner_id
         ================================================= */
 
         const winnerCard =
@@ -1536,9 +1687,8 @@ async function updateLiveScore() {
 
 
         if (
-            data.match_winner_id
+            data.winner_id
         ) {
-
 
             if (winnerCard) {
 
@@ -1550,10 +1700,9 @@ async function updateLiveScore() {
 
             if (winnerName) {
 
-
                 if (
-                    data.match_winner_id ===
-                    {{ match.team1_id }}
+                    Number(data.winner_id) ===
+                    Number({{ match.team1_id }})
                 ) {
 
                     winnerName.textContent =
@@ -1563,8 +1712,8 @@ async function updateLiveScore() {
 
 
                 else if (
-                    data.match_winner_id ===
-                    {{ match.team2_id }}
+                    Number(data.winner_id) ===
+                    Number({{ match.team2_id }})
                 ) {
 
                     winnerName.textContent =
@@ -1576,8 +1725,22 @@ async function updateLiveScore() {
 
         }
 
+        else {
+
+            if (winnerCard) {
+
+                winnerCard.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        return true;
 
     }
+
 
     catch (error) {
 
@@ -1586,10 +1749,128 @@ async function updateLiveScore() {
             error
         );
 
+        return false;
+
+    }
+
+
+    finally {
+
+        scoreRequestRunning =
+            false;
+
     }
 
 }
 
+
+/* =========================================================
+   MANUAL SCORE-ONLY REFRESH
+========================================================= */
+
+async function refreshScoreOnly() {
+
+    const button =
+        document.getElementById(
+            "refresh-score-button"
+        );
+
+
+    const status =
+        document.getElementById(
+            "refresh-score-status"
+        );
+
+
+    if (!button) {
+        return;
+    }
+
+
+    /*
+        If an automatic request is already running,
+        wait for it instead of creating another request.
+    */
+
+    if (scoreRequestRunning) {
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        "↻ Refreshing...";
+
+
+    if (status) {
+
+        status.textContent =
+            "";
+
+    }
+
+
+    const success =
+        await updateLiveScore();
+
+
+    if (success) {
+
+        button.textContent =
+            "✓ Score Updated";
+
+
+        if (status) {
+
+            status.textContent =
+                "Updated";
+
+        }
+
+
+        setTimeout(() => {
+
+            button.textContent =
+                "↻ Refresh Score";
+
+
+            if (status) {
+
+                status.textContent =
+                    "";
+
+            }
+
+        }, 1200);
+
+    }
+
+
+    else {
+
+        button.textContent =
+            "↻ Refresh Score";
+
+
+        if (status) {
+
+            status.textContent =
+                "Update failed";
+
+        }
+
+    }
+
+
+    button.disabled =
+        false;
+
+}
 
 
 /* =========================================================
@@ -1599,15 +1880,18 @@ async function updateLiveScore() {
 updateLiveScore();
 
 
-
 /* =========================================================
    LIVE POLLING
-   Every 2 seconds
+   CHECK EVERY 1 SECOND
+
+   IMPORTANT:
+   This does NOT reload the page.
+   Only score data is requested from the API.
 ========================================================= */
 
 setInterval(
     updateLiveScore,
-    2000
+    1000
 );
 
 </script>
@@ -1615,13 +1899,16 @@ setInterval(
 
 
 <!-- =========================================================
-     SCORE CHANGE ANIMATION CSS
+     SCORE CHANGE ANIMATION
 ========================================================= -->
 
 <style>
 
 .score-changed {
-    animation: scoreChangedAnimation 0.6s ease;
+    animation:
+        scoreChangedAnimation
+        0.6s
+        ease;
 }
 
 

@@ -3466,43 +3466,141 @@ def add_match_score(match_id):
 @app.route("/api/match/<int:match_id>/score", methods=["GET"])
 def api_get_match_score(match_id):
 
-    if "user_id" not in session:
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True, buffered=True)
+
+    try:
+
+        # ==========================================
+        # GET MATCH INFORMATION
+        # ==========================================
+
+        cursor.execute("""
+            SELECT
+                m.id,
+                m.team1_id,
+                m.team2_id,
+                m.status,
+                m.winner_id,
+
+                t1.team_name AS team1_name,
+                t2.team_name AS team2_name
+
+            FROM matches m
+
+            JOIN teams t1
+                ON m.team1_id = t1.id
+
+            JOIN teams t2
+                ON m.team2_id = t2.id
+
+            WHERE m.id = %s
+        """, (match_id,))
+
+        match = cursor.fetchone()
+
+        if not match:
+
+            return jsonify({
+                "success": False,
+                "message": "Match not found"
+            }), 404
+
+
+        # ==========================================
+        # GET SET SCORES
+        # ==========================================
+
+        cursor.execute("""
+            SELECT
+                id,
+                set_number,
+                team1_score,
+                team2_score,
+                winner_id
+
+            FROM match_sets
+
+            WHERE match_id = %s
+
+            ORDER BY set_number
+        """, (match_id,))
+
+        sets = cursor.fetchall()
+
+
+        # ==========================================
+        # CALCULATE SETS WON
+        # ==========================================
+
+        team1_sets = 0
+        team2_sets = 0
+
+        for match_set in sets:
+
+            if match_set["winner_id"] == match["team1_id"]:
+
+                team1_sets += 1
+
+            elif match_set["winner_id"] == match["team2_id"]:
+
+                team2_sets += 1
+
+
+        # ==========================================
+        # RETURN LIVE SCORE
+        # ==========================================
+
+        return jsonify({
+
+            "success": True,
+
+            "match_id": match["id"],
+
+            "team1": {
+                "id": match["team1_id"],
+                "name": match["team1_name"],
+                "sets": team1_sets
+            },
+
+            "team2": {
+                "id": match["team2_id"],
+                "name": match["team2_name"],
+                "sets": team2_sets
+            },
+
+            "status": match["status"],
+
+            "winner_id": match["winner_id"],
+
+            "sets": [
+                {
+                    "id": s["id"],
+                    "set_number": s["set_number"],
+                    "team1_score": s["team1_score"],
+                    "team2_score": s["team2_score"],
+                    "winner_id": s["winner_id"]
+                }
+                for s in sets
+            ]
+
+        })
+
+    except Exception as e:
+
+        print("LIVE SCORE API ERROR:", e)
+
         return jsonify({
             "success": False,
-            "message": "Not logged in"
-        }), 401
+            "message": "Database error"
+        }), 500
 
-    connection = get_db_connection()
+    finally:
 
-    cursor = connection.cursor(dictionary=True)
+        cursor.close()
+        connection.close()
 
-    cursor.execute("""
-        SELECT
-            id,
-            set_number,
-            team1_score,
-            team2_score,
-            winner_id
-        FROM match_sets
-        WHERE match_id = %s
-        ORDER BY set_number
-    """, (match_id,))
-
-    sets = cursor.fetchall()
-
-    cursor.close()
-    connection.close()
-
-    return jsonify({
-        "success": True,
-        "sets": sets
-    })
-
-# ============================================================
-# UPDATE ONE SCORE
-# ============================================================
-
-
+        
 
 # ============================================================
 # END CURRENT SET
