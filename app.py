@@ -3,7 +3,7 @@ import mysql.connector
 from mysql.connector import pooling
 import os
 import time
-
+from flask import send_from_directory
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -19,7 +19,7 @@ UPLOAD_FOLDER = os.path.join(
 )
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
+UPLOAD_FOLDER = os.path.join(app.static_folder, "uploads", "announcements")
 
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -3600,6 +3600,62 @@ def api_get_match_score(match_id):
         connection.close()
 
         
+@app.route("/announcement/delete/<int:announcement_id>", methods=["POST"])
+def delete_announcement(announcement_id):
+
+    # Only admin and organizer can delete
+    if session.get("user_role") not in ["admin", "organizer"]:
+        flash("You are not authorized to delete announcements.", "error")
+        return redirect(url_for("announcements"))
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    try:
+        # First get attachment information
+        cursor.execute("""
+            SELECT attachment_path
+            FROM announcements
+            WHERE id = %s
+        """, (announcement_id,))
+
+        announcement = cursor.fetchone()
+
+        if not announcement:
+            flash("Announcement not found.", "error")
+            return redirect(url_for("announcements"))
+
+        # Delete database record
+        cursor.execute("""
+            DELETE FROM announcements
+            WHERE id = %s
+        """, (announcement_id,))
+
+        connection.commit()
+
+        # Delete attached file if it exists
+        if announcement["attachment_path"]:
+            file_path = os.path.join(
+                app.root_path,
+                announcement["attachment_path"]
+            )
+
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+        flash("Announcement deleted successfully.", "success")
+
+    except Exception as e:
+        connection.rollback()
+        flash("Failed to delete announcement.", "error")
+        print("Delete announcement error:", e)
+
+    finally:
+        cursor.close()
+        connection.close()
+
+    return redirect(url_for("announcements"))
+
 
 # ============================================================
 # END CURRENT SET
@@ -4984,7 +5040,60 @@ def reject_organizer_request(request_id):
 
     return redirect(url_for("organizer_requests"))
 
- 
+@app.route("/announcement/file/<int:announcement_id>")
+def download_announcement_file(announcement_id):
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True, buffered=True)
+
+    try:
+
+        cursor.execute("""
+            SELECT
+                attachment_filename,
+                attachment_path
+            FROM announcements
+            WHERE id = %s
+        """, (announcement_id,))
+
+        announcement = cursor.fetchone()
+
+        if not announcement:
+            return "Announcement not found", 404
+
+        if not announcement["attachment_path"]:
+            return "No attachment found", 404
+
+        filename = os.path.basename(
+            announcement["attachment_path"]
+        )
+
+        file_directory = app.config["UPLOAD_FOLDER"]
+
+        file_path = os.path.join(
+            file_directory,
+            filename
+        )
+
+        if not os.path.isfile(file_path):
+            return "Attachment file not found on server", 404
+
+        return send_from_directory(
+            file_directory,
+            filename,
+            as_attachment=False
+        )
+
+    finally:
+
+        cursor.close()
+        connection.close()
+
+@app.route("/announcement-file/<filename>")
+def announcement_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)

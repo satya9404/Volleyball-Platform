@@ -598,3 +598,19 @@
         letter-spacing: 2px;
     }
 }
+
+
+.delete-announcement-button {
+    border: none;
+    background: #dc2626;
+    color: white;
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.delete-announcement-button:hover {
+    background: #b91c1c;
+}

@@ -1,116 +1,563 @@
 {% extends "base.html" %}
 
 {% block title %}
-Announcements | NIT Nagaland Volleyball
+Announcements
 {% endblock %}
 
 
 {% block extra_css %}
 
-<link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/announcements.css') }}"
->
-
 <style>
 
-    /* ==============================
-       ATTACHMENT
-    ============================== */
+/* =====================================================
+   PAGE
+===================================================== */
 
-    .announcement-attachment {
-        margin-top: 22px;
-        padding: 15px 18px;
+.announcements-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+}
 
-        display: flex;
-        align-items: center;
-        gap: 14px;
 
-        background: #f5f8ff;
-        border: 1px solid #dce6f8;
-        border-radius: 12px;
+/* =====================================================
+   HEADER
+===================================================== */
+
+.announcements-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+
+    padding: 30px;
+    margin-bottom: 30px;
+
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.header-icon {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eef4ff;
+
+    font-size: 30px;
+
+    flex-shrink: 0;
+}
+
+.header-content {
+    flex: 1;
+}
+
+.header-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #2563eb;
+}
+
+.header-content h1 {
+    margin: 0 0 8px;
+
+    font-size: 32px;
+
+    color: #172033;
+}
+
+.header-description {
+    margin: 0;
+
+    color: #64748b;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   ADMIN ACTION
+===================================================== */
+
+.admin-action {
+    margin-top: 20px;
+}
+
+.add-announcement-button {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 8px;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.add-announcement-button:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+}
+
+.add-button-icon {
+    font-size: 20px;
+}
+
+
+/* =====================================================
+   ANNOUNCEMENT LIST
+===================================================== */
+
+.announcements-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.announcement-card {
+    background: #ffffff;
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+
+    border: 1px solid #e5e7eb;
+}
+
+
+/* =====================================================
+   TOP
+===================================================== */
+
+.announcement-top {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.announcement-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #eef4ff;
+
+    font-size: 23px;
+
+    flex-shrink: 0;
+}
+
+.announcement-heading {
+    flex: 1;
+}
+
+.announcement-heading h2 {
+    margin: 0 0 10px;
+
+    font-size: 21px;
+
+    color: #172033;
+}
+
+
+/* =====================================================
+   META
+===================================================== */
+
+.announcement-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+}
+
+.meta-item {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+.meta-icon {
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.announcement-message {
+    padding: 18px;
+
+    margin-bottom: 18px;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+    color: #334155;
+
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+}
+
+
+/* =====================================================
+   ATTACHMENT
+===================================================== */
+
+.announcement-attachment {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    margin-bottom: 18px;
+
+    border-radius: 10px;
+
+    background: #f1f5f9;
+
+    border: 1px solid #e2e8f0;
+}
+
+.attachment-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    font-size: 20px;
+
+    flex-shrink: 0;
+}
+
+.attachment-info {
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+
+    flex: 1;
+}
+
+.attachment-label {
+    font-size: 12px;
+
+    color: #64748b;
+
+    font-weight: 700;
+
+    margin-bottom: 3px;
+}
+
+.attachment-name {
+    color: #172033;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   VIEW FILE BUTTON
+===================================================== */
+
+.attachment-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 9px 15px;
+
+    border-radius: 8px;
+
+    background: #2563eb;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    transition: 0.2s ease;
+
+    flex-shrink: 0;
+}
+
+.attachment-button:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.announcement-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.posted-by {
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+.posted-by strong {
+    color: #334155;
+}
+
+
+/* =====================================================
+   DELETE
+===================================================== */
+
+.announcement-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.delete-announcement-button {
+    border: none;
+
+    padding: 9px 15px;
+
+    border-radius: 8px;
+
+    background: #dc2626;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.delete-announcement-button:hover {
+    background: #b91c1c;
+
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty-announcements {
+    text-align: center;
+
+    padding: 60px 25px;
+
+    background: #ffffff;
+
+    border-radius: 15px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+}
+
+.empty-icon {
+    font-size: 45px;
+
+    margin-bottom: 15px;
+}
+
+.empty-announcements h2 {
+    margin: 0 0 8px;
+
+    color: #172033;
+}
+
+.empty-announcements p {
+    margin: 0 0 20px;
+
+    color: #64748b;
+}
+
+.empty-add-button {
+    display: inline-block;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+.empty-add-button:hover {
+    background: #1d4ed8;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .announcements-page {
+        padding: 20px 12px 40px;
     }
 
-    .attachment-icon {
-        font-size: 24px;
-        flex-shrink: 0;
+    .announcements-header {
+        padding: 20px;
+
+        gap: 12px;
+    }
+
+    .header-icon {
+        width: 45px;
+        height: 45px;
+
+        font-size: 23px;
+    }
+
+    .header-content h1 {
+        font-size: 25px;
+    }
+
+    .announcement-card {
+        padding: 18px;
+    }
+
+    .announcement-top {
+        gap: 10px;
+    }
+
+    .announcement-heading h2 {
+        font-size: 18px;
+    }
+
+    .announcement-attachment {
+        align-items: flex-start;
+
+        flex-wrap: wrap;
     }
 
     .attachment-info {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-
-        flex: 1;
-        min-width: 0;
-    }
-
-    .attachment-label {
-        font-size: 12px;
-        font-weight: 700;
-        color: #315aa8;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .attachment-name {
-        font-size: 14px;
-        color: #263b63;
-
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        width: calc(100% - 50px);
     }
 
     .attachment-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        width: 100%;
 
-        padding: 9px 16px;
-
-        background: #174ea6;
-        color: white;
-
-        text-decoration: none;
-
-        border-radius: 8px;
-
-        font-size: 13px;
-        font-weight: 700;
-
-        transition: 0.2s ease;
-
-        flex-shrink: 0;
+        margin-top: 5px;
     }
 
-    .attachment-button:hover {
-        background: #0f3b82;
-        transform: translateY(-1px);
+    .announcement-footer {
+        flex-direction: column;
+
+        align-items: stretch;
     }
 
-
-    /* ==============================
-       MOBILE
-    ============================== */
-
-    @media (max-width: 600px) {
-
-        .announcement-attachment {
-            align-items: flex-start;
-            flex-wrap: wrap;
-        }
-
-        .attachment-info {
-            width: calc(100% - 50px);
-        }
-
-        .attachment-button {
-            width: 100%;
-            margin-top: 5px;
-        }
-
+    .announcement-actions {
+        width: 100%;
     }
+
+    .delete-announcement-button {
+        width: 100%;
+    }
+}
 
 </style>
 
@@ -123,9 +570,9 @@ Announcements | NIT Nagaland Volleyball
 <div class="announcements-page">
 
 
-    <!-- ==========================================
+    <!-- =====================================================
          PAGE HEADER
-    =========================================== -->
+    ====================================================== -->
 
     <section class="announcements-header">
 
@@ -151,8 +598,6 @@ Announcements | NIT Nagaland Volleyball
                 information.
             </p>
 
-
-            <!-- ADMIN / ORGANIZER -->
 
             {% if session.get("user_role") in ["admin", "organizer"] %}
 
@@ -183,9 +628,9 @@ Announcements | NIT Nagaland Volleyball
 
 
 
-    <!-- ==========================================
+    <!-- =====================================================
          ANNOUNCEMENTS
-    =========================================== -->
+    ====================================================== -->
 
     <section class="announcements-section">
 
@@ -202,9 +647,9 @@ Announcements | NIT Nagaland Volleyball
             <article class="announcement-card">
 
 
-                <!-- ==================================
-                     ANNOUNCEMENT HEADER
-                =================================== -->
+                <!-- =================================================
+                     TOP
+                ================================================== -->
 
                 <div class="announcement-top">
 
@@ -269,9 +714,9 @@ Announcements | NIT Nagaland Volleyball
 
 
 
-                <!-- ==================================
+                <!-- =================================================
                      MESSAGE
-                =================================== -->
+                ================================================== -->
 
                 <div class="announcement-message">
 
@@ -281,11 +726,11 @@ Announcements | NIT Nagaland Volleyball
 
 
 
-                <!-- ==================================
+                <!-- =================================================
                      ATTACHMENT
-                =================================== -->
+                ================================================== -->
 
-                {% if announcement.attachment_path %}
+                {% if announcement.attachment_filename %}
 
                 <div class="announcement-attachment">
 
@@ -314,17 +759,18 @@ Announcements | NIT Nagaland Volleyball
                     </div>
 
 
+                    <!-- IMPORTANT:
+                         Use Flask attachment route instead
+                         of directly opening /static/... -->
+
                     <a
-                        href="{{ url_for(
-                            'static',
-                            filename=announcement.attachment_path
-                        ) }}"
+                        href="{{ url_for('download_announcement_file', announcement_id=announcement.id) }}"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="attachment-button"
                     >
 
-                        View File
+                        📄 View File
 
                     </a>
 
@@ -335,11 +781,12 @@ Announcements | NIT Nagaland Volleyball
 
 
 
-                <!-- ==================================
+                <!-- =================================================
                      FOOTER
-                =================================== -->
+                ================================================== -->
 
                 <div class="announcement-footer">
+
 
                     <span class="posted-by">
 
@@ -350,6 +797,33 @@ Announcements | NIT Nagaland Volleyball
                         </strong>
 
                     </span>
+
+
+                    {% if session.get("user_role") in ["admin", "organizer"] %}
+
+                    <div class="announcement-actions">
+
+                        <form
+                            method="POST"
+                            action="{{ url_for('delete_announcement', announcement_id=announcement.id) }}"
+                            onsubmit="return confirm('Are you sure you want to delete this announcement? This action cannot be undone.');"
+                        >
+
+                            <button
+                                type="submit"
+                                class="delete-announcement-button"
+                            >
+
+                                🗑️ Delete
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    {% endif %}
+
 
                 </div>
 
@@ -366,9 +840,9 @@ Announcements | NIT Nagaland Volleyball
         {% else %}
 
 
-        <!-- ==========================================
+        <!-- =================================================
              EMPTY STATE
-        =========================================== -->
+        ================================================== -->
 
         <div class="empty-announcements">
 
@@ -415,4 +889,3 @@ Announcements | NIT Nagaland Volleyball
 </div>
 
 {% endblock %}
-
